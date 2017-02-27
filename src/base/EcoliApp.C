@@ -4,6 +4,9 @@
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
+#include "PusztaiACBulk.h" //Add
+#include "PusztaiCHBulk.h" //Add
+
 template<>
 InputParameters validParams<EcoliApp>()
 {
@@ -40,6 +43,8 @@ extern "C" void EcoliApp__registerObjects(Factory & factory) { EcoliApp::registe
 void
 EcoliApp::registerObjects(Factory & factory)
 {
+  registerKernel(PusztaiACBulk);
+  registerKernel(PusztaiCHBulk);
 }
 
 // External entry point for dynamic syntax association

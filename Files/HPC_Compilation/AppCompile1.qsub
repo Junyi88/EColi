@@ -1,0 +1,60 @@
+#!/bin/sh
+#PBS -j oe
+#PBS -l walltime=24:00:00,select=1:ncpus=16:mpiprocs=16:mem=15200mb
+#
+
+module load mpi
+module load vtk
+module load gcc
+module load mooseframework
+# module load intel-suite mpi
+
+cd $WORK/mooseFR
+
+echo "Start cloning repos"
+git clone https://github.com/Junyi88/EColi.git
+echo "Done cloning repos"
+
+echo "Start build libmesh"
+cd moose
+./scripts/update_and_rebuild_libmesh.sh
+cd ..
+echo "Done build libmesh"
+
+echo "QZ Start Build moose"
+cd ./moose/test
+make -j24
+mpiexec ./run_tests
+cd ..
+cd ..
+echo "QZ Finish Build moose"
+
+echo "===== ENV"
+echo `printenv`
+echo "===== "
+
+echo "QZ Start move moose"
+cp -r ./moose/* $WORK/DropZone/moose
+echo "QZ Finish move moose"
+
+echo "QZ Start Build J1Stork"
+cd EColi
+make -j24
+cd ..
+echo "QZ Finish Build J1Stork"
+
+echo "===== ENV2"
+echo `printenv`
+echo "===== "
+
+echo `printenv` >> $WORK/Junyi.txt
+
+echo "QZ Start move J1stork"
+cp -r ./EColi/* $WORK/DropZone/EColi
+echo "QZ Finish move J1stork"
+
+cp -r $WORK/DropZone/MyRuns/* $TMPDIR
+mpiexec ./EColi/EColi-opt -i ./MyRuns/ControlRun2D_9.i
+cp $TMPDIR/*.e $WORK/Outputs
+
+echo "QZ Done"
