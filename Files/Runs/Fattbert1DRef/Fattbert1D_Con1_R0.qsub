@@ -1,0 +1,17 @@
+#!/bin/sh
+#PBS -j oe
+#PBS -l walltime=00:15:00,select=1:ncpus=16:mpiprocs=16:mem=1024mb
+#
+
+
+module load mpi
+module load vtk
+module load gcc
+module load mooseframework
+# module load intel-suite mpi
+
+cp -r $WORK/DropZone/MyRuns/* $TMPDIR
+pbsexec -grace 5 mpiexec $WORK/mooseFR/EColi/EColi-opt -i ./Fattbert1D_Con1_R0.i
+cp $TMPDIR/*.e -f $WORK/Outputs
+
+echo "QZ Done"
