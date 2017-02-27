@@ -624,7 +624,7 @@
   [./f_liquid]
     type = DerivativeParsedMaterial
     f_name = fl
-    args = 'cl Te'
+    args = 'c Te'
     derivative_order             = 2
     constant_names = 'p00 p01 p02 p03
                        p04 p05 p10 p11
@@ -640,10 +640,10 @@
                           -1.3443386108e-08 0.130208333333'
     function = 'Magni*(p00+p01*Te+(p02*(Te^2))+(p03*(Te^3))+
                  (p04*(Te^4))+(p05*(Te^5))+
-                 cl*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
-                 (cl^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
-                 (cl^3)*(p30+p31*Te+(p32*(Te^2)))+
-                 (cl^4)*(p40+p41*Te)+(cl^5)*p50)'
+                 c*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
+                 (c^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
+                 (c^3)*(p30+p31*Te+(p32*(Te^2)))+
+                 (c^4)*(p40+p41*Te)+(c^5)*p50)'
     outputs = exodus
   [../]
 
@@ -651,7 +651,7 @@
   [./f_solid]
     type = DerivativeParsedMaterial
     f_name = fs
-    args = 'cs Te'
+    args = 'c Te'
     derivative_order             = 2
     constant_names = 'p00 p01 p02 p03
                        p04 p05 p10 p11
@@ -667,10 +667,10 @@
                             -9.2352019506e-09  0.130208333333'
     function = 'Magni*(p00+p01*Te+(p02*(Te^2))+(p03*(Te^3))+
                  (p04*(Te^4))+(p05*(Te^5))+
-                 cs*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
-                 (cs^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
-                 (cs^3)*(p30+p31*Te+(p32*(Te^2)))+
-                 (cs^4)*(p40+p41*Te)+(cs^5)*p50)'
+                 c*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
+                 (c^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
+                 (c^3)*(p30+p31*Te+(p32*(Te^2)))+
+                 (c^4)*(p40+p41*Te)+(c^5)*p50)'
     outputs = exodus
   [../]
 
