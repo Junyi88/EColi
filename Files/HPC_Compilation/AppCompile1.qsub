@@ -1,0 +1,31 @@
+#!/bin/sh
+#PBS -j oe
+#PBS -l walltime=24:00:00,select=1:ncpus=16:mpiprocs=16:mem=15200mb
+#
+
+module load mpi
+module load vtk
+module load gcc
+module load mooseframework
+# module load intel-suite mpi
+
+cd $WORK/mooseFR
+
+echo "Start cloning repos"
+# Old Repo
+# git clone -b HPC https://github.com/Junyi88/J1stork.git
+# git clone -b SetupNewApp https://github.com/Junyi88/EColi.git
+git clone https://github.com/Junyi88/EColi.git
+echo "Done cloning repos"
+
+echo "QZ Start Build J1Stork"
+cd EColi
+make -j24
+cd ..
+echo "QZ Finish Build J1Stork"
+
+cp -r $WORK/DropZone/MyRuns/* $TMPDIR
+mpiexec ./EColi/EColi-opt -i $WORK/DropZone/MyRuns/Fattbert1D_Con1_R0.i
+cp $TMPDIR/*.e $WORK/Outputs
+
+echo "QZ Done"
