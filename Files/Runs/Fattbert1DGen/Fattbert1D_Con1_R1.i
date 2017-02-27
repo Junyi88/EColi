@@ -1,6 +1,6 @@
 [Mesh]
   #MOOSE supports reading field data from ExodusII, XDA/XDR, and mesh checkpoint files (.e, .xda, .xdr, .cp)
-  file =./Files/Runs/Fattbert1DRef/Fattbert1D_Con1_R0_out.e
+  file =./Files/Runs/Fattbert1DGen/Fattbert1D_Con1_R0_out.e
   #This method of restart is only supported on serial meshes
   #distribution = serial
 []
@@ -33,19 +33,19 @@
     initial_from_file_timestep = LATEST
   [../]
 
-  [./cl]   # Mole fraction of Cr (unitless)
-    order = FIRST
-    family = LAGRANGE
-    initial_from_file_var = cl
-    initial_from_file_timestep = LATEST
-  [../]
-
-  [./cs]   # Phase
-    order = FIRST
-    family = LAGRANGE
-    initial_from_file_var = cs
-    initial_from_file_timestep = LATEST
-  [../]
+  #[./cl]   # Mole fraction of Cr (unitless)
+  #  order = FIRST
+  #  family = LAGRANGE
+  #  initial_from_file_var = cl
+  #  initial_from_file_timestep = LATEST
+  #[../]
+  #
+  #[./cs]   # Phase
+  #  order = FIRST
+  #  family = LAGRANGE
+  #  initial_from_file_var = cs
+  #  initial_from_file_timestep = LATEST
+  #[../]
 
   [./q1]   # Mole fraction of Cr (unitless)
     order = FIRST
@@ -87,6 +87,97 @@
     initial_from_file_timestep = LATEST
   [../]
 []
+
+
+#[Mesh]
+#  #MOOSE supports reading field data from ExodusII, XDA/XDR, and mesh checkpoint files (.e, .xda, .xdr, .cp)
+#  file =/Files/Examples/Fattber1D/Fattbert1D_Con1_R0_out.e
+#  #This method of restart is only supported on serial meshes
+#  #distribution = serial
+#[]
+#
+##[Variables]
+##  [./nodal]
+##     family = LAGRANGE
+##     order = FIRST
+##     initial_from_file_var = nodal
+##     initial_from_file_timestep = 7266
+##  [../]
+##[]
+#
+#
+###===============================================================
+###: Section Mesh
+#[GlobalParams]
+#  outputs = exodus
+#  penalty = 1e3
+#[]
+#
+###===============================================================
+###: Section Variables
+#[Variables]
+#
+#  [./eta]
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = eta
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./cl]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = cl
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./cs]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = cs
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./q1]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = q1
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./q2]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = q2
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./LaQ]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = LaQ
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./Te]
+#    #initial_condition = 1600 # Start at room Teperature13
+#    initial_from_file_var = Te
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./c]
+#    #initial_condition = 0.45 # Start at room Teperature13
+#    initial_from_file_var = c
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./w]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = w
+#    initial_from_file_timestep = 12
+#  [../]
+#[]
 
 [BCs]
   #[./left_c]
@@ -139,11 +230,11 @@
   [./consts]
     type = GenericConstantMaterial
     prop_names  = 'kappa_eta kappaQ walleta
-                   Leta '
+                   Leta kappa_c'
     #prop_values = '0.0625 0.09765625 2.5
     #               6.4 0.25 1423.0'
     prop_values = '0.0625 0.09765625 2.5
-                  6.4 '
+                  6.4 0.0'
   [../]
   [./HQ]
     type = DerivativeParsedMaterial
@@ -264,17 +355,7 @@
    outputs = exodus
   [../]
 
-  [./Mob]
-    type = ParsedMaterial
-    f_name = M
-    args = 'c eta Te'
-    material_property_names = 'MS:=MS(c,Te)   ML:=ML(c,Te)'
-    constant_names = 'Rg Mag1'
-    constant_expressions = '8.31451e-3 7.68e9'
-  function ='(MS+(ML-MS)*(1.0-(eta^3)*(10.0-15.0*eta+6.0*(eta^2))))*Mag1'
-  # function ='0.001'
-   outputs = exodus
-  [../]
+
 
   #[./Mob]
   #  type = ParsedMaterial
@@ -291,7 +372,7 @@
   [./f_liquid]
     type = DerivativeParsedMaterial
     f_name = fl
-    args = 'cl Te'
+    args = 'c Te'
     derivative_order             = 3
     constant_names = 'p00 p01 p02 p03
                        p04 p05 p10 p11
@@ -307,10 +388,10 @@
                           -1.3443386108e-08 0.130208333333'
     function = 'Magni*(p00+p01*Te+(p02*(Te^2))+(p03*(Te^3))+
                  (p04*(Te^4))+(p05*(Te^5))+
-                 cl*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
-                 (cl^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
-                 (cl^3)*(p30+p31*Te+(p32*(Te^2)))+
-                 (cl^4)*(p40+p41*Te)+(cl^5)*p50)'
+                 c*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
+                 (c^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
+                 (c^3)*(p30+p31*Te+(p32*(Te^2)))+
+                 (c^4)*(p40+p41*Te)+(c^5)*p50)'
     outputs = exodus
   [../]
 
@@ -318,7 +399,7 @@
   [./f_solid]
     type = DerivativeParsedMaterial
     f_name = fs
-    args = 'cs Te'
+    args = 'c Te'
     derivative_order             = 3
     constant_names = 'p00 p01 p02 p03
                        p04 p05 p10 p11
@@ -334,11 +415,39 @@
                             -9.2352019506e-09  0.130208333333'
     function = 'Magni*(p00+p01*Te+(p02*(Te^2))+(p03*(Te^3))+
                  (p04*(Te^4))+(p05*(Te^5))+
-                 cs*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
-                 (cs^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
-                 (cs^3)*(p30+p31*Te+(p32*(Te^2)))+
-                 (cs^4)*(p40+p41*Te)+(cs^5)*p50)'
+                 c*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
+                 (c^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
+                 (c^3)*(p30+p31*Te+(p32*(Te^2)))+
+                 (c^4)*(p40+p41*Te)+(c^5)*p50)'
     outputs = exodus
+  [../]
+
+  [./DerivativeTwoPhaseMaterial]
+    args                         = 'c Te'
+    W                            = 2.5                           # Energy barrier for the phase transformation from A to B
+    derivative_order             = 3                           # Maximum order of derivatives taken (2 or 3)
+    eta                          = 'eta'                  # Order parameter
+    f_name                       = 'F'                           # Base name of the free energy function (used to name the material properties)
+    fa_name                      = 'fl'                  # Phase A material (at eta=0)
+    fb_name                      = 'fs'                  # Phase A material (at eta=1)
+    g                            = 'g'                           # Barrier Function Material that provides g(eta)
+    h                            = 'h'                           # Switching Function Material that provides h(eta)
+    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
+    outputs                      = none                        # Vector of output names were you would like to restrict the output of ...
+                                                               # variables(s) associated with this object
+    type                         = DerivativeTwoPhaseMaterial
+  [../]
+
+  [./Mob]
+    type = ParsedMaterial
+    f_name = M
+    args = 'c eta Te'
+    material_property_names = 'MS:=MS(c,Te)   ML:=ML(c,Te)'
+    constant_names = 'Rg Mag1'
+    constant_expressions = '8.31451e-3 7.68e9'
+    function ='(MS+(ML-MS)*(1.0-(eta^3)*(10.0-15.0*eta+6.0*(eta^2))))*Mag1'
+  # function ='0.001'
+   outputs = exodus
   [../]
 
   # Heat
@@ -370,38 +479,22 @@
 # =======================================================
 # Kernels
 [Kernels]
-  # enforce c = (1-h(eta))*cl + h(eta)*cs
-  [./PhaseConc]
-    type = KKSPhaseConcentration
-    ca       = cl
-    variable = cs
-    c        = c
-    eta      = eta
-  [../]
-
-  # enforce pointwise equality of chemical potentials
-  [./ChemPotSolute]
-    type = KKSPhaseChemicalPotential
-    args_a   = 'Te'
-    args_b   = 'Te'
-    variable = cl
-    cb       = cs
-    fa_name  = fl
-    fb_name  = fs
-  [../]
-
   #
   # Cahn-Hilliard Equation
   #
-  [./CHBulk]
-    type = KKSSplitCHCRes
-    args_a   = 'Te'
-    variable = c
-    ca       = cl
-    cb       = cs
-    fa_name  = fl
-    fb_name  = fs
-    w        = w
+  [./SplitCHParsed]
+    args                         = 'eta Te'                            # Vector of additional arguments to F
+    f_name                       = F                  # Base name of the free energy function F defined in a DerivativeParsedMaterial
+    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
+                                                               # form
+    kappa_name                   = kappa_c                  # The kappa used with the kernel
+    seed                         = 0                           # The seed for the master random number generator
+    type                         = SplitCHParsed
+    use_displaced_mesh           = 0                           # Whether or not this object should use the displaced mesh for computation. ...
+                                                               # Note that in the case this is true but no displacements are provided ...
+                                                               # in the Mesh block the undisplaced mesh will still be used.
+    variable                     = c                  # The name of the variable that this Kernel operates on
+    w                            = w                  # chem poten
   [../]
 
   [./dcdt]
@@ -427,25 +520,18 @@
     type                         = AllenCahn
     variable                     = 'eta Te'                   # The name of the variable that this Kernel operates on
   [../]
-  [./ACBulkF]
-    type = KKSACBulkF
-    variable = eta
-    fa_name  = fl
-    fb_name  = fs
-    w        = 2.5
-    args = 'cl cs Te'
-    mob_name = 'Leta'
+
+  [./AllenCahn]
+    args                         =  'c Te'                           # Vector of arguments of the mobility
+    enable                       = 1                           # Set the enabled status of the MooseObject.
+    f_name                       = F                  # Base name of the free energy function F defined in a DerivativeParsedMaterial
+    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
+                                                               # form
+    mob_name                     = Leta                           # The mobility used with the kernel
+    type                         = AllenCahn
+    variable                     = 'eta'                  # The name of the variable that this Kernel operates on
   [../]
-  [./ACBulkC]
-    type = KKSACBulkC
-    args = 'cl cs Te'
-    variable = eta
-    ca       = cl
-    cb       = cs
-    fa_name  = fl
-    fb_name  = fs
-    mob_name = 'Leta'
-  [../]
+
   [./ACInterface]
     type = ACInterface
     variable = eta
@@ -639,7 +725,7 @@
 ##: Executioner
 [Executioner]
   type = Transient
-  solve_type = 'PJFNK'
+  solve_type = 'NEWTON'
 # PJFNK
   petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
   petsc_options_value = 'asm      ilu          nonzero'
@@ -649,7 +735,7 @@
   #nl_abs_tol = 1e-8
   nl_abs_tol = 1e-8
   end_time = 0.75
-  dt = 1.0e-3
+  dt = 1.0e-4
   #scheme                     =explicit-euler
 #  [./TimeIntegrator]
 #   type = ExplicitEuler
@@ -704,7 +790,7 @@
 [Outputs]
   interval                       = 1
   exodus = true
-  console = true
+  console = false
   print_perf_log = true
   output_initial = true
 []

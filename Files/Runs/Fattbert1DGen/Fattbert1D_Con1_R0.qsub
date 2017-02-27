@@ -9,8 +9,8 @@ module load gcc
 module load mooseframework
 # module load intel-suite mpi
 
-cp -r $WORK/DropZone/Fattbert1DRef/*.i $TMPDIR
+cp -r $WORK/DropZone/Fattbert1DGen/*.i $TMPDIR
 pbsexec -grace 5 mpiexec $WORK/mooseFR/EColi/EColi-opt -i ./Fattbert1D_Con1_R0.i
-cp -f $TMPDIR/*.e $WORK/Outputs/Fattbert1DRef/
+cp -f $TMPDIR/*.e $WORK/Outputs/Fattbert1DGen/
 
 echo "QZ Done"
