@@ -1,15 +1,15 @@
-#include "PusztaiCHBulk.h"
+#include "PusztaiQsBulk.h"
 
 template<>
-InputParameters validParams<PusztaiCHBulk>()
+InputParameters validParams<PusztaiQsBulk>()
 {
   InputParameters params = validParams<Kernel>();
   params.addClassDescription("Pusztai Kernel for Etas");
   params.addRequiredParam<MaterialPropertyName>("L_name",  "The mobility used with the kernel");
   params.addRequiredParam<MaterialPropertyName>("H_name",  "The energy function of the non-grain boundary phases");
   params.addRequiredParam<MaterialPropertyName>("P_name", "Interpolation function for phases");
-  params.addParam<Real>("DelQMax", 20.0, "Maximum Value");
-  params.addParam<Real>("DelQPin", 0.1 ,"Pinning");
+  params.addParam<Real>("Correction_y0", 1.0, "Maximum Value");
+  params.addParam<Real>("Correction_Z", 1.0 ,"Pinning");
   params.addCoupledVar("Args", "Vector of Etas and Temperature this object depends on");
   params.addCoupledVar("Qs", "Vector of Qs this object depends on");
   params.addParam<bool>("variable_L", false, "The mobility is a function of any MOOSE variable (if this is set to false L must be constant over the entire domain!)");
@@ -19,7 +19,7 @@ InputParameters validParams<PusztaiCHBulk>()
 }
 
 //** Constructor *********************************************************
-PusztaiCHBulk::PusztaiCHBulk(const InputParameters & parameters) :
+PusztaiQsBulk::PusztaiQsBulk(const InputParameters & parameters) :
     DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >(parameters),
     _nvar(_coupled_moose_vars.size()),
     _nQs(0),
@@ -85,7 +85,7 @@ PusztaiCHBulk::PusztaiCHBulk(const InputParameters & parameters) :
 
   //** computeQpResidual() *********************************************************
 Real
-PusztaiCHBulk::computeQpResidual()
+PusztaiQsBulk::computeQpResidual()
 {
   // std::ofstream myfile;  //QZ_Debug
   // myfile.open ("DebgQs.txt",std::ios_base::app); //QZ_Debug
@@ -100,7 +100,7 @@ PusztaiCHBulk::computeQpResidual()
 
 //** computeQpJacobian() *********************************************************
 Real
-PusztaiCHBulk::computeQpJacobian()
+PusztaiQsBulk::computeQpJacobian()
 {
   return ((InSqrtGrad2()*_grad_phi[_j][_qp])+
          (_grad_u[_qp]*dInSqrtGrad2_dEta()))*H2PNablaLTest();
@@ -108,7 +108,7 @@ PusztaiCHBulk::computeQpJacobian()
 
 //** computeQpOffDiagJacobian() *********************************************************
 Real
-PusztaiCHBulk::computeQpOffDiagJacobian(unsigned int jvar)
+PusztaiQsBulk::computeQpOffDiagJacobian(unsigned int jvar)
 {
   // return 0.0;
   const unsigned int cvar = mapJvarToCvar(jvar);
@@ -129,7 +129,7 @@ PusztaiCHBulk::computeQpOffDiagJacobian(unsigned int jvar)
 
 //** NablaLTest() *********************************************************
 RealGradient
-PusztaiCHBulk::NablaLTest()
+PusztaiQsBulk::NablaLTest()
 {
   RealGradient sum=_L[_qp]*_grad_test[_i][_qp];
 
@@ -144,7 +144,7 @@ PusztaiCHBulk::NablaLTest()
 
 //** DiffNablaLTest() *********************************************************
 RealGradient
-PusztaiCHBulk::DiffNablaLTest(const unsigned int &cvar)
+PusztaiQsBulk::DiffNablaLTest(const unsigned int &cvar)
 {
   RealGradient dsum=_grad_phi[_j][_qp]*(*_dLdarg[cvar])[_qp];
   for (unsigned int i = 0; i < _nvar; ++i)
@@ -154,7 +154,7 @@ PusztaiCHBulk::DiffNablaLTest(const unsigned int &cvar)
 
 //** SqrtGrad2() *********************************************************
 Real
-PusztaiCHBulk::SqrtGrad2()
+PusztaiQsBulk::SqrtGrad2()
 {
   Real sum=_grad_u[_qp]*_grad_u[_qp];
 
@@ -166,7 +166,7 @@ PusztaiCHBulk::SqrtGrad2()
 
 //** InSqrtGrad2() *********************************************************
 Real
-PusztaiCHBulk::InSqrtGrad2()
+PusztaiQsBulk::InSqrtGrad2()
 {
   if(SqrtGrad2()<_Z)
   {
@@ -178,7 +178,7 @@ PusztaiCHBulk::InSqrtGrad2()
 
 //** dInSqrtGrad2_dEta() *********************************************************
 Real
-PusztaiCHBulk::dInSqrtGrad2_dEta()
+PusztaiQsBulk::dInSqrtGrad2_dEta()
 {
   if (SqrtGrad2()>_Z)
   {
@@ -190,7 +190,7 @@ PusztaiCHBulk::dInSqrtGrad2_dEta()
 
 //** dInSqrtGrad2_dArg() *********************************************************
 Real
-PusztaiCHBulk::dInSqrtGrad2_dArg(const unsigned int &cvar)
+PusztaiQsBulk::dInSqrtGrad2_dArg(const unsigned int &cvar)
 {
   if (SqrtGrad2()>_Z)
   {
@@ -202,14 +202,14 @@ PusztaiCHBulk::dInSqrtGrad2_dArg(const unsigned int &cvar)
 
 //** H2NablaLTest() *********************************************************
 RealGradient
-PusztaiCHBulk::H2PNablaLTest()
+PusztaiQsBulk::H2PNablaLTest()
 {
   return 2.0*_H[_qp]*_P[_qp]*NablaLTest();
 }
 
 //** H2NablaLTest() *********************************************************
 RealGradient
-PusztaiCHBulk::Nabla2LTest()
+PusztaiQsBulk::Nabla2LTest()
 {
   return 2.0*NablaLTest();
 }

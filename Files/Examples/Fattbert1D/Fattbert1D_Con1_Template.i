@@ -1,6 +1,210 @@
 [Mesh]
+  type = GeneratedMesh
+  dim = 2
+  elem_type = QUAD4
+  nx = 1000
+  ny = 1
+  nz = 0
+  xmin = 0
+  xmax = 2.0e1
+  ymin = 0
+  ymax = 2.0e1
+  zmin = 0
+  zmax = 0
+[]
+[MeshModifiers]
+  [./SubdomainBoundingBox1]
+    block_id                     = 1                 # Subdomain id to set for inside/outside the bounding box
+    block_name                   =                             # Subdomain name to set for inside/outside the bounding box (optional)
+
+    control_tags                 =                             # Adds user-defined labels for accessing object parameters via control ...
+                                                               # logic.
+    depends_on                   =                             # The MeshModifiers that this modifier relies upon (i.e. must execute before ...
+                                                               # this one)
+    enable                       = 1                           # Set the enabled status of the MooseObject.
+    force_prepare                = 0                           # Normally all MeshModifiers run before the mesh is prepared for use. This ...
+                                                               # flag can be set on an individual modifier to force preperation between ...
+                                                               # modifiers where they might be needed.
+    location                     = INSIDE                      # Control of where the subdomain id is to be set
+    #top_right                    = '0.5665e-1 2.0e-1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    #bottom_left                  = '0.4335e-1 0.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    top_right                    = '0.5865e1 2.0e1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    bottom_left                  = '0.4135e1 0.0 0.0'
+    type                         = SubdomainBoundingBox
+  [../]
+  [./SubdomainBoundingBox2]
+    block_id                     = 2                 # Subdomain id to set for inside/outside the bounding box
+    block_name                   =                             # Subdomain name to set for inside/outside the bounding box (optional)
+
+    control_tags                 =                             # Adds user-defined labels for accessing object parameters via control ...
+                                                               # logic.
+    depends_on                   =                             # The MeshModifiers that this modifier relies upon (i.e. must execute before ...
+                                                               # this one)
+    enable                       = 1                           # Set the enabled status of the MooseObject.
+    force_prepare                = 0                           # Normally all MeshModifiers run before the mesh is prepared for use. This ...
+                                                               # flag can be set on an individual modifier to force preperation between ...
+                                                               # modifiers where they might be needed.
+    location                     = INSIDE                      # Control of where the subdomain id is to be set
+    top_right                    = '1.5865e1 2.0e1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    bottom_left                  = '1.4131e1 0.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    #top_right                    = '1.5665e-1 2.0e-1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    #bottom_left                  = '1.4331e-1 0.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    type                         = SubdomainBoundingBox
+  [../]
+[]
+
+
+# =======================================================
+# Variables
+[Variables]
+  # order parameter
+  [./eta]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  # hydrogen concentration
+  [./c]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  # chemical potential
+  [./w]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  # Liquid phase solute concentration
+  [./cl]
+    order = FIRST
+    family = LAGRANGE
+    initial_condition = 0.7244
+  [../]
+  # Solid phase solute concentration
+  [./cs]
+    order = FIRST
+    family = LAGRANGE
+    initial_condition = 0.9163
+  [../]
+
+  # Temperature
+  [./Te]
+    order = FIRST
+    family = LAGRANGE
+    initial_condition = 1423.0
+  [../]
+
+  [./q1]   # Mole fraction of Cr (unitless)
+    order = FIRST
+    family = LAGRANGE
+    #initial_condition = 0.8
+  [../]
+
+  [./q2]   # Mole fraction of Cr (unitless)
+    order = FIRST
+    family = LAGRANGE
+    #initial_condition = 0.6
+  [../]
+
+  [./LaQ]   # Lagrangian
+    order = FIRST
+    family = LAGRANGE
+  [../]
+[]
+
+#[Functions]
+#  [./ic_func_eta]
+#    type = ParsedFunction
+#    value = 0.95*(1.0-tanh((x)/sqrt(2.0)))
+#  [../]
+#  [./ic_func_c]
+#    type = ParsedFunction
+#    value = '0.9163*(0.95*(1.0-tanh(x/sqrt(2.0))))^3*(6*(0.95*(1.0-tanh(x/sqrt(2.0))))^2-15*(0.95*(1.0-tanh(x/sqrt(2.0))))+10)+0.7244*(1-(0.95*(1.0-tanh(x/sqrt(2.0))))^3*(6*(0.95*(1.0-tanh(x/sqrt(2.0))))^2-15*(0.95*(1.0-tanh(x/sqrt(2.0))))+10))'
+#  [../]
+#[]
+
+[ICs]
+  #====================================================================
+  [./ConstantIC_0_eta]
+    block                        =    0
+    type                         = ConstantIC
+    value                        = 0.02
+    variable                     = eta
+  [../]
+  [./ConstantIC_0_c]
+    block                        =    0
+    type                         = ConstantIC
+    value                        = 0.7244
+    variable                     = c
+  [../]
+  [./ConstantIC_0_q1]
+    block                        =    0                         # The list of block ids (SubdomainID) that this object will be applied
+    type                         = ConstantIC
+    value                        = 0.70710678118                 # The value to be set in IC
+    variable                     = q1                  # The variable this initial condition is supposed to provide values for.
+  [../]
+  [./ConstantIC_0_q2]
+    block                        =    0                         # The list of block ids (SubdomainID) that this object will be applied
+    type                         = ConstantIC
+    value                        = 0.70710678118                 # The value to be set in IC
+    variable                     = q2                  # The variable this initial condition is supposed to provide values for.
+  [../]
+  #====================================================================
+  [./ConstantIC_1_eta]
+    block                        =    1
+    type                         = ConstantIC
+    value                        = 0.98
+    variable                     = eta
+  [../]
+  [./ConstantIC_1_c]
+    block                        =    1
+    type                         = ConstantIC
+    value                        = 0.9163
+    variable                     = c
+  [../]
+  [./ConstantIC_1_q1]
+    block                        =    1                         # The list of block ids (SubdomainID) that this object will be applied
+    type                         = ConstantIC
+    value                        = 0.6                 # The value to be set in IC
+    variable                     = q1                  # The variable this initial condition is supposed to provide values for.
+  [../]
+  [./ConstantIC_1_q2]
+    block                        =    1                         # The list of block ids (SubdomainID) that this object will be applied
+    type                         = ConstantIC
+    value                        = 0.8                 # The value to be set in IC
+    variable                     = q2                  # The variable this initial condition is supposed to provide values for.
+  [../]
+  #====================================================================
+  [./ConstantIC_2_eta]
+    block                        =    2
+    type                         = ConstantIC
+    value                        = 0.98
+    variable                     = eta
+  [../]
+  [./ConstantIC_2_c]
+    block                        =    2
+    type                         = ConstantIC
+    value                        = 0.9163
+    variable                     = c
+  [../]
+  [./ConstantIC_2_q1]
+    block                        =    2                         # The list of block ids (SubdomainID) that this object will be applied
+    type                         = ConstantIC
+    value                        = 0.8                 # The value to be set in IC
+    variable                     = q1                  # The variable this initial condition is supposed to provide values for.
+  [../]
+  [./ConstantIC_2_q2]
+    block                        =    2                         # The list of block ids (SubdomainID) that this object will be applied
+    type                         = ConstantIC
+    value                        = 0.6                 # The value to be set in IC
+    variable                     = q2                  # The variable this initial condition is supposed to provide values for.
+  [../]
+[]
+
+[Mesh]
   #MOOSE supports reading field data from ExodusII, XDA/XDR, and mesh checkpoint files (.e, .xda, .xdr, .cp)
-  file =/Files/Examples/Fattber1D/Fattbert1D_Con1_R1_out.e
+  file =/Files/Examples/Fattber1D/Fattbert1D_Con1_R0_out.e
   #This method of restart is only supported on serial meshes
   #distribution = serial
 []
@@ -30,64 +234,83 @@
     order = FIRST
     family = LAGRANGE
     initial_from_file_var = eta
-    initial_from_file_timestep = 240
+    initial_from_file_timestep = 12
   [../]
 
   [./cl]   # Mole fraction of Cr (unitless)
     order = FIRST
     family = LAGRANGE
     initial_from_file_var = cl
-    initial_from_file_timestep = 240
+    initial_from_file_timestep = 12
   [../]
 
   [./cs]   # Phase
     order = FIRST
     family = LAGRANGE
     initial_from_file_var = cs
-    initial_from_file_timestep = 240
+    initial_from_file_timestep = 12
   [../]
 
   [./q1]   # Mole fraction of Cr (unitless)
     order = FIRST
     family = LAGRANGE
     initial_from_file_var = q1
-    initial_from_file_timestep = 240
+    initial_from_file_timestep = 12
   [../]
 
   [./q2]   # Mole fraction of Cr (unitless)
     order = FIRST
     family = LAGRANGE
     initial_from_file_var = q2
-    initial_from_file_timestep = 240
+    initial_from_file_timestep = 12
   [../]
 
   [./LaQ]   # Phase
     order = FIRST
     family = LAGRANGE
     initial_from_file_var = LaQ
-    initial_from_file_timestep = 240
+    initial_from_file_timestep = 12
   [../]
 
   [./Te]
     #initial_condition = 1600 # Start at room Teperature13
     initial_from_file_var = Te
-    initial_from_file_timestep = 240
+    initial_from_file_timestep = 12
   [../]
 
   [./c]
     #initial_condition = 0.45 # Start at room Teperature13
     initial_from_file_var = c
-    initial_from_file_timestep = 240
+    initial_from_file_timestep = 12
   [../]
 
   [./w]   # Phase
     order = FIRST
     family = LAGRANGE
     initial_from_file_var = w
-    initial_from_file_timestep = 240
+    initial_from_file_timestep = 12
   [../]
 []
 
+[BCs]
+  #[./left_c]
+  #  type = DirichletBC
+  #  variable = 'c'
+  #  boundary = 'left'
+  #  value = 0.5
+  #[../]
+  #[./left_eta]
+  #  type = DirichletBC
+  #  variable = 'eta'
+  #  boundary = 'left'
+  #  value = 0.5
+  #[../]
+  [./Periodic]
+    [./c_bcs]
+      auto_direction = 'x y'
+    [../]
+  [../]
+[]
 
 [AuxVariables]
   [./Fglobal]
@@ -113,29 +336,6 @@
   [../]
 []
 
-
-
-
-[BCs]
-  #[./left_c]
-  #  type = DirichletBC
-  #  variable = 'c'
-  #  boundary = 'left'
-  #  value = 0.5
-  #[../]
-  #[./left_eta]
-  #  type = DirichletBC
-  #  variable = 'eta'
-  #  boundary = 'left'
-  #  value = 0.5
-  #[../]
-  [./Periodic]
-    [./c_bcs]
-      auto_direction = 'x y'
-    [../]
-  [../]
-[]
-
 ##===============================================================
 # Materials
 [Materials]
@@ -152,7 +352,7 @@
   [./HQ]
     type = DerivativeParsedMaterial
     f_name = HQ
-    function = '0.25*Te/1000.0'
+    function = '0.25*Te'
     args = 'Te'
     derivative_order             = 1
     outputs = exodus
@@ -168,10 +368,7 @@
   [./Penalty1]
     type = DerivativeParsedMaterial
     f_name =Pen1
-    #constant_names = 'LQMin LQMax'
-    #constant_expressions = '1e-6 0.64'
     material_property_names = 'g2:=g2(eta)'
-    #function = 'LQMin+(LQMax-LQMin)*(1.0-(eta^3)*(10.0-15.0*eta+6.0*(eta^2)))'
     function = 'g2*1.0e3'
     args = 'eta Te'
     derivative_order             = 2
@@ -279,7 +476,7 @@
     constant_names = 'Rg Mag1'
     constant_expressions = '8.31451e-3 7.68e9'
   function ='(MS+(ML-MS)*(1.0-(eta^3)*(10.0-15.0*eta+6.0*(eta^2))))*Mag1'
-  # function ='0.000'
+  # function ='0.001'
    outputs = exodus
   [../]
 
@@ -464,8 +661,8 @@
     variable = eta
   [../]
   [./PusztaiBulkEta]
-    DelQMax                      = 1.0                           # Maximum Value
-    DelQPin                      = 1.0                         # Pinning
+    Correction_y0   = 1.0
+    Correction_Z   = 1.0
     Args                          = 'c Te'                             # Vector of Etas this object depends on
     Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
     H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
@@ -496,7 +693,8 @@
       #function                     = '(-2.37e4)*exp(-13.1802*t)+(2.1729)*exp(0.0078*t)'
       #function                     = '(-2.6061e3)*exp(-1.4315*t)+(6.7976)*exp(0.0296*t)'
       #function                     = '(-880.8589)*exp(-0.4421*t)+(8.7685)*exp(0.1709*t)'
-      value                        = -400.0                           # Value of heat source. Multiplied by function if present.
+      #value                        = -400.0                           # Value of heat source. Multiplied by function if present.
+      value                        = -400.0
       variable                     = Te                # The name of the variable that this Kernel operates on
     [../]
 
@@ -508,14 +706,14 @@
       [../]
 
       [./PusztaiInterface1]
-        DelQPin                      = 1.0
-        DelQMax                      = 1.0
+        Correction_y0                      = 1.0
+        Correction_Z                      = 1.0
         Args                         = 'eta c Te'
         Qs                           =  'q2'
         H_name                       = 'HQ'
         L_name                       = 'LQ '
         P_name                       = 'P1'
-        type                         = PusztaiCHBulk
+        type                         = PusztaiQsBulk
         variable                     = q1
         variable_H                   = 1
         variable_L                   = 1
@@ -554,15 +752,15 @@
       [../]
 
       [./PusztaiInterface2]
-        DelQPin                      = 1.0
-        DelQMax                      = 1.0
+        Correction_y0                     = 1.0
+        Correction_Z                      = 1.0
         Args                         = 'eta c Te'
         Qs                           =  'q1'
         H_name                       = 'HQ'
         implicit                     = 1
         L_name                     = 'LQ '
         P_name                       = 'P1'
-        type                         = PusztaiCHBulk
+        type                         = PusztaiQsBulk
         variable                     = q2
         variable_H                   = 1
 
@@ -582,8 +780,7 @@
       # Langrange Q
       [./SwitchingFunctionConstraintLagrangeQ]
         enable                       = 1
-        #epsilon                      = 1e-09
-        epsilon                      = 1e-12
+        epsilon                      = 1e-09
         etas                         = 'q1 q2'
         h_names                      = 'hq1 hq2'
         implicit                     = 1
@@ -646,7 +843,7 @@
 ##: Executioner
 [Executioner]
   type = Transient
-  solve_type = 'PJFNK'
+  solve_type = 'NEWTON'
 
   petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
   petsc_options_value = 'asm      ilu          nonzero'

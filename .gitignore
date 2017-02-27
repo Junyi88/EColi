@@ -147,3 +147,4 @@ out.xyz
 /Exclude/*
 *.e
 /.jitcache/*
+/lib/*.so.*

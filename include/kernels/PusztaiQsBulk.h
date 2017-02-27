@@ -10,15 +10,15 @@
 #include <fstream>
 
 //----------------------------------
-class PusztaiCHBulk;
+class PusztaiQsBulk;
 
 template<>
-InputParameters validParams<PusztaiCHBulk>();
+InputParameters validParams<PusztaiQsBulk>();
 
-class PusztaiCHBulk : public DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >
+class PusztaiQsBulk : public DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >
 {
 public:
-  PusztaiCHBulk(const InputParameters & parameters);
+  PusztaiQsBulk(const InputParameters & parameters);
   // virtual void initialSetup();
 
 protected:

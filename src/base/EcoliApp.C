@@ -5,7 +5,7 @@
 #include "MooseSyntax.h"
 
 #include "PusztaiACBulk.h" //Add
-#include "PusztaiCHBulk.h" //Add
+#include "PusztaiQsBulk.h" //Add
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -44,7 +44,7 @@ void
 EcoliApp::registerObjects(Factory & factory)
 {
   registerKernel(PusztaiACBulk);
-  registerKernel(PusztaiCHBulk);
+  registerKernel(PusztaiQsBulk);
 }
 
 // External entry point for dynamic syntax association

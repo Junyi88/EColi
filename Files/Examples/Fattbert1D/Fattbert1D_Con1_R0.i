@@ -53,29 +53,6 @@
   [../]
 []
 
-[AuxVariables]
-  [./Fglobal]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./grad_q1x]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./grad_q2x]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-
-  [./grad_q1y]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./grad_q2y]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-[]
 
 # =======================================================
 # Variables
@@ -225,6 +202,96 @@
   [../]
 []
 
+#[Mesh]
+#  #MOOSE supports reading field data from ExodusII, XDA/XDR, and mesh checkpoint files (.e, .xda, .xdr, .cp)
+#  file =/Files/Examples/Fattber1D/Fattbert1D_Con1_R0_out.e
+#  #This method of restart is only supported on serial meshes
+#  #distribution = serial
+#[]
+#
+##[Variables]
+##  [./nodal]
+##     family = LAGRANGE
+##     order = FIRST
+##     initial_from_file_var = nodal
+##     initial_from_file_timestep = 7266
+##  [../]
+##[]
+#
+#
+###===============================================================
+###: Section Mesh
+#[GlobalParams]
+#  outputs = exodus
+#  penalty = 1e3
+#[]
+#
+###===============================================================
+###: Section Variables
+#[Variables]
+#
+#  [./eta]
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = eta
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./cl]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = cl
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./cs]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = cs
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./q1]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = q1
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./q2]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = q2
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./LaQ]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = LaQ
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./Te]
+#    #initial_condition = 1600 # Start at room Teperature13
+#    initial_from_file_var = Te
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./c]
+#    #initial_condition = 0.45 # Start at room Teperature13
+#    initial_from_file_var = c
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./w]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = w
+#    initial_from_file_timestep = 12
+#  [../]
+#[]
+
 [BCs]
   #[./left_c]
   #  type = DirichletBC
@@ -245,6 +312,30 @@
   [../]
 []
 
+[AuxVariables]
+  [./Fglobal]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./grad_q1x]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./grad_q2x]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+
+  [./grad_q1y]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./grad_q2y]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+[]
+
 ##===============================================================
 # Materials
 [Materials]
@@ -261,7 +352,7 @@
   [./HQ]
     type = DerivativeParsedMaterial
     f_name = HQ
-    function = '2*0.25*Te'
+    function = '-0.25*Te'
     args = 'Te'
     derivative_order             = 1
     outputs = exodus
@@ -570,6 +661,8 @@
     variable = eta
   [../]
   [./PusztaiBulkEta]
+    Correction_y0   = 1.0
+    Correction_Z   = 1.0
     Args                          = 'c Te'                             # Vector of Etas this object depends on
     Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
     H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
@@ -613,14 +706,14 @@
       [../]
 
       [./PusztaiInterface1]
-        DelQPin                      = 1.0
-        DelQMax                      = 1.0
+        Correction_y0                      = 1.0
+        Correction_Z                      = 1.0
         Args                         = 'eta c Te'
         Qs                           =  'q2'
         H_name                       = 'HQ'
         L_name                       = 'LQ '
         P_name                       = 'P1'
-        type                         = PusztaiCHBulk
+        type                         = PusztaiQsBulk
         variable                     = q1
         variable_H                   = 1
         variable_L                   = 1
@@ -659,15 +752,15 @@
       [../]
 
       [./PusztaiInterface2]
-        DelQPin                      = 1.0
-        DelQMax                      = 1.0
+        Correction_y0                     = 1.0
+        Correction_Z                      = 1.0
         Args                         = 'eta c Te'
         Qs                           =  'q1'
         H_name                       = 'HQ'
         implicit                     = 1
         L_name                     = 'LQ '
         P_name                       = 'P1'
-        type                         = PusztaiCHBulk
+        type                         = PusztaiQsBulk
         variable                     = q2
         variable_H                   = 1
 
@@ -751,7 +844,7 @@
 [Executioner]
   type = Transient
   solve_type = 'NEWTON'
-
+# PJFNK
   petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
   petsc_options_value = 'asm      ilu          nonzero'
 

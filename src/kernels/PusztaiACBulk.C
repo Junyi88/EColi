@@ -8,8 +8,8 @@ InputParameters validParams<PusztaiACBulk>()
   params.addRequiredParam<MaterialPropertyName>("L_name",  "The mobility used with the kernel");
   params.addRequiredParam<MaterialPropertyName>("H_name",  "The energy function of the non-grain boundary phases");
   params.addRequiredParam<MaterialPropertyName>("P_name", "Interpolation function for phases");
-  params.addParam<Real>("DelQMax", 20.0, "Maximum Value");
-  params.addParam<Real>("DelQPin", 0.1 ,"Pinning");
+  params.addParam<Real>("Correction_y0", 1.0, "Maximum Value");
+  params.addParam<Real>("Correction_Z", 1.0 ,"Pinning");
   params.addCoupledVar("Args", "Vector of Etas and Temperature this object depends on");
   params.addCoupledVar("Qs", "Vector of Qs this object depends on");
   params.addParam<bool>("variable_L", false, "The mobility is a function of any MOOSE variable (if this is set to false L must be constant over the entire domain!)");
@@ -33,8 +33,8 @@ PusztaiACBulk::PusztaiACBulk(const InputParameters & parameters) :
     _d2PdEtadarg(_nvar),
     _dLdarg(_nvar),
     _dHdarg(_nvar),
-    _y0(getParam<Real>("DelQMax")),
-    _Z(getParam<Real>("DelQPin")),
+    _y0(getParam<Real>("Correction_y0")),
+    _Z(getParam<Real>("Correction_Z")),
     _A3(2.0*_y0/(pow(_Z,3.0))-3.0/(pow(_Z,4.0))),
     _A2(4.0*_y0/(pow(_Z,3.0))-3.0/(pow(_Z,2.0))),
     _variable_L(getParam<bool>("variable_L")),
