@@ -1,230 +1,230 @@
-[Mesh]
-  type = GeneratedMesh
-  dim = 2
-  elem_type = QUAD4
-  nx = 1000
-  ny = 1
-  nz = 0
-  xmin = 0
-  xmax = 2.0e1
-  ymin = 0
-  ymax = 2.0e1
-  zmin = 0
-  zmax = 0
-[]
-
-[MeshModifiers]
-  [./SubdomainBoundingBox1]
-    block_id                     = 1                 # Subdomain id to set for inside/outside the bounding box
-    enable                       = 1                           # Set the enabled status of the MooseObject.
-    location                     = INSIDE                      # Control of where the subdomain id is to be set
-    #top_right                    = '0.5665e-1 2.0e-1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
-    #bottom_left                  = '0.4335e-1 0.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
-    top_right                    = '6.237 2.0e1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
-    bottom_left                  = '3.763 0.0 0.0'
-    type                         = SubdomainBoundingBox
-  [../]
-  [./SubdomainBoundingBox2]
-    block_id                     = 2                 # Subdomain id to set for inside/outside the bounding box
-    enable                       = 1                           # Set the enabled status of the MooseObject.
-    location                     = INSIDE                      # Control of where the subdomain id is to be set
-    top_right                    = '16.237 2.0e1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
-    bottom_left                  = '13.763 0.0 0.0'               # The bottom left point (in x,y,z with spaces in-between).
-    #top_right                    = '1.5665e-1 2.0e-1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
-    #bottom_left                  = '1.4331e-1 0.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
-    type                         = SubdomainBoundingBox
-  [../]
-[]
-
-
-# =======================================================
-# Variables
-[Variables]
-  # order parameter
-  [./eta1]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-
-  [./eta2]   # Mole fraction of Cr (unitless)
-    order = FIRST
-    family = LAGRANGE
-  [../]
-
-  [./eta3]   # Mole fraction of Cr (unitless)
-    order = FIRST
-    family = LAGRANGE
-  [../]
-
-  [./La_eta]   # Phase
-    order = FIRST
-    family = LAGRANGE
-  [../]
-
-  # hydrogen concentration
-  [./c]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-
-  # chemical potential
-  [./w]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-
-  # Temperature
-  [./Te]
-    order = FIRST
-    family = LAGRANGE
-    initial_condition = 1800.0
-  [../]
-
-  [./q1]   # Mole fraction of Cr (unitless)
-    order = FIRST
-    family = LAGRANGE
-    #initial_condition = 0.8
-  [../]
-
-  [./q2]   # Mole fraction of Cr (unitless)
-    order = FIRST
-    family = LAGRANGE
-    #initial_condition = 0.6
-  [../]
-
-  [./LaQ]   # Lagrangian
-    order = FIRST
-    family = LAGRANGE
-  [../]
-[]
-
-#[Functions]
-#  [./ic_func_eta]
-#    type = ParsedFunction
-#    value = 0.95*(1.0-tanh((x)/sqrt(2.0)))
+#[Mesh]
+#  type = GeneratedMesh
+#  dim = 2
+#  elem_type = QUAD4
+#  nx = 1000
+#  ny = 1
+#  nz = 0
+#  xmin = 0
+#  xmax = 2.0e1
+#  ymin = 0
+#  ymax = 2.0e1
+#  zmin = 0
+#  zmax = 0
+#[]
+#
+#[MeshModifiers]
+#  [./SubdomainBoundingBox1]
+#    block_id                     = 1                 # Subdomain id to set for inside/outside the bounding box
+#    enable                       = 1                           # Set the enabled status of the MooseObject.
+#    location                     = INSIDE                      # Control of where the subdomain id is to be set
+#    #top_right                    = '0.5665e-1 2.0e-1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+#    #bottom_left                  = '0.4335e-1 0.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+#    top_right                    = '6.237 2.0e1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+#    bottom_left                  = '3.763 0.0 0.0'
+#    type                         = SubdomainBoundingBox
 #  [../]
-#  [./ic_func_c]
-#    type = ParsedFunction
-#    value = '0.9163*(0.95*(1.0-tanh(x/sqrt(2.0))))^3*(6*(0.95*(1.0-tanh(x/sqrt(2.0))))^2-15*(0.95*(1.0-tanh(x/sqrt(2.0))))+10)+0.7244*(1-(0.95*(1.0-tanh(x/sqrt(2.0))))^3*(6*(0.95*(1.0-tanh(x/sqrt(2.0))))^2-15*(0.95*(1.0-tanh(x/sqrt(2.0))))+10))'
+#  [./SubdomainBoundingBox2]
+#    block_id                     = 2                 # Subdomain id to set for inside/outside the bounding box
+#    enable                       = 1                           # Set the enabled status of the MooseObject.
+#    location                     = INSIDE                      # Control of where the subdomain id is to be set
+#    top_right                    = '16.237 2.0e1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+#    bottom_left                  = '13.763 0.0 0.0'               # The bottom left point (in x,y,z with spaces in-between).
+#    #top_right                    = '1.5665e-1 2.0e-1 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+#    #bottom_left                  = '1.4331e-1 0.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+#    type                         = SubdomainBoundingBox
 #  [../]
 #[]
-
-[ICs]
-  #====================================================================
-  [./ConstantIC_0_eta1]
-    block                        =    0
-    type                         = ConstantIC
-    value                        = 0.94
-    variable                     = eta1
-  [../]
-  [./ConstantIC_0_eta2]
-    block                        =    0
-    type                         = ConstantIC
-    value                        = 0.03
-    variable                     = eta2
-  [../]
-  [./ConstantIC_0_eta3]
-    block                        =    0
-    type                         = ConstantIC
-    value                        = 0.03
-    variable                     = eta3
-  [../]
-  [./ConstantIC_0_c]
-    block                        =    0
-    type                         = ConstantIC
-    value                        = 0.4661
-    variable                     = c
-  [../]
-  [./ConstantIC_0_q1]
-    block                        =    0                         # The list of block ids (SubdomainID) that this object will be applied
-    type                         = ConstantIC
-    value                        = 0.70710678118                 # The value to be set in IC
-    variable                     = q1                  # The variable this initial condition is supposed to provide values for.
-  [../]
-  [./ConstantIC_0_q2]
-    block                        =    0                         # The list of block ids (SubdomainID) that this object will be applied
-    type                         = ConstantIC
-    value                        = 0.70710678118                 # The value to be set in IC
-    variable                     = q2                  # The variable this initial condition is supposed to provide values for.
-  [../]
-  #====================================================================
-  [./ConstantIC_1_eta1]
-    block                        =    1
-    type                         = ConstantIC
-    value                        = 0.03
-    variable                     = eta1
-  [../]
-  [./ConstantIC_1_eta2]
-    block                        =    1
-    type                         = ConstantIC
-    value                        = 0.03
-    variable                     = eta2
-  [../]
-  [./ConstantIC_1_eta3]
-    block                        =    1
-    type                         = ConstantIC
-    value                        = 0.94
-    variable                     = eta3
-  [../]
-  [./ConstantIC_1_c]
-    block                        =    1
-    type                         = ConstantIC
-    value                        = 0.4169
-    variable                     = c
-  [../]
-  [./ConstantIC_1_q1]
-    block                        =    1                         # The list of block ids (SubdomainID) that this object will be applied
-    type                         = ConstantIC
-    value                        = 0.6                 # The value to be set in IC
-    variable                     = q1                  # The variable this initial condition is supposed to provide values for.
-  [../]
-  [./ConstantIC_1_q2]
-    block                        =    1                         # The list of block ids (SubdomainID) that this object will be applied
-    type                         = ConstantIC
-    value                        = 0.8                 # The value to be set in IC
-    variable                     = q2                  # The variable this initial condition is supposed to provide values for.
-  [../]
-  #====================================================================
-  [./ConstantIC_2_eta1]
-    block                        =    2
-    type                         = ConstantIC
-    value                        = 0.03
-    variable                     = eta1
-  [../]
-  [./ConstantIC_2_eta2]
-    block                        =    2
-    type                         = ConstantIC
-    value                        = 0.03
-    variable                     = eta2
-  [../]
-  [./ConstantIC_2_eta3]
-    block                        =    2
-    type                         = ConstantIC
-    value                        = 0.94
-    variable                     = eta3
-  [../]
-  [./ConstantIC_2_c]
-    block                        =    2
-    type                         = ConstantIC
-    value                        = 0.4169
-    variable                     = c
-  [../]
-  [./ConstantIC_2_q1]
-    block                        =    2                         # The list of block ids (SubdomainID) that this object will be applied
-    type                         = ConstantIC
-    value                        = 0.8                 # The value to be set in IC
-    variable                     = q1                  # The variable this initial condition is supposed to provide values for.
-  [../]
-  [./ConstantIC_2_q2]
-    block                        =    2                         # The list of block ids (SubdomainID) that this object will be applied
-    type                         = ConstantIC
-    value                        = 0.6                 # The value to be set in IC
-    variable                     = q2                  # The variable this initial condition is supposed to provide values for.
-  [../]
-[]
-
-
-
+#
+#
+## =======================================================
+## Variables
+#[Variables]
+#  # order parameter
+#  [./eta1]
+#    order = FIRST
+#    family = LAGRANGE
+#  [../]
+#
+#  [./eta2]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#  [../]
+#
+#  [./eta3]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#  [../]
+#
+#  [./La_eta]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#  [../]
+#
+#  # hydrogen concentration
+#  [./c]
+#    order = FIRST
+#    family = LAGRANGE
+#  [../]
+#
+#  # chemical potential
+#  [./w]
+#    order = FIRST
+#    family = LAGRANGE
+#  [../]
+#
+#  # Temperature
+#  [./Te]
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_condition = 1800.0
+#  [../]
+#
+#  [./q1]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    #initial_condition = 0.8
+#  [../]
+#
+#  [./q2]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    #initial_condition = 0.6
+#  [../]
+#
+#  [./LaQ]   # Lagrangian
+#    order = FIRST
+#    family = LAGRANGE
+#  [../]
+#[]
+#
+##[Functions]
+##  [./ic_func_eta]
+##    type = ParsedFunction
+##    value = 0.95*(1.0-tanh((x)/sqrt(2.0)))
+##  [../]
+##  [./ic_func_c]
+##    type = ParsedFunction
+##    value = '0.9163*(0.95*(1.0-tanh(x/sqrt(2.0))))^3*(6*(0.95*(1.0-tanh(x/sqrt(2.0))))^2-15*(0.95*(1.0-tanh(x/sqrt(2.0))))+10)+0.7244*(1-(0.95*(1.0-tanh(x/sqrt(2.0))))^3*(6*(0.95*(1.0-tanh(x/sqrt(2.0))))^2-15*(0.95*(1.0-tanh(x/sqrt(2.0))))+10))'
+##  [../]
+##[]
+#
+#[ICs]
+#  #====================================================================
+#  [./ConstantIC_0_eta1]
+#    block                        =    0
+#    type                         = ConstantIC
+#    value                        = 0.94
+#    variable                     = eta1
+#  [../]
+#  [./ConstantIC_0_eta2]
+#    block                        =    0
+#    type                         = ConstantIC
+#    value                        = 0.03
+#    variable                     = eta2
+#  [../]
+#  [./ConstantIC_0_eta3]
+#    block                        =    0
+#    type                         = ConstantIC
+#    value                        = 0.03
+#    variable                     = eta3
+#  [../]
+#  [./ConstantIC_0_c]
+#    block                        =    0
+#    type                         = ConstantIC
+#    value                        = 0.4661
+#    variable                     = c
+#  [../]
+#  [./ConstantIC_0_q1]
+#    block                        =    0                         # The list of block ids (SubdomainID) that this object will be applied
+#    type                         = ConstantIC
+#    value                        = 0.70710678118                 # The value to be set in IC
+#    variable                     = q1                  # The variable this initial condition is supposed to provide values for.
+#  [../]
+#  [./ConstantIC_0_q2]
+#    block                        =    0                         # The list of block ids (SubdomainID) that this object will be applied
+#    type                         = ConstantIC
+#    value                        = 0.70710678118                 # The value to be set in IC
+#    variable                     = q2                  # The variable this initial condition is supposed to provide values for.
+#  [../]
+#  #====================================================================
+#  [./ConstantIC_1_eta1]
+#    block                        =    1
+#    type                         = ConstantIC
+#    value                        = 0.03
+#    variable                     = eta1
+#  [../]
+#  [./ConstantIC_1_eta2]
+#    block                        =    1
+#    type                         = ConstantIC
+#    value                        = 0.03
+#    variable                     = eta2
+#  [../]
+#  [./ConstantIC_1_eta3]
+#    block                        =    1
+#    type                         = ConstantIC
+#    value                        = 0.94
+#    variable                     = eta3
+#  [../]
+#  [./ConstantIC_1_c]
+#    block                        =    1
+#    type                         = ConstantIC
+#    value                        = 0.4169
+#    variable                     = c
+#  [../]
+#  [./ConstantIC_1_q1]
+#    block                        =    1                         # The list of block ids (SubdomainID) that this object will be applied
+#    type                         = ConstantIC
+#    value                        = 0.6                 # The value to be set in IC
+#    variable                     = q1                  # The variable this initial condition is supposed to provide values for.
+#  [../]
+#  [./ConstantIC_1_q2]
+#    block                        =    1                         # The list of block ids (SubdomainID) that this object will be applied
+#    type                         = ConstantIC
+#    value                        = 0.8                 # The value to be set in IC
+#    variable                     = q2                  # The variable this initial condition is supposed to provide values for.
+#  [../]
+#  #====================================================================
+#  [./ConstantIC_2_eta1]
+#    block                        =    2
+#    type                         = ConstantIC
+#    value                        = 0.03
+#    variable                     = eta1
+#  [../]
+#  [./ConstantIC_2_eta2]
+#    block                        =    2
+#    type                         = ConstantIC
+#    value                        = 0.03
+#    variable                     = eta2
+#  [../]
+#  [./ConstantIC_2_eta3]
+#    block                        =    2
+#    type                         = ConstantIC
+#    value                        = 0.94
+#    variable                     = eta3
+#  [../]
+#  [./ConstantIC_2_c]
+#    block                        =    2
+#    type                         = ConstantIC
+#    value                        = 0.4169
+#    variable                     = c
+#  [../]
+#  [./ConstantIC_2_q1]
+#    block                        =    2                         # The list of block ids (SubdomainID) that this object will be applied
+#    type                         = ConstantIC
+#    value                        = 0.8                 # The value to be set in IC
+#    variable                     = q1                  # The variable this initial condition is supposed to provide values for.
+#  [../]
+#  [./ConstantIC_2_q2]
+#    block                        =    2                         # The list of block ids (SubdomainID) that this object will be applied
+#    type                         = ConstantIC
+#    value                        = 0.6                 # The value to be set in IC
+#    variable                     = q2                  # The variable this initial condition is supposed to provide values for.
+#  [../]
+#[]
+#
+#
+#
 
 ##===============================================================
 ##: Section Mesh
@@ -236,7 +236,7 @@
 ##===============================================================
 ##: Section Variables
 [Mesh]
-  file =/Files/Examples/Fattber1D/Fattbert1D_Con1_R0_out.e
+  file =/home/junyi/projects/EColi/Files/Runs/TiAl_1D_A/TiAl_1D_A1_R0_out.e
 []
 
 [Variables]
@@ -1074,7 +1074,7 @@
   #nl_abs_tol = 1e-8
   nl_abs_tol = 1e-8
   end_time = 0.01
-  dt = 1.0e-8
+  dt = 1.0e-5
   #scheme                     =explicit-euler
 #  [./TimeIntegrator]
 #   type = ExplicitEuler
