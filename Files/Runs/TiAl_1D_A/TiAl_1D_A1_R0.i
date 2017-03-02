@@ -351,10 +351,10 @@
                    kappa11 kappa12 kappa13
                    kappa21 kappa22 kappa23
                    kappa31 kappa32 kappa33'
-    prop_values = '6.4e2 0.09765625e-2 0.0625e-2
-                   0.0625e-2 0.0625e-2 0.0625e-2
-                   0.0625e-2 0.0625e-2 0.0625e-2
-                   0.0625e-2 0.0625e-2 0.0625e-2'
+    prop_values = '6.4e2 0.09765625e-4 0.0625e-6
+                   0.0625e-4 0.0625e-4 0.0625e-4
+                   0.0625e-4 0.0625e-4 0.0625e-4
+                   0.0625e-4 0.0625e-4 0.0625e-4'
   [../]
 
 
@@ -441,7 +441,7 @@
   [./HQ]
     type = DerivativeParsedMaterial
     f_name = HQ
-    function = '(0.25e-2)*Te'
+    function = '(1e2)*(0.25e-2)*Te'
     args = 'Te'
     derivative_order             = 1
     outputs = exodus
@@ -924,7 +924,7 @@
       #function                     = '(-2.6061e3)*exp(-1.4315*t)+(6.7976)*exp(0.0296*t)'
       #function                     = '(-880.8589)*exp(-0.4421*t)+(8.7685)*exp(0.1709*t)'
       #value                        = -400.0                           # Value of heat source. Multiplied by function if present.
-      value                        = -400.0
+      value                        = 0.0
       variable                     = Te                # The name of the variable that this Kernel operates on
     [../]
 

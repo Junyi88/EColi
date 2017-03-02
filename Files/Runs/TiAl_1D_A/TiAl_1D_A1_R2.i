@@ -9,7 +9,7 @@
 ##===============================================================
 ##: Section Variables
 [Mesh]
-  file =./Files/Runs/TiAl_1D_A/TiAl_1D_A1_R0_out.e
+  file =./Files/Runs/TiAl_1D_A/TiAl_1D_A1_R1_out.e
 []
 
 [Variables]
@@ -848,7 +848,7 @@
   #nl_abs_tol = 1e-8
   nl_abs_tol = 1e-8
   end_time = 0.1
-  dt = 1.0e-5
+  dt = 5.0e-6
   #scheme                     =explicit-euler
 #  [./TimeIntegrator]
 #   type = ExplicitEuler
