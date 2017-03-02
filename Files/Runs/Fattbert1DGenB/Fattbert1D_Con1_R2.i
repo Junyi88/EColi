@@ -1,6 +1,6 @@
 [Mesh]
   #MOOSE supports reading field data from ExodusII, XDA/XDR, and mesh checkpoint files (.e, .xda, .xdr, .cp)
-  file =Fattbert2D_Con1_R0_out.e
+  file =./Files/Runs/Fattbert1DGenB/Fattbert1D_Con1_R1_out.e
   #This method of restart is only supported on serial meshes
   #distribution = serial
 []
@@ -33,6 +33,19 @@
     initial_from_file_timestep = LATEST
   [../]
 
+  #[./cl]   # Mole fraction of Cr (unitless)
+  #  order = FIRST
+  #  family = LAGRANGE
+  #  initial_from_file_var = cl
+  #  initial_from_file_timestep = LATEST
+  #[../]
+  #
+  #[./cs]   # Phase
+  #  order = FIRST
+  #  family = LAGRANGE
+  #  initial_from_file_var = cs
+  #  initial_from_file_timestep = LATEST
+  #[../]
 
   [./q1]   # Mole fraction of Cr (unitless)
     order = FIRST
@@ -76,7 +89,115 @@
 []
 
 
+#[Mesh]
+#  #MOOSE supports reading field data from ExodusII, XDA/XDR, and mesh checkpoint files (.e, .xda, .xdr, .cp)
+#  file =/Files/Examples/Fattber1D/Fattbert1D_Con1_R0_out.e
+#  #This method of restart is only supported on serial meshes
+#  #distribution = serial
+#[]
+#
+##[Variables]
+##  [./nodal]
+##     family = LAGRANGE
+##     order = FIRST
+##     initial_from_file_var = nodal
+##     initial_from_file_timestep = 7266
+##  [../]
+##[]
+#
+#
+###===============================================================
+###: Section Mesh
+#[GlobalParams]
+#  outputs = exodus
+#  penalty = 1e3
+#[]
+#
+###===============================================================
+###: Section Variables
+#[Variables]
+#
+#  [./eta]
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = eta
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./cl]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = cl
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./cs]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = cs
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./q1]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = q1
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./q2]   # Mole fraction of Cr (unitless)
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = q2
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./LaQ]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = LaQ
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./Te]
+#    #initial_condition = 1600 # Start at room Teperature13
+#    initial_from_file_var = Te
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./c]
+#    #initial_condition = 0.45 # Start at room Teperature13
+#    initial_from_file_var = c
+#    initial_from_file_timestep = 12
+#  [../]
+#
+#  [./w]   # Phase
+#    order = FIRST
+#    family = LAGRANGE
+#    initial_from_file_var = w
+#    initial_from_file_timestep = 12
+#  [../]
+#[]
 
+[BCs]
+  #[./left_c]
+  #  type = DirichletBC
+  #  variable = 'c'
+  #  boundary = 'left'
+  #  value = 0.5
+  #[../]
+  #[./left_eta]
+  #  type = DirichletBC
+  #  variable = 'eta'
+  #  boundary = 'left'
+  #  value = 0.5
+  #[../]
+  [./Periodic]
+    [./c_bcs]
+      auto_direction = 'x y'
+    [../]
+  [../]
+[]
 
 [AuxVariables]
   [./Fglobal]
@@ -102,16 +223,6 @@
   [../]
 []
 
-
-
-[BCs]
-  [./Periodic]
-    [./c_bcs]
-      auto_direction = 'x y'
-    [../]
-  [../]
-[]
-
 ##===============================================================
 # Materials
 [Materials]
@@ -120,8 +231,10 @@
     type = GenericConstantMaterial
     prop_names  = 'kappa_eta kappaQ walleta
                    Leta kappa_c'
+    #prop_values = '0.0625 0.09765625 2.5
+    #               6.4 0.25 1423.0'
     prop_values = '0.0625 0.09765625 2.5
-                  6.4 0.0'
+                  6.4 0.0625'
   [../]
   [./HQ]
     type = DerivativeParsedMaterial
@@ -148,7 +261,22 @@
     derivative_order             = 2
     outputs = exodus
   [../]
-
+  # Interpolation funcions
+  #[./h]
+  #  type = DerivativeParsedMaterial
+  #  f_name = h
+  #  function = '(eta^3)*(10.0-15.0*eta+6.0*(eta^2))'
+  #  args = 'eta'
+  #  derivative_order             = 2
+  #[../]
+  #
+  #[./g]
+  #  type = DerivativeParsedMaterial
+  #  f_name = g
+  #  function = '1.0*(eta^2)*(1-(eta^2))'
+  #  args = 'eta'
+  #  derivative_order             = 2
+  #[../]
   # h(eta)
   [./h_eta]
     type = SwitchingFunctionMaterial
@@ -227,18 +355,18 @@
    outputs = exodus
   [../]
 
-  [./Mob]
-    type = ParsedMaterial
-    f_name = M
-    args = 'c eta Te'
-    material_property_names = 'MS:=MS(c,Te)   ML:=ML(c,Te)'
-    constant_names = 'Rg Mag1'
-    constant_expressions = '8.31451e-3 7.68e9'
-  function ='(MS+(ML-MS)*(1.0-(eta^3)*(10.0-15.0*eta+6.0*(eta^2))))*Mag1'
-  # function ='0.000'
-   outputs = exodus
-  [../]
 
+
+  #[./Mob]
+  #  type = ParsedMaterial
+  #  f_name = M
+  #  args = 'c Te eta'
+  #  material_property_names = 'MS:=MS[c,Te]   ML:=ML[c,Te]'
+  #  constant_names = 'Rg Mag1'
+  #  constant_expressions = '8.31451e-3 7.68e-3'
+  # function ='(MS+(ML-MS)*(1.0-(eta^3)*(10.0-15.0*eta+6.0*(eta^2))))*Mag1'
+  # outputs = exodus
+  #[../]
   # Energies
   #----------------------------------------------------
   [./f_liquid]
@@ -293,19 +421,11 @@
                  (c^4)*(p40+p41*Te)+(c^5)*p50)'
     outputs = exodus
   [../]
-  #[./f_dummy]
-  #  type = DerivativeParsedMaterial
-  #  f_name = fdummy
-  #  args = 'c'
-  #  derivative_order             = 1
-  #  function = '0.0'
-  #  outputs = exodus
-  #[../]
 
   [./DerivativeTwoPhaseMaterial]
     args                         = 'c Te'
     W                            = 2.5                           # Energy barrier for the phase transformation from A to B
-    derivative_order             = 3                           # Maximum order of derivatives taken (2 or 3)
+    derivative_order             = 2                           # Maximum order of derivatives taken (2 or 3)
     eta                          = 'eta'                  # Order parameter
     f_name                       = 'F'                           # Base name of the free energy function (used to name the material properties)
     fa_name                      = 'fl'                  # Phase A material (at eta=0)
@@ -316,6 +436,18 @@
     outputs                      = none                        # Vector of output names were you would like to restrict the output of ...
                                                                # variables(s) associated with this object
     type                         = DerivativeTwoPhaseMaterial
+  [../]
+
+  [./Mob]
+    type = ParsedMaterial
+    f_name = M
+    args = 'c eta Te'
+    material_property_names = 'MS:=MS(c,Te)   ML:=ML(c,Te)'
+    constant_names = 'Rg Mag1'
+    constant_expressions = '8.31451e-3 7.68e9'
+    function ='(MS+(ML-MS)*(1.0-(eta^3)*(10.0-15.0*eta+6.0*(eta^2))))*Mag1'
+  # function ='0.001'
+   outputs = exodus
   [../]
 
   # Heat
@@ -347,9 +479,6 @@
 # =======================================================
 # Kernels
 [Kernels]
-  # enforce c = (1-h(eta))*cl + h(eta)*cs
-
-
   #
   # Cahn-Hilliard Equation
   #
@@ -378,13 +507,7 @@
     mob_name = M
     variable = w
   [../]
-  #[./coupled_parsed]
-  #    variable = c
-  #    type = SplitCHParsed
-  #    f_name = f_dummy
-  #    kappa_name = kappa_c
-  #    w = w
-  #  [../]
+
   #
   # Allen-Cahn Equation
   #
@@ -397,6 +520,7 @@
     type                         = AllenCahn
     variable                     = 'eta Te'                   # The name of the variable that this Kernel operates on
   [../]
+
   [./AllenCahn]
     args                         =  'c Te'                           # Vector of arguments of the mobility
     enable                       = 1                           # Set the enabled status of the MooseObject.
@@ -407,6 +531,7 @@
     type                         = AllenCahn
     variable                     = 'eta'                  # The name of the variable that this Kernel operates on
   [../]
+
   [./ACInterface]
     type = ACInterface
     variable = eta
@@ -418,19 +543,21 @@
     variable = eta
   [../]
   [./PusztaiBulkEta]
-    Correction_y0                     = 1.0
+    Correction_y0                      = 1.0
     Correction_Z                      = 1.0
-    Args                          = 'c Te'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    implicit                     = 1
-
-    L_name                     = 'Leta'
-    P_name                       = 'P1'
+    Args                          = 'c Te'                             # Vector of Etas this object depends on
+    Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
+    H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
+    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
+                                                               # form
+    L_name                     = 'Leta'                           # The mobility used with the kernel
+    P_name                       = 'P1'                  # Interpolation function for phases
     type                         = PusztaiACBulk
-    variable                     = eta
-    variable_H                   = 1
-    variable_L                   = 1
+    variable                     = eta                 # The name of the variable that this Kernel operates on
+    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
+                                                               # L must be constant over the entire domain!)
+    variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...
+                                                               # L must be constant over the entire domain!)
   [../]
 
   #==============================
@@ -445,8 +572,12 @@
     [../]
     [./HeatSource]
       type                         = HeatSource
+      #function                     = '(-2.37e4)*exp(-13.1802*t)+(2.1729)*exp(0.0078*t)'
+      #function                     = '(-2.6061e3)*exp(-1.4315*t)+(6.7976)*exp(0.0296*t)'
+      #function                     = '(-880.8589)*exp(-0.4421*t)+(8.7685)*exp(0.1709*t)'
+      #value                        = -400.0                           # Value of heat source. Multiplied by function if present.
       value                        = -400.0
-      variable                     = Te
+      variable                     = Te                # The name of the variable that this Kernel operates on
     [../]
 
     # -----------------------------------------------------------
@@ -457,8 +588,8 @@
       [../]
 
       [./PusztaiInterface1]
-        Correction_y0                      = 1.0                          # Maximum Value
-        Correction_Z                      = 1.0                         # Pinning
+        Correction_y0                      = 1.0
+        Correction_Z                      = 1.0
         Args                         = 'eta c Te'
         Qs                           =  'q2'
         H_name                       = 'HQ'
@@ -503,8 +634,8 @@
       [../]
 
       [./PusztaiInterface2]
-        Correction_y0                      = 1.0                          # Maximum Value
-        Correction_Z                      = 1.0                         # Pinning
+        Correction_y0                      = 1.0
+        Correction_Z                      = 1.0
         Args                         = 'eta c Te'
         Qs                           =  'q1'
         H_name                       = 'HQ'
@@ -531,7 +662,6 @@
       # Langrange Q
       [./SwitchingFunctionConstraintLagrangeQ]
         enable                       = 1
-        #epsilon                      = 1e-09
         epsilon                      = 1e-09
         etas                         = 'q1 q2'
         h_names                      = 'hq1 hq2'
@@ -539,6 +669,8 @@
         type                         = SwitchingFunctionConstraintLagrange
         variable                     = LaQ
       [../]
+
+
 []
 
 [AuxKernels]
@@ -594,7 +726,7 @@
 [Executioner]
   type = Transient
   solve_type = 'PJFNK'
-
+# PJFNK
   petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
   petsc_options_value = 'asm      ilu          nonzero'
 
@@ -603,13 +735,62 @@
   #nl_abs_tol = 1e-8
   nl_abs_tol = 1e-8
   end_time = 0.75
-  dt = 1.0e-4
-[]
+  dt = 1.0e-3
+  #scheme                     =explicit-euler
+#  [./TimeIntegrator]
+#   type = ExplicitEuler
+#[../]
 
+#[./TimeStepper]
+#    # Turn on time stepping
+#    type = IterationAdaptiveDT
+#    dt = 1.0e-7
+#    cutback_factor = 0.8
+#    growth_factor = 2.0
+#    optimal_iterations = 7
+#  [../]
+[]
+#[Adaptivity]
+#  marker = errorfrac
+#  steps = 2
+#
+#  [./Indicators]
+#    [./error]
+#      type = GradientJumpIndicator
+#      variable = q1
+#    [../]
+#  [../]
+#
+#  [./Markers]
+#    [./errorfrac]
+#      type = ErrorFractionMarker
+#      refine = 0.5
+#      coarsen = 0.2
+#      indicator = error
+#    [../]
+#  [../]
+#[]
+#[ExecutionerOLD]
+#  type = Transient
+#  solve_type = NEWTON
+#  l_max_its = 30
+#  l_tol = 1e-6
+#  nl_max_its = 30
+#  nl_abs_tol = 1e-9
+#  dtmax                      = 1e-2                       # The maximum timestep size in an adaptive run
+#  dtmin                      = 1e-14                       # The minimum timestep size in an adaptive run
+#  end_time = 1.0   # 1 day. We only need to run this long enough to verify
+#                     # the model is working properly.
+#  petsc_options_iname = '-pc_type -ksp_gmres_restart -sub_ksp_type
+#                         -sub_pc_type -pc_asm_overlap'
+#  petsc_options_value = 'asm      31                  preonly
+#                         ilu          1'
+#  dt = 0.1
+#[]
 [Outputs]
-  interval                       = 5
+  interval                       = 1
   exodus = true
-  console = false
+  console = true
   print_perf_log = true
   output_initial = true
 []

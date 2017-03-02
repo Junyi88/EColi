@@ -121,7 +121,7 @@
     prop_names  = 'kappa_eta kappaQ walleta
                    Leta kappa_c'
     prop_values = '0.0625 0.09765625 2.5
-                  6.4 0.0'
+                  6.4 0.0625'
   [../]
   [./HQ]
     type = DerivativeParsedMaterial
@@ -176,7 +176,7 @@
     f_name = LQ
     constant_names = 'LQMin LQMax'
     #constant_expressions = '1e-6 0.64'
-    constant_expressions = '1e-6 0.64'
+    constant_expressions = '1e-4 0.64'
     function = 'LQMin+(LQMax-LQMin)*(1.0-(eta^3)*(10.0-15.0*eta+6.0*(eta^2)))'
     #function = '0.0'
     args = 'eta'
