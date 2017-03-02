@@ -452,28 +452,28 @@
     f_name = P1
     function = '(eta1^2)'
     args = 'eta1'
-    derivative_order             = 2
+    derivative_order             = 1
   [../]
   [./P2]
     type = DerivativeParsedMaterial
     f_name = P2
     function = '(eta2^2)'
     args = 'eta2'
-    derivative_order             = 2
+    derivative_order             = 1
   [../]
   [./P3]
     type = DerivativeParsedMaterial
     f_name = P3
     function = '(eta3^2)'
     args = 'eta3'
-    derivative_order             = 2
+    derivative_order             = 1
   [../]
   [./PQ]
     type = DerivativeParsedMaterial
     f_name = PQ
     function = '(eta3^2)+(eta3^2)'
     args = 'eta2 eta3'
-    derivative_order             = 2
+    derivative_order             = 1
   [../]
 
   # Mobility
@@ -485,7 +485,7 @@
     function = 'LQMax+(LQMin-LQMax)*(1.0-(eta1^3)*(10.0-15.0*eta1+6.0*(eta1^2)))'
     #function = '0.0'
     args = 'eta1'
-    derivative_order             = 2
+    derivative_order             = 1
     outputs = exodus
   [../]
 
@@ -495,7 +495,7 @@
     f_name = hq1
     function = 'q1^2'
     args = 'q1'
-  derivative_order             = 2
+  derivative_order             = 1
   [../]
 
   [./phase_free_energy_hq2]
@@ -503,7 +503,7 @@
     f_name = hq2
     function = 'q2^2'
     args = 'q2'
-  derivative_order             = 2
+  derivative_order             = 1
   [../]
 
 #*****************************************************************
@@ -539,26 +539,26 @@
                (1-c)*Db0*exp(-Qb1/(kb*Te))*exp(Qb2/(kb*Te^2)))'
    outputs = exodus
   [../]
-
-  [./Malpha2]
-    type = ParsedMaterial
-    f_name = Malpha2
-    args = 'c Te'
-    constant_names = 'Mag kb Da0 Qa1 Db0 Qb1'
-    constant_expressions = '1e12 8.6173303e-5 2.24e-5 2.99 2.32e-1 4.08'
-   function ='Mag*(c*Da0*exp(-Qa1/(kb*Te))+(1-c)*Db0*exp(-Qb1/(kb*Te)))'
-   outputs = exodus
-  [../]
-
-  [./Mgamma]
-    type = ParsedMaterial
-    f_name = Mgamma
-    args = 'c Te'
-    constant_names = 'Mag kb Da0 Qa1 Db0 Qb1'
-    constant_expressions = '1e12 8.6173303e-5 1.43e-6 2.59 2.11e-2 3.71'
-   function ='Mag*(c*Da0*exp(-Qa1/(kb*Te))+(1-c)*Db0*exp(-Qb1/(kb*Te)))'
-   outputs = exodus
-  [../]
+  #
+  #[./Malpha2]
+  #  type = ParsedMaterial
+  #  f_name = Malpha2
+  #  args = 'c Te'
+  #  constant_names = 'Mag kb Da0 Qa1 Db0 Qb1'
+  #  constant_expressions = '1e12 8.6173303e-5 2.24e-5 2.99 2.32e-1 4.08'
+  # function ='Mag*(c*Da0*exp(-Qa1/(kb*Te))+(1-c)*Db0*exp(-Qb1/(kb*Te)))'
+  # outputs = exodus
+  #[../]
+  #
+  #[./Mgamma]
+  #  type = ParsedMaterial
+  #  f_name = Mgamma
+  #  args = 'c Te'
+  #  constant_names = 'Mag kb Da0 Qa1 Db0 Qb1'
+  #  constant_expressions = '1e12 8.6173303e-5 1.43e-6 2.59 2.11e-2 3.71'
+  # function ='Mag*(c*Da0*exp(-Qa1/(kb*Te))+(1-c)*Db0*exp(-Qb1/(kb*Te)))'
+  # outputs = exodus
+  #[../]
 
   [./Mob]
     type = ParsedMaterial
@@ -673,61 +673,61 @@
     outputs = exodus
   [../]
 
-  [./f_alpha2]
-    type = DerivativeParsedMaterial
-    f_name = Falpha2
-    args = 'c Te'
-    derivative_order             = 2
-    constant_names = 'p00 p01 p02 p03
-                       p04 p05 p10 p11
-                       p12 p13 p14 p20
-                       p21 p22 p23 p30
-                       p31 p32 p40 p41
-                       p50 Magni'
-    constant_expressions = '-2.1269910087e+03 -7.7644152076e+00 -5.0782482359e-02
-                             2.1134355331e-05 -6.0111839349e-09 7.1457143620e-13
-                             -1.4728581929e+05 3.3052339895e+01 -1.2705758576e-03
-                             -1.4036222737e-06 4.3849455306e-10 1.3254392046e+05
-                             -4.6607168697e+01 7.4493154748e-03 3.2820836665e-07
-                             1.5834227706e+05 3.1789786285e+00 -5.4311712711e-03
-                             -2.4075800686e+05 1.2564474874e+01 1.0140109227e+05
-                            1e-3'
-    function = 'Magni*(p00+p01*Te+(p02*(Te^2))+(p03*(Te^3))+
-                 (p04*(Te^4))+(p05*(Te^5))+
-                 c*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
-                 (c^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
-                 (c^3)*(p30+p31*Te+(p32*(Te^2)))+
-                 (c^4)*(p40+p41*Te)+(c^5)*p50)'
-    outputs = exodus
-  [../]
-
-  [./f_gamma]
-    type = DerivativeParsedMaterial
-    f_name = Fgamma
-    args = 'c Te'
-    derivative_order             = 2
-    constant_names = 'p00 p01 p02 p03
-                       p04 p05 p10 p11
-                       p12 p13 p14 p20
-                       p21 p22 p23 p30
-                       p31 p32 p40 p41
-                       p50 Magni'
-    constant_expressions = '2.6638132921e+03 -5.9596432918e+00 -5.1919540632e-02
-                            2.1787365474e-05 -6.1640114011e-09 7.3786451035e-13
-                            -1.2067738847e+05 -1.6973439104e+01 2.2276568302e-03
-                            -2.6513855167e-06 4.6705803557e-10 1.3085084300e+05
-                            1.4329451979e+02 2.1924007070e-03 1.1798624645e-06
-                            -4.0025092112e+05 -1.9871973943e+02 -2.5277310381e-03
-                            7.4249390180e+05 7.3850873223e+01 -3.5744112976e+05
-                            1e-3'
-    function = 'Magni*(p00+p01*Te+(p02*(Te^2))+(p03*(Te^3))+
-                 (p04*(Te^4))+(p05*(Te^5))+
-                 c*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
-                 (c^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
-                 (c^3)*(p30+p31*Te+(p32*(Te^2)))+
-                 (c^4)*(p40+p41*Te)+(c^5)*p50)'
-    outputs = exodus
-  [../]
+  #[./f_alpha2]
+  #  type = DerivativeParsedMaterial
+  #  f_name = Falpha2
+  #  args = 'c Te'
+  #  derivative_order             = 2
+  #  constant_names = 'p00 p01 p02 p03
+  #                     p04 p05 p10 p11
+  #                     p12 p13 p14 p20
+  #                     p21 p22 p23 p30
+  #                     p31 p32 p40 p41
+  #                     p50 Magni'
+  #  constant_expressions = '-2.1269910087e+03 -7.7644152076e+00 -5.0782482359e-02
+  #                           2.1134355331e-05 -6.0111839349e-09 7.1457143620e-13
+  #                           -1.4728581929e+05 3.3052339895e+01 -1.2705758576e-03
+  #                           -1.4036222737e-06 4.3849455306e-10 1.3254392046e+05
+  #                           -4.6607168697e+01 7.4493154748e-03 3.2820836665e-07
+  #                           1.5834227706e+05 3.1789786285e+00 -5.4311712711e-03
+  #                           -2.4075800686e+05 1.2564474874e+01 1.0140109227e+05
+  #                          1e-3'
+  #  function = 'Magni*(p00+p01*Te+(p02*(Te^2))+(p03*(Te^3))+
+  #               (p04*(Te^4))+(p05*(Te^5))+
+  #               c*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
+  #               (c^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
+  #               (c^3)*(p30+p31*Te+(p32*(Te^2)))+
+  #               (c^4)*(p40+p41*Te)+(c^5)*p50)'
+  #  outputs = exodus
+  #[../]
+  #
+  #[./f_gamma]
+  #  type = DerivativeParsedMaterial
+  #  f_name = Fgamma
+  #  args = 'c Te'
+  #  derivative_order             = 2
+  #  constant_names = 'p00 p01 p02 p03
+  #                     p04 p05 p10 p11
+  #                     p12 p13 p14 p20
+  #                     p21 p22 p23 p30
+  #                     p31 p32 p40 p41
+  #                     p50 Magni'
+  #  constant_expressions = '2.6638132921e+03 -5.9596432918e+00 -5.1919540632e-02
+  #                          2.1787365474e-05 -6.1640114011e-09 7.3786451035e-13
+  #                          -1.2067738847e+05 -1.6973439104e+01 2.2276568302e-03
+  #                          -2.6513855167e-06 4.6705803557e-10 1.3085084300e+05
+  #                          1.4329451979e+02 2.1924007070e-03 1.1798624645e-06
+  #                          -4.0025092112e+05 -1.9871973943e+02 -2.5277310381e-03
+  #                          7.4249390180e+05 7.3850873223e+01 -3.5744112976e+05
+  #                          1e-3'
+  #  function = 'Magni*(p00+p01*Te+(p02*(Te^2))+(p03*(Te^3))+
+  #               (p04*(Te^4))+(p05*(Te^5))+
+  #               c*(p10+p11*Te+(p12*(Te^2))+(p13*(Te^3))+(p14*(Te^4)))+
+  #               (c^2)*(p20+p21*Te+(p22*(Te^2))+(p23*(Te^3)))+
+  #               (c^3)*(p30+p31*Te+(p32*(Te^2)))+
+  #               (c^4)*(p40+p41*Te)+(c^5)*p50)'
+  #  outputs = exodus
+  #[../]
 []
 
 # =======================================================
@@ -957,14 +957,14 @@
         variable                     = q1
       [../]
 
-      #[./ACInterfaceQ1]
-      #  args                         =  'eta1 eta2 eta3 c q2'
-      #  kappa_name                   = 'kappaQ'
-      #  mob_name                     = 'LQ'
-      #  type                         = ACInterface
-      #  variable                     = 'q1'
-      #  variable_L                   = 1
-      #[../]
+      [./ACInterfaceQ1]
+        args                         =  'eta1 eta2 eta3 c q2'
+        kappa_name                   = 'kappaQ'
+        mob_name                     = 'LQ'
+        type                         = ACInterface
+        variable                     = 'q1'
+        variable_L                   = 1
+      [../]
 
       # -----------------------------------------------------------
       # Q2
@@ -997,14 +997,14 @@
       #  variable_L                   = 1
       #[../]
 
-      #[./ACInterfaceQ2]
-      #  args                         =  'eta1 eta2 eta3 c q1'
-      #  kappa_name                   = 'kappaQ'
-      #  mob_name                     = 'LQ'
-      #  type                         = ACInterface
-      #  variable                     = 'q2'
-      #  variable_L                   = 1
-      #[../]
+      [./ACInterfaceQ2]
+        args                         =  'eta1 eta2 eta3 c q1'
+        kappa_name                   = 'kappaQ'
+        mob_name                     = 'LQ'
+        type                         = ACInterface
+        variable                     = 'q2'
+        variable_L                   = 1
+      [../]
 
       #--------------------------------------------------------------------------
       # Langrange Q
