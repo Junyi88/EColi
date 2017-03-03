@@ -471,7 +471,7 @@
   [./PQ]
     type = DerivativeParsedMaterial
     f_name = PQ
-    function = '(eta3^2)+(eta3^2)'
+    function = '(eta2^2)+(eta3^2)'
     args = 'eta2 eta3'
     derivative_order             = 1
   [../]

@@ -9,7 +9,7 @@
 ##===============================================================
 ##: Section Variables
 [Mesh]
-  file =./Files/Runs/TiAl_1D_A/TiAl_1D_A1_R1B_out.e
+  file =./Files/Runs/TiAl_1D_A/TiAl_1D_A1_R2_out.e
 []
 
 [Variables]
@@ -124,7 +124,7 @@
                    kappa11 kappa12 kappa13
                    kappa21 kappa22 kappa23
                    kappa31 kappa32 kappa33'
-    prop_values = '6.4e2 0.09765625e-2 0.0625e-8
+    prop_values = '6.4e2 0.09765625e-2 0.0625e-6
                    0.0625e-2 0.0625e-2 0.0625e-2
                    0.0625e-2 0.0625e-2 0.0625e-2
                    0.0625e-2 0.0625e-2 0.0625e-2'
@@ -214,7 +214,7 @@
   [./HQ]
     type = DerivativeParsedMaterial
     f_name = HQ
-    function = '(1e0)*(0.25e-2)*Te'
+    function = '(0.25e-2)*Te'
     args = 'Te'
     derivative_order             = 1
     outputs = exodus
@@ -346,7 +346,8 @@
                                # h3:=h3(eta3)
     #constant_names = 'Rg Mag1'
     #constant_expressions = '8.31451e-3 7.68e9'
-  function ='(eta1*MLq+eta2*Malpha+eta3*Mbeta)/d2F'
+  #function ='(eta1*MLq+eta2*Malpha+eta3*Mbeta)/d2F'
+  function ='(MLq)/d2F'
   # function ='0.001'
    outputs = exodus
   [../]
@@ -846,21 +847,21 @@
   nl_max_its = 30
   #nl_abs_tol = 1e-8
   nl_abs_tol = 1e-8
-  end_time = 0.75
-  dt = 1.0e-5
+  end_time = 0.1
+  #dt = 5.0e-5
   #scheme                     =explicit-euler
 #  [./TimeIntegrator]
 #   type = ExplicitEuler
 #[../]
 
-#[./TimeStepper]
-#    # Turn on time stepping
-#    type = IterationAdaptiveDT
-#    dt = 1.0e-7
-#    cutback_factor = 0.8
-#    growth_factor = 2.0
-#    optimal_iterations = 7
-#  [../]
+[./TimeStepper]
+    # Turn on time stepping
+    type = IterationAdaptiveDT
+    dt = 5.0e-5
+    cutback_factor = 0.8
+    growth_factor = 1.5
+    optimal_iterations = 7
+  [../]
 []
 #[Adaptivity]
 #  marker = errorfrac
@@ -902,7 +903,7 @@
 [Outputs]
   interval                       = 1
   exodus = true
-  console = true
+  console = false
   print_perf_log = true
   output_initial = true
 []
