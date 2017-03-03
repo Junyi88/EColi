@@ -51,20 +51,7 @@
     type                         = VariableGradientComponent
     variable                     = 'grad_q2y'                  # The name of the variable that this object applies to
   [../]
-  [./CNoise]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-  [./etaNoise]
-    order = FIRST
-    family = LAGRANGE
-  [../]
 
-
-  [./q1Noise]
-    order = FIRST
-    family = LAGRANGE
-  [../]
 []
 
 [MeshModifiers]
@@ -498,7 +485,7 @@
   [./Te]
     order = FIRST
     family = LAGRANGE
-    initial_condition = 1423.0
+    initial_condition = 1123.0
   [../]
 
   [./q1]   # Mole fraction of Cr (unitless)
@@ -541,6 +528,21 @@
   [./grad_q2y]
     order = CONSTANT
     family = MONOMIAL
+  [../]
+
+  [./CNoise]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+  [./etaNoise]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+
+  [./q1Noise]
+    order = FIRST
+    family = LAGRANGE
   [../]
 []
 
@@ -783,7 +785,17 @@
     args = 'q2'
   derivative_order             = 2
   [../]
-
+  #[./MagNoiseQ]
+  #  type = ParsedMaterial
+  #  f_name = MagNoiseQ
+  #  args = 'Te'
+  #  #constant_names = 'A B'
+  #  constant_names = 'A1 A2 A3 A4 A5'
+  #  constant_expressions = '1000.0 0.0 1500.0 0.01 10.0'
+  #  function = 'A5+(A1*(A2+1.0/(1.0+exp(-A4*(Te-A3)))))'
+  #  #function = 'A*exp(B*Te)'
+  #  #outputs = exodus
+  #[../]
 []
 
 # =======================================================
@@ -820,7 +832,7 @@
     variable = w
   [../]
   [./ConservedLangevinNoise]
-    amplitude                    = 1.0                 # Amplitude
+    amplitude                    = 100.0                 # Amplitude
     #multiplier                   = MagNoiseC
     noise                        = ConservedNormalNoise1                 # ConservativeNoise userobject that produces the random numbers
     seed                         = 201                           # The seed for the master random number generator
@@ -884,7 +896,7 @@
   [../]
 
   [./LangevinNoise_eta1]
-    amplitude                    = 1.0               # Amplitude
+    amplitude                    = 100.0               # Amplitude
     #multiplier                   = MagNoiseEta
     seed                         = 301                           # The seed for the master random number generator
     type                         = LangevinNoise
@@ -950,7 +962,7 @@
       [../]
 
       [./LangevinNoise_Q1]
-        amplitude                    = 1.0               # Amplitude
+        amplitude                    = 10.0               # Amplitude
         #multiplier                   = MagNoiseEta
         seed                         = 301                           # The seed for the master random number generator
         type                         = LangevinNoise
@@ -1057,9 +1069,9 @@
 []
 
 [Outputs]
-  interval                       = 5
+  interval                       = 1
   exodus = true
-  console = false
+  console = true
   print_perf_log = true
   output_initial = true
 []
