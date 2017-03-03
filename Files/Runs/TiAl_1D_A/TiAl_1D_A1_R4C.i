@@ -9,7 +9,7 @@
 ##===============================================================
 ##: Section Variables
 [Mesh]
-  file =./Files/Runs/TiAl_1D_A/TiAl_1D_A1_R1_out.e
+  file =./Files/Runs/TiAl_1D_A/TiAl_1D_A1_R3C_out.e
 []
 
 [Variables]
@@ -214,7 +214,7 @@
   [./HQ]
     type = DerivativeParsedMaterial
     f_name = HQ
-    function = '(2.0)*(0.25e-2)*Te'
+    function = '(0.25e-2)*Te'
     args = 'Te'
     derivative_order             = 1
     outputs = exodus
@@ -848,20 +848,21 @@
   #nl_abs_tol = 1e-8
   nl_abs_tol = 1e-8
   end_time = 0.1
-  dt = 5.0e-6
+  #dt = 5.0e-5
   #scheme                     =explicit-euler
 #  [./TimeIntegrator]
 #   type = ExplicitEuler
 #[../]
 
-#[./TimeStepper]
-#    # Turn on time stepping
-#    type = IterationAdaptiveDT
-#    dt = 1.0e-7
-#    cutback_factor = 0.8
-#    growth_factor = 2.0
-#    optimal_iterations = 7
-#  [../]
+[./TimeStepper]
+    # Turn on time stepping
+    type = IterationAdaptiveDT
+    dt = 2.0e-5
+    cutback_factor = 0.8
+    growth_factor = 1.5
+    optimal_iterations = 8
+    iteration_window   = 2
+  [../]
 []
 #[Adaptivity]
 #  marker = errorfrac

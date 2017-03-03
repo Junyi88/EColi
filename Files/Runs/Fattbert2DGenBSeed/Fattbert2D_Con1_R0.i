@@ -12,6 +12,61 @@
   zmin = 0
   zmax = 0
 []
+
+[AuxKernels]
+  [./GlobalFreeEnergy]
+    variable = Fglobal
+    type = KKSGlobalFreeEnergy
+    fa_name = fl
+    fb_name = fs
+    w = 2.5
+  [../]
+  [./VariableGradientComponent1]
+    component                    = 'x'                            # The gradient component to compute
+    gradient_variable            = 'q1'                  # The variable from which to compute the gradient component
+    seed                         = 0                           # The seed for the master random number generator
+    type                         = VariableGradientComponent
+    variable                     = 'grad_q1x'                  # The name of the variable that this object applies to
+  [../]
+
+  [./VariableGradientComponent2]
+    component                    = 'x'                            # The gradient component to compute
+    gradient_variable            = 'q2'                  # The variable from which to compute the gradient component
+    seed                         = 0                           # The seed for the master random number generator
+    type                         = VariableGradientComponent
+    variable                     = 'grad_q2x'                  # The name of the variable that this object applies to
+  [../]
+  [./VariableGradientComponent3]
+    component                    = 'y'                            # The gradient component to compute
+    gradient_variable            = 'q1'                  # The variable from which to compute the gradient component
+    seed                         = 0                           # The seed for the master random number generator
+    type                         = VariableGradientComponent
+    variable                     = 'grad_q1y'                  # The name of the variable that this object applies to
+  [../]
+
+  [./VariableGradientComponent4]
+    component                    = 'y'                            # The gradient component to compute
+    gradient_variable            = 'q2'                  # The variable from which to compute the gradient component
+    seed                         = 0                           # The seed for the master random number generator
+    type                         = VariableGradientComponent
+    variable                     = 'grad_q2y'                  # The name of the variable that this object applies to
+  [../]
+  [./CNoise]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+  [./etaNoise]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+
+  [./q1Noise]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+[]
+
 [MeshModifiers]
   #[./SubdomainBoundingBox1]
   #  block_id                     = 1                 # Subdomain id to set for inside/outside the bounding box
@@ -944,7 +999,7 @@
         implicit                     = 1
         L_name                     = 'LQ '
         P_name                       = 'P1'
-        type                         = PusztaiQSBulk
+        type                         = PusztaiQsBulk
         variable                     = q2
         variable_H                   = 1
 
@@ -974,45 +1029,7 @@
       [../]
 []
 
-[AuxKernels]
-  [./GlobalFreeEnergy]
-    variable = Fglobal
-    type = KKSGlobalFreeEnergy
-    fa_name = fl
-    fb_name = fs
-    w = 2.5
-  [../]
-  [./VariableGradientComponent1]
-    component                    = 'x'                            # The gradient component to compute
-    gradient_variable            = 'q1'                  # The variable from which to compute the gradient component
-    seed                         = 0                           # The seed for the master random number generator
-    type                         = VariableGradientComponent
-    variable                     = 'grad_q1x'                  # The name of the variable that this object applies to
-  [../]
 
-  [./VariableGradientComponent2]
-    component                    = 'x'                            # The gradient component to compute
-    gradient_variable            = 'q2'                  # The variable from which to compute the gradient component
-    seed                         = 0                           # The seed for the master random number generator
-    type                         = VariableGradientComponent
-    variable                     = 'grad_q2x'                  # The name of the variable that this object applies to
-  [../]
-  [./VariableGradientComponent3]
-    component                    = 'y'                            # The gradient component to compute
-    gradient_variable            = 'q1'                  # The variable from which to compute the gradient component
-    seed                         = 0                           # The seed for the master random number generator
-    type                         = VariableGradientComponent
-    variable                     = 'grad_q1y'                  # The name of the variable that this object applies to
-  [../]
-
-  [./VariableGradientComponent4]
-    component                    = 'y'                            # The gradient component to compute
-    gradient_variable            = 'q2'                  # The variable from which to compute the gradient component
-    seed                         = 0                           # The seed for the master random number generator
-    type                         = VariableGradientComponent
-    variable                     = 'grad_q2y'                  # The name of the variable that this object applies to
-  [../]
-[]
 ##===============================================================
 ##: Preconditioning
 [Preconditioning]

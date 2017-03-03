@@ -447,27 +447,27 @@
     outputs = exodus
   [../]
 
-  [./P1]
-    type = DerivativeParsedMaterial
-    f_name = P1
-    function = '(eta1^2)'
-    args = 'eta1'
-    derivative_order             = 1
-  [../]
-  [./P2]
-    type = DerivativeParsedMaterial
-    f_name = P2
-    function = '(eta2^2)'
-    args = 'eta2'
-    derivative_order             = 1
-  [../]
-  [./P3]
-    type = DerivativeParsedMaterial
-    f_name = P3
-    function = '(eta3^2)'
-    args = 'eta3'
-    derivative_order             = 1
-  [../]
+  #[./P1]
+  #  type = DerivativeParsedMaterial
+  #  f_name = P1
+  #  function = '(eta1^2)'
+  #  args = 'eta1'
+  #  derivative_order             = 1
+  #[../]
+  #[./P2]
+  #  type = DerivativeParsedMaterial
+  #  f_name = P2
+  #  function = '(eta2^2)'
+  #  args = 'eta2'
+  #  derivative_order             = 1
+  #[../]
+  #[./P3]
+  #  type = DerivativeParsedMaterial
+  #  f_name = P3
+  #  function = '(eta3^2)'
+  #  args = 'eta3'
+  #  derivative_order             = 1
+  #[../]
   [./PQ]
     type = DerivativeParsedMaterial
     f_name = PQ
@@ -798,7 +798,7 @@
     implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
                                                                # form
     L_name                     = 'Leta'                           # The mobility used with the kernel
-    P_name                       = 'P1'                  # Interpolation function for phases
+    P_name                       = 'PQ'                  # Interpolation function for phases
     type                         = PusztaiACBulk
     variable                     = eta1                 # The name of the variable that this Kernel operates on
     variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
@@ -843,7 +843,7 @@
     implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
                                                                # form
     L_name                     = 'Leta'                           # The mobility used with the kernel
-    P_name                       = 'P2'                  # Interpolation function for phases
+    P_name                       = 'PQ'                  # Interpolation function for phases
     type                         = PusztaiACBulk
     variable                     = eta2                 # The name of the variable that this Kernel operates on
     variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
@@ -888,7 +888,7 @@
     implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
                                                                # form
     L_name                     = 'Leta'                           # The mobility used with the kernel
-    P_name                       = 'P3'                  # Interpolation function for phases
+    P_name                       = 'PQ'                  # Interpolation function for phases
     type                         = PusztaiACBulk
     variable                     = eta3                 # The name of the variable that this Kernel operates on
     variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
