@@ -2,8 +2,8 @@
   type = GeneratedMesh
   dim = 2
   elem_type = QUAD4
-  nx = 50
-  ny = 50
+  nx = 100
+  ny = 100
   nz = 0
   xmin = 0
   xmax = 2.0e1
@@ -698,7 +698,7 @@
                    kappa11 kappa12 kappa13
                    kappa21 kappa22 kappa23
                    kappa31 kappa32 kappa33'
-    prop_values = '6.4e2 0.12e-2 0.09e-3
+    prop_values = '6.4e2 0.12e-2 0.09e-4
                    0.09e-2 0.09e-2 0.09e-2
                    0.09e-2 0.09e-2 0.09e-2
                    0.09e-2 0.09e-2 0.09e-2'
@@ -748,15 +748,7 @@
     W = 2.5e-3
   derivative_order             = 2
   [../]
-  #[./FFree]
-  #  type = DerivativeParsedMaterial
-  #  f_name = F
-  #  args = 'c Te eta1 eta2 eta3'
-  #  derivative_order             = 2
-  #  #function = '0.5*c^2'
-  #  function = '0.0'
-  #  outputs = exodus
-  #[../]
+
 # ==========================================================
 # Penalty
   [./g_eta1]
@@ -784,7 +776,7 @@
     type = DerivativeParsedMaterial
     f_name =Pen1
     material_property_names = 'g1:=g1(eta1)  g2:=g2(eta2) g3:=g3(eta3) '
-    function = '(g1+g2+g3)*1.0e1'
+    function = '(g1+g2+g3)*1.0e3'
     args = 'eta1 eta2 eta3'
     derivative_order             = 1
     outputs = exodus
@@ -908,8 +900,8 @@
                                # h3:=h3(eta3)
     #constant_names = 'Rg Mag1'
     #constant_expressions = '8.31451e-3 7.68e9'
-  #function ='(eta1*MLq+eta2*Malpha+eta3*Mbeta)/d2F'
-   function ='0.1'
+  function ='(eta1*MLq+eta2*Malpha+eta3*Mbeta)/d2F'
+  # function ='0.001'
    outputs = exodus
   [../]
 
@@ -1091,15 +1083,6 @@
     w = w
   [../]
 
-  #[./w_dot]
-  #  variable = w
-  #  type = TimeDerivative
-  #[../]
-  #[./c_dot]
-  #  variable = c
-  #  type = TimeDerivative
-  #[../]
-
   # Allen-Cahn Equation
   #
 
@@ -1109,13 +1092,13 @@
     type                         = TimeDerivative
     variable                     = eta1
   [../]
-  #[./ACBulk1]
-  #  type = AllenCahn
-  #  variable = eta1
-  #  args = 'eta2 eta3 Te c'
-  #  mob_name = Leta
-  #  f_name = F
-  #[../]
+  [./ACBulk1]
+    type = AllenCahn
+    variable = eta1
+    args = 'eta2 eta3 Te c'
+    mob_name = Leta
+    f_name = F
+  [../]
   [./ACInterface1]
     type = ACMultiInterface
     variable = eta1
@@ -1130,22 +1113,22 @@
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta1                 # The name of the variable that this Kernel operates on
   [../]
-  #[./PusztaiBulkEta1]
-  #  Correction_y0   = 1.0
-  #  Correction_Z   = 1.0
-  #  Args                          = 'c Te eta2 eta3'                             # Vector of Etas this object depends on
-  #  Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
-  #  H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
-  #  implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
-  #                                                             # form
-  #  L_name                     = 'Leta'                           # The mobility used with the kernel
-  #  P_name                       = 'PQ'                  # Interpolation function for phases
-  #  type                         = PusztaiACBulk
-  #  variable                     = eta1                 # The name of the variable that this Kernel operates on
-  #  variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
-  #                                                             # L must be constant over the entire domain!)
-  #  variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
-  #[../]
+  [./PusztaiBulkEta1]
+    Correction_y0   = 1.0
+    Correction_Z   = 1.0
+    Args                          = 'c Te eta2 eta3'                             # Vector of Etas this object depends on
+    Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
+    H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
+    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
+                                                               # form
+    L_name                     = 'Leta'                           # The mobility used with the kernel
+    P_name                       = 'PQ'                  # Interpolation function for phases
+    type                         = PusztaiACBulk
+    variable                     = eta1                 # The name of the variable that this Kernel operates on
+    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
+                                                               # L must be constant over the entire domain!)
+    variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
+  [../]
 
   #--------------------------------------------------------------------------
   # Eta2
@@ -1153,13 +1136,13 @@
     type                         = TimeDerivative
     variable                     = eta2
   [../]
-  #[./ACBulk2]
-  #  type = AllenCahn
-  #  variable = eta2
-  #  args = 'eta1 eta3 Te c'
-  #  mob_name = Leta
-  #  f_name = F
-  #[../]
+  [./ACBulk2]
+    type = AllenCahn
+    variable = eta2
+    args = 'eta1 eta3 Te c'
+    mob_name = Leta
+    f_name = F
+  [../]
   [./ACInterface2]
     type = ACMultiInterface
     variable = eta2
@@ -1175,22 +1158,22 @@
     variable                     = eta2                 # The name of the variable that this Kernel operates on
   [../]
 
-  #[./PusztaiBulkEta2]
-  #  Correction_y0   = 1.0
-  #  Correction_Z   = 1.0
-  #  Args                          = 'c Te eta1 eta3'                             # Vector of Etas this object depends on
-  #  Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
-  #  H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
-  #  implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
-  #                                                             # form
-  #  L_name                     = 'Leta'                           # The mobility used with the kernel
-  #  P_name                       = 'PQ'                  # Interpolation function for phases
-  #  type                         = PusztaiACBulk
-  #  variable                     = eta2                 # The name of the variable that this Kernel operates on
-  #  variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
-  #                                                             # L must be constant over the entire domain!)
-  #  variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
-  #[../]
+  [./PusztaiBulkEta2]
+    Correction_y0   = 1.0
+    Correction_Z   = 1.0
+    Args                          = 'c Te eta1 eta3'                             # Vector of Etas this object depends on
+    Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
+    H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
+    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
+                                                               # form
+    L_name                     = 'Leta'                           # The mobility used with the kernel
+    P_name                       = 'PQ'                  # Interpolation function for phases
+    type                         = PusztaiACBulk
+    variable                     = eta2                 # The name of the variable that this Kernel operates on
+    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
+                                                               # L must be constant over the entire domain!)
+    variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
+  [../]
 
   #--------------------------------------------------------------------------
   # Eta3
@@ -1198,13 +1181,13 @@
     type                         = TimeDerivative
     variable                     = eta3
   [../]
-  #[./ACBulk3]
-  #  type = AllenCahn
-  #  variable = eta3
-  #  args = 'eta1 eta2 Te c'
-  #  mob_name = Leta
-  #  f_name = F
-  #[../]
+  [./ACBulk3]
+    type = AllenCahn
+    variable = eta3
+    args = 'eta1 eta2 Te c'
+    mob_name = Leta
+    f_name = F
+  [../]
   [./ACInterface3]
     type = ACMultiInterface
     variable = eta3
@@ -1220,22 +1203,22 @@
     variable                     = eta3                 # The name of the variable that this Kernel operates on
   [../]
 
-  #[./PusztaiBulkEta3]
-  #  Correction_y0   = 1.0
-  #  Correction_Z   = 1.0
-  #  Args                          = 'c Te eta1 eta2'                             # Vector of Etas this object depends on
-  #  Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
-  #  H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
-  #  implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
-  #                                                             # form
-  #  L_name                     = 'Leta'                           # The mobility used with the kernel
-  #  P_name                       = 'PQ'                  # Interpolation function for phases
-  #  type                         = PusztaiACBulk
-  #  variable                     = eta3                 # The name of the variable that this Kernel operates on
-  #  variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
-  #                                                             # L must be constant over the entire domain!)
-  #  variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
-  #[../]
+  [./PusztaiBulkEta3]
+    Correction_y0   = 1.0
+    Correction_Z   = 1.0
+    Args                          = 'c Te eta1 eta2'                             # Vector of Etas this object depends on
+    Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
+    H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
+    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
+                                                               # form
+    L_name                     = 'Leta'                           # The mobility used with the kernel
+    P_name                       = 'PQ'                  # Interpolation function for phases
+    type                         = PusztaiACBulk
+    variable                     = eta3                 # The name of the variable that this Kernel operates on
+    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
+                                                               # L must be constant over the entire domain!)
+    variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
+  [../]
 
 
   #--------------------------------------------------------------------------
@@ -1260,11 +1243,11 @@
       type = HeatConductionTimeDerivative
       variable = Te
     [../]
-    #[./HeatSource]
-    #  type                         = HeatSource
-    #  value                        = 0.0
-    #  variable                     = Te                # The name of the variable that this Kernel operates on
-    #[../]
+    [./HeatSource]
+      type                         = HeatSource
+      value                        = -400.0
+      variable                     = Te                # The name of the variable that this Kernel operates on
+    [../]
 
     # -----------------------------------------------------------
     # Q1
@@ -1273,36 +1256,36 @@
         variable                     = q1
       [../]
 
-      #[./PusztaiInterface1]
-      #  Correction_y0                      = 1.0
-      #  Correction_Z                      = 1.0
-      #  Args                         = 'eta1 eta2 eta3 c Te'
-      #  Qs                           =  'q2'
-      #  H_name                       = 'HQ'
-      #  L_name                       = 'LQ '
-      #  P_name                       = 'PQ'
-      #  type                         = PusztaiQsBulk
-      #  variable                     = q1
-      #  variable_H                   = 1
-      #  variable_L                   = 1
-      #[../]
+      [./PusztaiInterface1]
+        Correction_y0                      = 1.0
+        Correction_Z                      = 1.0
+        Args                         = 'eta1 eta2 eta3 c Te'
+        Qs                           =  'q2'
+        H_name                       = 'HQ'
+        L_name                       = 'LQ '
+        P_name                       = 'PQ'
+        type                         = PusztaiQsBulk
+        variable                     = q1
+        variable_H                   = 1
+        variable_L                   = 1
+      [../]
 
-      #[./SwitchingFunctionConstraintq1]
-      #  h_name                       = hq1
-      #  implicit                     = 1
-      #  lambda                       = LaQ
-      #  type                         = SwitchingFunctionConstraintEta
-      #  variable                     = q1
-      #[../]
+      [./SwitchingFunctionConstraintq1]
+        h_name                       = hq1
+        implicit                     = 1
+        lambda                       = LaQ
+        type                         = SwitchingFunctionConstraintEta
+        variable                     = q1
+      [../]
 
-      #[./ACInterfaceQ1]
-      #  args                         =  'eta1 eta2 eta3 c q2'
-      #  kappa_name                   = 'kappaQ'
-      #  mob_name                     = 'LQ'
-      #  type                         = ACInterface
-      #  variable                     = 'q1'
-      #  variable_L                   = 1
-      #[../]
+      [./ACInterfaceQ1]
+        args                         =  'eta1 eta2 eta3 c q2'
+        kappa_name                   = 'kappaQ'
+        mob_name                     = 'LQ'
+        type                         = ACInterface
+        variable                     = 'q1'
+        variable_L                   = 1
+      [../]
 
 
       # -----------------------------------------------------------
@@ -1312,38 +1295,38 @@
         variable                     = q2
       [../]
 
-      #[./SwitchingFunctionConstraintq2]
-      #  h_name                       = hq2
-      #  implicit                     = 1
-      #  lambda                       = LaQ
-      #  type                         = SwitchingFunctionConstraintEta
-      #  variable                     = q2
-      #[../]
+      [./SwitchingFunctionConstraintq2]
+        h_name                       = hq2
+        implicit                     = 1
+        lambda                       = LaQ
+        type                         = SwitchingFunctionConstraintEta
+        variable                     = q2
+      [../]
 
-      #[./PusztaiInterface2]
-      #  Correction_y0                     = 1.0
-      #  Correction_Z                      = 1.0
-      #  Args                         = 'eta1 eta2 eta3 c Te'
-      #  Qs                           =  'q1'
-      #  H_name                       = 'HQ'
-      #  implicit                     = 1
-      #  L_name                     = 'LQ '
-      #  P_name                       = 'PQ'
-      #  type                         = PusztaiQsBulk
-      #  variable                     = q2
-      #  variable_H                   = 1
-      #
-      #  variable_L                   = 1
-      #[../]
+      [./PusztaiInterface2]
+        Correction_y0                     = 1.0
+        Correction_Z                      = 1.0
+        Args                         = 'eta1 eta2 eta3 c Te'
+        Qs                           =  'q1'
+        H_name                       = 'HQ'
+        implicit                     = 1
+        L_name                     = 'LQ '
+        P_name                       = 'PQ'
+        type                         = PusztaiQsBulk
+        variable                     = q2
+        variable_H                   = 1
 
-      #[./ACInterfaceQ2]
-      #  args                         =  'eta1 eta2 eta3 c q1'
-      #  kappa_name                   = 'kappaQ'
-      #  mob_name                     = 'LQ'
-      #  type                         = ACInterface
-      #  variable                     = 'q2'
-      #  variable_L                   = 1
-      #[../]
+        variable_L                   = 1
+      [../]
+
+      [./ACInterfaceQ2]
+        args                         =  'eta1 eta2 eta3 c q1'
+        kappa_name                   = 'kappaQ'
+        mob_name                     = 'LQ'
+        type                         = ACInterface
+        variable                     = 'q2'
+        variable_L                   = 1
+      [../]
 
       #--------------------------------------------------------------------------
       # Langrange Q
@@ -1423,7 +1406,7 @@
 [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
-    dt = 1.0e-6
+    dt = 1.0e-7
     cutback_factor = 0.8
     growth_factor = 1.5
     optimal_iterations = 8
