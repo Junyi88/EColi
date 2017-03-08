@@ -1,0 +1,19 @@
+#!/bin/sh
+#PBS -j oe
+#PBS -l walltime=18:00:00,select=1:ncpus=16:mpiprocs=16:mem=3072mb
+#
+
+module load mpi
+module load vtk
+module load gcc
+module load mooseframework
+# module load intel-suite mpi
+
+cp -r $WORK/DropZone/TiAl_2D_A/TiAl_2D_SB1_R0.i $TMPDIR
+# cp -r $WORK/Outputs/Fattbert2D_Con1_R6L_out.e $TMPDIR
+
+pbsexec -grace 60 mpiexec $WORK/mooseFR/EColi/EColi-opt -i ./TiAl_2D_SB1_R0.i
+cp $TMPDIR/TiAl_2D_SB1_R0*.e -f $WORK/Outputs/TiAl_2D_A
+cp $TMPDIR/TiAl_2D_SB1_R0.i -f $WORK/Outputs/TiAl_2D_A
+
+# echo "QZ Done"

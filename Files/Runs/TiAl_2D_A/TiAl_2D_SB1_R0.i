@@ -12,8 +12,8 @@
   type = GeneratedMesh
   dim = 2
   elem_type = QUAD4
-  nx = 100
-  ny = 100
+  nx = 200
+  ny = 200
   nz = 0
   xmin = 0
   xmax = 2.0e1
@@ -27,41 +27,41 @@
 # Mesh Modifiers
 [MeshModifiers]
   [./SubdomainBoundingBox1]
-    block_id                     = 1                 # Subdomain id to set for inside/outside the bounding box
-    location                     = INSIDE                      # Control of where the subdomain id is to be set
-    top_right                    = '6.0 6.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    block_id                     = 1
+    location                     = INSIDE
+    top_right                    = '6.0 6.0 0.0'
     bottom_left                  = '2.0 2.0 0.0'
     type                         = SubdomainBoundingBox
   [../]
 
   [./SubdomainBoundingBox2]
-    block_id                     = 2                 # Subdomain id to set for inside/outside the bounding box
-    location                     = INSIDE                      # Control of where the subdomain id is to be set
-    top_right                    = '18.0 6.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    block_id                     = 2
+    location                     = INSIDE
+    top_right                    = '18.0 6.0 0.0'
     bottom_left                  = '14.0 2.0 0.0'
     type                         = SubdomainBoundingBox
   [../]
 
   [./SubdomainBoundingBox3]
-    block_id                     = 3                 # Subdomain id to set for inside/outside the bounding box
-    location                     = INSIDE                      # Control of where the subdomain id is to be set
-    top_right                    = '12.0 12.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    block_id                     = 3
+    location                     = INSIDE
+    top_right                    = '12.0 12.0 0.0'
     bottom_left                  = '8.0 8.0 0.0'
     type                         = SubdomainBoundingBox
   [../]
 
   [./SubdomainBoundingBox4]
-    block_id                     = 4                 # Subdomain id to set for inside/outside the bounding box
-    location                     = INSIDE                      # Control of where the subdomain id is to be set
-    top_right                    = '5.0 17.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    block_id                     = 4
+    location                     = INSIDE
+    top_right                    = '5.0 17.0 0.0'
     bottom_left                  = '1.0 13.0 0.0'
     type                         = SubdomainBoundingBox
   [../]
 
   [./SubdomainBoundingBox5]
-    block_id                     = 5                 # Subdomain id to set for inside/outside the bounding box
-    location                     = INSIDE                      # Control of where the subdomain id is to be set
-    top_right                    = '18.0 20.0 0.0'                  # The bottom left point (in x,y,z with spaces in-between).
+    block_id                     = 5
+    location                     = INSIDE
+    top_right                    = '18.0 20.0 0.0'
     bottom_left                  = '14.0 16.0 0.0'
     type                         = SubdomainBoundingBox
   [../]
@@ -729,10 +729,6 @@
                    kappa11 kappa12 kappa13
                    kappa21 kappa22 kappa23
                    kappa31 kappa32 kappa33'
-    #prop_values = '6.4e2 0.0 0.0
-    #               0.0 0.0 0.0
-    #               0.0 0.0 0.0
-    #               0.0 0.0 0.0'
    prop_values = '6.4e2 0.09765625e-2 0.0625e-6
                   0.0625e-2 0.0625e-2 0.0625e-2
                   0.0625e-2 0.0625e-2 0.0625e-2
@@ -825,7 +821,7 @@
     function = '(0.25e-2)*Te'
     args = 'Te'
     derivative_order             = 1
-    outputs = exodus
+    #outputs = exodus
   [../]
 
   [./PQ]
@@ -846,7 +842,7 @@
     #function = '0.0'
     args = 'eta1'
     derivative_order             = 1
-    outputs = exodus
+    #outputs = exodus
   [../]
 
   # Angle
@@ -876,7 +872,7 @@
     constant_names = 'Mag Rg D0 Q1'
     constant_expressions = '1e12 8.31451e-3 4.29e-7 36.3'
    function ='Mag*D0*exp(-Q1/(Rg*Te))'
-   outputs = exodus
+  # outputs = exodus
   [../]
 
   [./Malpha]
@@ -886,7 +882,7 @@
     constant_names = 'Mag kb Da0 Qa1 Db0 Qb1'
     constant_expressions = '1e12 8.6173303e-5 1.35e-3 3.14 6.6e-3 3.41'
    function ='Mag*(c*Da0*exp(-Qa1/(kb*Te))+(1-c)*Db0*exp(-Qb1/(kb*Te)))'
-   outputs = exodus
+  # outputs = exodus
   [../]
 
   [./Mbeta]
@@ -897,7 +893,7 @@
     constant_expressions = '1e12 8.6173303e-5 3.53e-4 3.4 1335.0 1.94e-4 3.36 1266.0 '
    function ='Mag*(c*Da0*exp(-Qa1/(kb*Te))*exp(Qa2/(kb*Te^2))+
                (1-c)*Db0*exp(-Qb1/(kb*Te))*exp(Qb2/(kb*Te^2)))'
-   outputs = exodus
+  # outputs = exodus
   [../]
 
   [./Mob]
@@ -908,11 +904,6 @@
                                Malpha:=Malpha(c,Te)
                                Mbeta:=Mbeta(c,Te)
                                d2F:=D[F(Te,c),c,c]+1e-16'
-                               # h1:=h1(eta1)
-                               # h2:=h2(eta2)
-                               # h3:=h3(eta3)
-    #constant_names = 'Rg Mag1'
-    #constant_expressions = '8.31451e-3 7.68e9'
   function ='(eta1*MLq+eta2*Malpha+eta3*Mbeta)/d2F'
   # function ='2.0e2'
    outputs = exodus
@@ -924,7 +915,7 @@
   [./Heat1]
     type = GenericConstantMaterial
     prop_names = 'thermal_conductivity specific_heat density'
-    prop_values = '1.0 1.0 1.0' # W/m*K, J/kg-K, kg/m^3 @ 296K48
+    prop_values = '1.0 1.0 1.0'
   [../]
 
   # Energy 1
@@ -1082,7 +1073,7 @@
     P_name                       = 'PQ'                  # Interpolation function for phases
     type                         = PusztaiACBulk
     variable                     = eta1                 # The name of the variable that this Kernel operates on
-    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
+    variable_H                   = 0                          # The mobility is a function of any MOOSE variable (if this is set to false ...
                                                                # L must be constant over the entire domain!)
     variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
   [../]
@@ -1127,7 +1118,7 @@
     P_name                       = 'PQ'                  # Interpolation function for phases
     type                         = PusztaiACBulk
     variable                     = eta2                 # The name of the variable that this Kernel operates on
-    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
+    variable_H                   = 0                          # The mobility is a function of any MOOSE variable (if this is set to false ...
                                                                # L must be constant over the entire domain!)
     variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
   [../]
@@ -1172,7 +1163,7 @@
     P_name                       = 'PQ'                  # Interpolation function for phases
     type                         = PusztaiACBulk
     variable                     = eta3                 # The name of the variable that this Kernel operates on
-    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
+    variable_H                   = 0                          # The mobility is a function of any MOOSE variable (if this is set to false ...
                                                                # L must be constant over the entire domain!)
     variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
   [../]
@@ -1201,8 +1192,7 @@
     [../]
     [./HeatSource]
       type                         = HeatSource
-      #value                        = -400.0
-      value                        = 0.0
+      value                        = -400.0
       variable                     = Te
     [../]
 
@@ -1223,7 +1213,7 @@
         P_name                       = 'PQ'
         type                         = PusztaiQsBulk
         variable                     = q1
-        variable_H                   = 1
+        variable_H                   = 0
         variable_L                   = 1
       [../]
 
@@ -1270,8 +1260,7 @@
         P_name                       = 'PQ'
         type                         = PusztaiQsBulk
         variable                     = q2
-        variable_H                   = 1
-
+        variable_H                   = 0
         variable_L                   = 1
       [../]
 
@@ -1331,9 +1320,9 @@
 []
 
 [Outputs]
-  interval                       = 1
+  interval                       = 5
   exodus = true
-  console = true
+  console = false
   print_perf_log = true
   output_initial = true
 []

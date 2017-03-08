@@ -224,8 +224,6 @@
 []
 
 
-
-
 ##===============================================================
 ##: Section Mesh
 [GlobalParams]
@@ -309,6 +307,8 @@
   [../]
 []
 
+
+
 [BCs]
   [./Periodic]
     [./c_bcs]
@@ -339,8 +339,17 @@
     order = CONSTANT
     family = MONOMIAL
   [../]
+
 []
 
+[UserObjects]
+  [./ConservedNormalNoise1]
+    execute_on                   = TIMESTEP_BEGIN              # Set to (nonlinear|linear|timestep_end|timestep_begin|custom) to execute ...
+    seed                         = 201                           # The seed for the master random number generator
+    type                         = ConservedNormalNoise
+    use_displaced_mesh           = 0                           # Whether or not this object should use the displaced mesh for computation. .
+  [../]
+[]
 ##===============================================================
 # Materials
 [Materials]

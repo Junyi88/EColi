@@ -1,6 +1,5 @@
 #====================================================================
 # Global Params
-
 [GlobalParams]
   outputs = exodus
   penalty = 1e3
@@ -13,26 +12,14 @@
   dim = 2
   elem_type = QUAD4
   nx = 100
-  ny = 100
+  ny = 1
   nz = 0
   xmin = 0
-  xmax = 1.0e1
+  xmax = 2.0e1
   ymin = 0
-  ymax = 1.0e1
+  ymax = 2.0e1
   zmin = 0
   zmax = 0
-[]
-
-#====================================================================
-# Mesh Modifiers
-[MeshModifiers]
-  [./SubdomainBoundingBox1]
-    block_id                     = 1
-    location                     = INSIDE
-    top_right                    = '7.5 7.5 0.0'
-    bottom_left                  = '2.5 2.5 0.0'
-    type                         = SubdomainBoundingBox
-  [../]
 []
 
 #====================================================================
@@ -91,83 +78,40 @@
   [../]
 []
 
-#====================================================================
-# Initial Conditions
 [ICs]
+  #====================================================================
   [./ConstantIC_0_eta1]
-    block                        =    0
     type                         = ConstantIC
-    value                        = 0.94
+    value                        = 0.5
     variable                     = eta1
   [../]
   [./ConstantIC_0_eta2]
-    block                        =    0
     type                         = ConstantIC
-    value                        = 0.03
+    value                        = 0.1
     variable                     = eta2
   [../]
   [./ConstantIC_0_eta3]
-    block                        =    0
     type                         = ConstantIC
-    value                        = 0.03
+    value                        = 0.4
     variable                     = eta3
   [../]
   [./ConstantIC_0_c]
-    block                        =    0
     type                         = ConstantIC
-    value                        = 0.4661
+    value                        = 0.42
     variable                     = c
   [../]
   [./ConstantIC_0_q1]
-    block                        =    0
     type                         = ConstantIC
     value                        = 0.70710678118
     variable                     = q1
   [../]
   [./ConstantIC_0_q2]
-    block                        =    0
-    type                         = ConstantIC
-    value                        = 0.70710678118
-    variable                     = q2
-  [../]
-#====================================================================
-  [./ConstantIC_1_eta1]
-    block                        =    1
-    type                         = ConstantIC
-    value                        = 0.03
-    variable                     = eta1
-  [../]
-  [./ConstantIC_1_eta2]
-    block                        =    1
-    type                         = ConstantIC
-    value                        = 0.03
-    variable                     = eta2
-  [../]
-  [./ConstantIC_1_eta3]
-    block                        =    1
-    type                         = ConstantIC
-    value                        = 0.94
-    variable                     = eta3
-  [../]
-  [./ConstantIC_1_c]
-    block                        =    1
-    type                         = ConstantIC
-    value                        = 0.4169
-    variable                     = c
-  [../]
-  [./ConstantIC_1_q1]
-    block                        =    1
-    type                         = ConstantIC
-    value                        = 0.70710678118
-    variable                     = q1
-  [../]
-  [./ConstantIC_1_q2]
-    block                        =    1
     type                         = ConstantIC
     value                        = 0.70710678118
     variable                     = q2
   [../]
 []
+
 
 #====================================================================
 # Boundary Conditions
@@ -176,6 +120,15 @@
     [./c_bcs]
       auto_direction = 'x y'
     [../]
+  [../]
+[]
+
+[UserObjects]
+  [./ConservedNormalNoise1]
+    execute_on                   = TIMESTEP_BEGIN              # Set to (nonlinear|linear|timestep_end|timestep_begin|custom) to execute ...
+    seed                         = 201                           # The seed for the master random number generator
+    type                         = ConservedNormalNoise
+    use_displaced_mesh           = 0                           # Whether or not this object should use the displaced mesh for computation. .
   [../]
 []
 
@@ -198,6 +151,26 @@
   [./grad_q2y]
     order = CONSTANT
     family = MONOMIAL
+  [../]
+
+  [./time]
+  [../]
+
+  [./CNoise]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+  [./eta1Noise]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+  [./eta2Noise]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+  [./q1Noise]
+    order = FIRST
+    family = LAGRANGE
   [../]
 []
 
@@ -235,6 +208,12 @@
     type                         = VariableGradientComponent
     variable                     = 'grad_q2y'
   [../]
+
+  [./FunctionAux1]
+    function                     = 't'
+    type                         = FunctionAux
+    variable                     = time
+  [../]
 []
 
 ##===============================================================
@@ -247,19 +226,14 @@
                    kappa11 kappa12 kappa13
                    kappa21 kappa22 kappa23
                    kappa31 kappa32 kappa33'
-    #prop_values = '6.4e2 0.0 0.0
-    #               0.0 0.0 0.0
-    #               0.0 0.0 0.0
-    #               0.0 0.0 0.0'
-   prop_values = '6.4e2 0.09765625e-2 0.0625e-6
+   prop_values = '0.0 0.09765625e-2 0.0625e-6
                   0.0625e-2 0.0625e-2 0.0625e-2
                   0.0625e-2 0.0625e-2 0.0625e-2
                   0.0625e-2 0.0625e-2 0.0625e-2'
   [../]
-
-#=====================================================================
-# AllenCahn Stuff
-# Swtiching and well functions
+  #=====================================================================
+  # AllenCahn Stuff
+  # Swtiching and well functions
   [./switching1]
     type = SwitchingFunctionMaterial
     function_name = h1
@@ -286,39 +260,6 @@
     g_order                      = SIMPLE
     well_only                    = 0
   [../]
-
-# ==========================================================
-# Penalty
-  #[./g_eta1]
-  #  type = BarrierFunctionMaterial
-  #  g_order = SIMPLE
-  #  eta = eta1
-  #  function_name  = g1
-  #  well_only                    = 1
-  #[../]
-  #[./g_eta2]
-  #  type = BarrierFunctionMaterial
-  #  g_order = SIMPLE
-  #  eta = eta2
-  #  function_name  = g2
-  #  well_only                    = 1
-  #[../]
-  #[./g_eta3]
-  #  type = BarrierFunctionMaterial
-  #  g_order = SIMPLE
-  #  eta = eta3
-  #  function_name  = g3
-  #  well_only                    = 1
-  #[../]
-  #[./Penalty1]
-  #  type = DerivativeParsedMaterial
-  #  f_name =Pen1
-  #  material_property_names = 'g1:=g1(eta1)  g2:=g2(eta2) g3:=g3(eta3) '
-  #  function = '(g1+g2+g3)*1.0e3'
-  #  args = 'eta1 eta2 eta3'
-  #  derivative_order             = 1
-  #  outputs = exodus
-  #[../]
 
   # Total Free Energy
     [./free_energy]
@@ -431,18 +372,17 @@
                                # h3:=h3(eta3)
     #constant_names = 'Rg Mag1'
     #constant_expressions = '8.31451e-3 7.68e9'
-  function ='(eta1*MLq+eta2*Malpha+eta3*Mbeta)/d2F'
-  # function ='2.0e2'
+  #function ='(eta1*MLq+eta2*Malpha+eta3*Mbeta)/d2F'
+   function ='0.0'
    outputs = exodus
   [../]
-
 
   # Heat
   #-----------------------------------------------------------
   [./Heat1]
     type = GenericConstantMaterial
     prop_names = 'thermal_conductivity specific_heat density'
-    prop_values = '1.0 1.0 1.0' # W/m*K, J/kg-K, kg/m^3 @ 296K48
+    prop_values = '1.0 1.0 1.0'
   [../]
 
   # Energy 1
@@ -530,6 +470,36 @@
                  (c^4)*(p40+p41*Te)+(c^5)*p50)'
     outputs = exodus
   [../]
+
+#  Noise
+  #[./MagNoiseE]
+  #  type = ParsedMaterial
+  #  f_name = MagNoiseEta
+  #  args = 'time'
+  #  #constant_names = 'A B'
+  #  function='if(time<=0.01,20.0*(1.0-tanh(800.0*(time-2.0e-3))),0.01)'
+  #  #outputs = exodus
+  #[../]
+  #
+  #[./MagNoiseC]
+  #  type = ParsedMaterial
+  #  f_name = MagNoiseC
+  #  args = 'time'
+  #  #constant_names = 'A B'
+  #  #constant_expressions = '0.001 0.006908'
+  #  function='if(time<=0.01,10.0*(1.0-tanh(400.0*(time-5.0e-3))),0.01)'
+  #  #outputs = exodus
+  #[../]
+
+  [./MagNoiseQ]
+    type = ParsedMaterial
+    f_name = MagNoiseQ
+    args = 'time'
+    #constant_names = 'A B'
+    #constant_expressions = '0.001 0.006908'
+    function = 'if(time<=0.01,200.0*exp(-50.0*time),0.0)'
+    #outputs = exodus
+  [../]
 []
 
 # =======================================================
@@ -559,9 +529,18 @@
     w = w
   [../]
 
+  #[./ConservedLangevinNoise]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseC
+  #  noise                        = ConservedNormalNoise1
+  #  seed                         = 201
+  #  type                         = ConservedLangevinNoise
+  #  variable                     = c
+  #  save_in                      = CNoise
+  #[../]
+
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
-
   # Eta1
   [./eta1_dot]
     type                         = TimeDerivative
@@ -574,6 +553,13 @@
     mob_name = Leta
     f_name = F
   [../]
+  #[./ACBulkPen1]
+  #  type = AllenCahn
+  #  variable = eta1
+  #  args = 'eta2 eta3 Te c'
+  #  mob_name = Leta
+  #  f_name = Pen1
+  #[../]
   [./ACInterface1]
     type = ACMultiInterface
     variable = eta1
@@ -582,29 +568,33 @@
     kappa_names = 'kappa11 kappa12 kappa13'
   [../]
   [./SwitchingFunctionConstraintEta1]
-    h_name                       = h1                            # Switching Function Materials that provides h(eta_i)
+    h_name                       = h1
     implicit                     = 1
-    lambda                       = La_eta                 # Lagrange multiplier
+    lambda                       = La_eta
     type                         = SwitchingFunctionConstraintEta
-    variable                     = eta1                 # The name of the variable that this Kernel operates on
+    variable                     = eta1
   [../]
   [./PusztaiBulkEta1]
     Correction_y0   = 1.0
     Correction_Z   = 1.0
-    Args                          = 'c Te eta2 eta3'                             # Vector of Etas this object depends on
-    Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
-    H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
-    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
-                                                               # form
-    L_name                     = 'Leta'                           # The mobility used with the kernel
-    P_name                       = 'PQ'                  # Interpolation function for phases
+    Args                         = 'c Te eta2 eta3'
+    Qs                           = 'q1 q2'
+    H_name                       = 'HQ'
+    L_name                       = 'Leta'
+    P_name                       = 'PQ'
     type                         = PusztaiACBulk
-    variable                     = eta1                 # The name of the variable that this Kernel operates on
-    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
-                                                               # L must be constant over the entire domain!)
-    variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
+    variable                     = eta1
+    variable_H                   = 1
+    variable_L                   = 1
   [../]
-
+  #[./LangevinNoise_eta1]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 301
+  #  type                         = LangevinNoise
+  #  variable                     = eta1
+  #  save_in                      = eta1Noise
+  #[../]
   #--------------------------------------------------------------------------
   # Eta2
   [./eta2_dot]
@@ -618,6 +608,13 @@
     mob_name = Leta
     f_name = F
   [../]
+  #[./ACBulkPen2]
+  #  type = AllenCahn
+  #  variable = eta2
+  #  args = 'eta1 eta3 Te c'
+  #  mob_name = Leta
+  #  f_name = Pen1
+  #[../]
   [./ACInterface2]
     type = ACMultiInterface
     variable = eta2
@@ -626,30 +623,34 @@
     kappa_names = 'kappa21 kappa22 kappa23'
   [../]
   [./SwitchingFunctionConstraintEta2]
-    h_name                       = h2                            # Switching Function Materials that provides h(eta_i)
+    h_name                       = h2
     implicit                     = 1
-    lambda                       = La_eta                 # Lagrange multiplier
+    lambda                       = La_eta
     type                         = SwitchingFunctionConstraintEta
-    variable                     = eta2                 # The name of the variable that this Kernel operates on
+    variable                     = eta2
   [../]
 
   [./PusztaiBulkEta2]
     Correction_y0   = 1.0
     Correction_Z   = 1.0
-    Args                          = 'c Te eta1 eta3'                             # Vector of Etas this object depends on
-    Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
-    H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
-    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
-                                                               # form
-    L_name                     = 'Leta'                           # The mobility used with the kernel
-    P_name                       = 'PQ'                  # Interpolation function for phases
+    Args                          = 'c Te eta1 eta3'
+    Qs                           = 'q1 q2'
+    H_name                       = 'HQ'
+    L_name                     = 'Leta'
+    P_name                       = 'PQ'
     type                         = PusztaiACBulk
-    variable                     = eta2                 # The name of the variable that this Kernel operates on
-    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
-                                                               # L must be constant over the entire domain!)
-    variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
+    variable                     = eta2
+    variable_H                   = 1
+    variable_L                   = 1
   [../]
-
+  #[./LangevinNoise_eta2]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 301
+  #  type                         = LangevinNoise
+  #  variable                     = eta2
+  #  save_in                      = eta2Noise
+  #[../]
   #--------------------------------------------------------------------------
   # Eta3
   [./eta3_dot]
@@ -663,6 +664,13 @@
     mob_name = Leta
     f_name = F
   [../]
+  #[./ACBulkPen3]
+  #  type = AllenCahn
+  #  variable = eta3
+  #  args = 'eta1 eta2 Te c'
+  #  mob_name = Leta
+  #  f_name = Pen1
+  #[../]
   [./ACInterface3]
     type = ACMultiInterface
     variable = eta3
@@ -671,40 +679,36 @@
     kappa_names = 'kappa31 kappa32 kappa33'
   [../]
   [./SwitchingFunctionConstraintEta3]
-    h_name                       = h3                            # Switching Function Materials that provides h(eta_i)
+    h_name                       = h3
     implicit                     = 1
-    lambda                       = La_eta                 # Lagrange multiplier
+    lambda                       = La_eta
     type                         = SwitchingFunctionConstraintEta
-    variable                     = eta3                 # The name of the variable that this Kernel operates on
+    variable                     = eta3
   [../]
 
   [./PusztaiBulkEta3]
     Correction_y0   = 1.0
     Correction_Z   = 1.0
-    Args                          = 'c Te eta1 eta2'                             # Vector of Etas this object depends on
-    Qs                           = 'q1 q2'                            # Vector of Qs this object depends on
-    H_name                       = 'HQ'                           # The energy constant of the non-grain boundary phases
-    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
-                                                               # form
-    L_name                     = 'Leta'                           # The mobility used with the kernel
-    P_name                       = 'PQ'                  # Interpolation function for phases
+    Args                          = 'c Te eta1 eta2'
+    Qs                           = 'q1 q2'
+    H_name                       = 'HQ'
+    L_name                     = 'Leta'
+    P_name                       = 'PQ'
     type                         = PusztaiACBulk
-    variable                     = eta3                 # The name of the variable that this Kernel operates on
-    variable_H                   = 1                          # The mobility is a function of any MOOSE variable (if this is set to false ...
-                                                               # L must be constant over the entire domain!)
-    variable_L                   = 1                           # The mobility is a function of any MOOSE variable (if this is set to false ...                                                               # L must be constant over the entire domain!)
+    variable                     = eta3
+    variable_H                   = 1
+    variable_L                   = 1
   [../]
 
   #--------------------------------------------------------------------------
   # Langrange Eta
   [./SwitchingFunctionConstraintLagrange]
-    enable                       = 1                           # Set the enabled status of the MooseObject.
-    epsilon                      = 1e-09                       # Shift factor to avoid a zero pivot
-    etas                         = 'eta1 eta2 eta3'                  # eta_i order parameters, one for each h
-    h_names                      = 'h1 h2 h3'                            # Switching Function Materials that provide h(eta_i)
-    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
+    enable                       = 1
+    epsilon                      = 1e-09
+    etas                         = 'eta1 eta2 eta3'
+    h_names                      = 'h1 h2 h3'
     type                         = SwitchingFunctionConstraintLagrange
-    variable                     = La_eta                  # The name of the variable that this Kernel operates on
+    variable                     = La_eta
   [../]
 
   #==============================
@@ -719,8 +723,7 @@
     [../]
     [./HeatSource]
       type                         = HeatSource
-      #value                        = -400.0
-      value                        = 0.0
+      value                        = -400.0
       variable                     = Te
     [../]
 
@@ -731,19 +734,19 @@
         variable                     = q1
       [../]
 
-      [./PusztaiInterface1]
-        Correction_y0                      = 1.0
-        Correction_Z                      = 1.0
-        Args                         = 'eta1 eta2 eta3 c Te'
-        Qs                           =  'q2'
-        H_name                       = 'HQ'
-        L_name                       = 'LQ '
-        P_name                       = 'PQ'
-        type                         = PusztaiQsBulk
-        variable                     = q1
-        variable_H                   = 1
-        variable_L                   = 1
-      [../]
+      #[./PusztaiInterface1]
+      #  Correction_y0                      = 1.0
+      #  Correction_Z                      = 1.0
+      #  Args                         = 'eta1 eta2 eta3 c Te'
+      #  Qs                           =  'q2'
+      #  H_name                       = 'HQ'
+      #  L_name                       = 'LQ '
+      #  P_name                       = 'PQ'
+      #  type                         = PusztaiQsBulk
+      #  variable                     = q1
+      #  variable_H                   = 1
+      #  variable_L                   = 1
+      #[../]
 
       [./SwitchingFunctionConstraintq1]
         h_name                       = hq1
@@ -753,15 +756,23 @@
         variable                     = q1
       [../]
 
-      [./ACInterfaceQ1]
-        args                         =  'eta1 eta2 eta3 c q2'
-        kappa_name                   = 'kappaQ'
-        mob_name                     = 'LQ'
-        type                         = ACInterface
-        variable                     = 'q1'
-        variable_L                   = 1
-      [../]
+      #[./ACInterfaceQ1]
+      #  args                         =  'eta1 eta2 eta3 c q2'
+      #  kappa_name                   = 'kappaQ'
+      #  mob_name                     = 'LQ'
+      #  type                         = ACInterface
+      #  variable                     = 'q1'
+      #  variable_L                   = 1
+      #[../]
 
+      [./LangevinNoise_q1]
+        amplitude                    = 1.0
+        multiplier                   = MagNoiseQ
+        seed                         = 801
+        type                         = LangevinNoise
+        variable                     = q1
+        save_in                      = q1Noise
+      [../]
       # -----------------------------------------------------------
       # Q2
       [./q2_dot]
@@ -777,30 +788,30 @@
         variable                     = q2
       [../]
 
-      [./PusztaiInterface2]
-        Correction_y0                     = 1.0
-        Correction_Z                      = 1.0
-        Args                         = 'eta1 eta2 eta3 c Te'
-        Qs                           =  'q1'
-        H_name                       = 'HQ'
-        implicit                     = 1
-        L_name                     = 'LQ '
-        P_name                       = 'PQ'
-        type                         = PusztaiQsBulk
-        variable                     = q2
-        variable_H                   = 1
+      #[./PusztaiInterface2]
+      #  Correction_y0                     = 1.0
+      #  Correction_Z                      = 1.0
+      #  Args                         = 'eta1 eta2 eta3 c Te'
+      #  Qs                           =  'q1'
+      #  H_name                       = 'HQ'
+      #  implicit                     = 1
+      #  L_name                     = 'LQ '
+      #  P_name                       = 'PQ'
+      #  type                         = PusztaiQsBulk
+      #  variable                     = q2
+      #  variable_H                   = 1
+      #
+      #  variable_L                   = 1
+      #[../]
 
-        variable_L                   = 1
-      [../]
-
-      [./ACInterfaceQ2]
-        args                         =  'eta1 eta2 eta3 c q1'
-        kappa_name                   = 'kappaQ'
-        mob_name                     = 'LQ'
-        type                         = ACInterface
-        variable                     = 'q2'
-        variable_L                   = 1
-      [../]
+      #[./ACInterfaceQ2]
+      #  args                         =  'eta1 eta2 eta3 c q1'
+      #  kappa_name                   = 'kappaQ'
+      #  mob_name                     = 'LQ'
+      #  type                         = ACInterface
+      #  variable                     = 'q2'
+      #  variable_L                   = 1
+      #[../]
 
       #--------------------------------------------------------------------------
       # Langrange Q
@@ -829,7 +840,7 @@
 [Executioner]
   type = Transient
   solve_type = 'NEWTON'
-
+# OR PJFNK
   petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
   petsc_options_value = 'asm      ilu          nonzero'
 
@@ -841,7 +852,7 @@
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
-    dt = 1.0e-6
+    dt = 1.0e-4
     cutback_factor = 0.5
     growth_factor = 2.0
     optimal_iterations = 7

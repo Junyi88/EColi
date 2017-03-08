@@ -1106,7 +1106,7 @@
 ##: Executioner
 [Executioner]
   type = Transient
-  solve_type = 'PJFNK'
+  solve_type = 'NEWTON'
 
   petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
   petsc_options_value = 'asm      ilu          nonzero'
