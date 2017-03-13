@@ -97,7 +97,7 @@
 
   [./ConstantIC_0_c]
     type                         = ConstantIC
-    value                        = 0.46
+    value                        = 0.44
     variable                     = c
   [../]
 []
@@ -364,7 +364,7 @@
     #constant_names = 'Rg Mag1'
     #constant_expressions = '8.31451e-3 7.68e9'
   #function ='(eta1*MLq+eta2*Malpha+eta3*Mbeta+eta4*Malpha2+eta5*Mgamma)/d2F'
-  function ='(sqrt(eta1^2)*MLq+sqrt(eta2^2)*Malpha+sqrt(eta3^2)*Mbeta+sqrt(eta4^2)*Malpha2+sqrt(eta5^2)*Mgamma)/d2F'
+  function ='(1.0e-3)*((sqrt(eta1^2)*MLq+sqrt(eta2^2)*Malpha+sqrt(eta3^2)*Mbeta+sqrt(eta4^2)*Malpha2+sqrt(eta5^2)*Mgamma)/d2F)'
   #function ='(h1*MLq+h2*Malpha+h3*Mbeta+h4*Malpha2+h5*Mgamma)/d2F'
   # function ='2.0e2'
    outputs = exodus

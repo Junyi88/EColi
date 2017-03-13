@@ -11,8 +11,8 @@
   type = GeneratedMesh
   dim = 2
   elem_type = QUAD4
-  nx = 200
-  ny = 200
+  nx = 1000
+  ny = 1
   nz = 0
   xmin = 0
   xmax = 1.0e1
@@ -20,6 +20,16 @@
   ymax = 1.0e1
   zmin = 0
   zmax = 0
+[]
+
+[MeshModifiers]
+  [./SubdomainBoundingBox1]
+    block_id                     = 1
+    location                     = INSIDE
+    top_right                    = '1.0e1 1.0e1 0.0'
+    bottom_left                  = '0.0 0.0 0.0'
+    type                         = SubdomainBoundingBox
+  [../]
 []
 
 #====================================================================
@@ -65,39 +75,55 @@
     order = FIRST
     family = LAGRANGE
   [../]
+
+  [./q1]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  [./q2]
+    order = FIRST
+    family = LAGRANGE
+  [../]
 []
 
 [ICs]
   #====================================================================
   [./ConstantIC_0_eta1]
+    block                        =    0
     type                         = ConstantIC
     value                        = 0.90
     variable                     = eta1
   [../]
   [./ConstantIC_0_eta2]
+    block                        =    0
     type                         = ConstantIC
     value                        = 0.025
     variable                     = eta2
   [../]
   [./ConstantIC_0_eta3]
+    block                        =    0
     type                         = ConstantIC
     value                        = 0.025
     variable                     = eta3
   [../]
   [./ConstantIC_0_eta4]
+    block                        =    0
     type                         = ConstantIC
     value                        = 0.025
     variable                     = eta4
   [../]
   [./ConstantIC_0_eta5]
+    block                        =    0
     type                         = ConstantIC
     value                        = 0.025
     variable                     = eta5
   [../]
 
   [./ConstantIC_0_c]
+    block                        =    0
     type                         = ConstantIC
-    value                        = 0.46
+    value                        = 0.44
     variable                     = c
   [../]
 []
@@ -161,11 +187,7 @@
 # AuxKernels
 [AuxKernels]
   [./FunctionAux1]
-    function                     = '2000.0-1709.0*tanh(9.452*t)'
-    #function                     = '2000.0-1706.0*tanh(2.402*time)'
-    #function                     = '2000.0-1702.0*tanh(1.111*time)'
-    #function                     = '2000.0-1708.0*tanh(0.6115*time)'
-    #function                     = '2000.0-1710.0*tanh(0.3942*time)'
+    function                     = 'if(t<=2.0,1830.0-725*t,400)'
     type                         = FunctionAux
     variable                     = Te
   [../]
@@ -188,51 +210,51 @@
   [../]
 
   # Penalty
-    #[./g_eta1]
-    #  type = BarrierFunctionMaterial
-    #  g_order = SIMPLE
-    #  eta = eta1
-    #  function_name  = g1
-    #  well_only                    = 1
-    #[../]
-    #[./g_eta2]
-    #  type = BarrierFunctionMaterial
-    #  g_order = SIMPLE
-    #  eta = eta2
-    #  function_name  = g2
-    #  well_only                    = 1
-    #[../]
-    #[./g_eta3]
-    #  type = BarrierFunctionMaterial
-    #  g_order = SIMPLE
-    #  eta = eta3
-    #  function_name  = g3
-    #  well_only                    = 1
-    #[../]
-    #[./g_eta4]
-    #  type = BarrierFunctionMaterial
-    #  g_order = SIMPLE
-    #  eta = eta4
-    #  function_name  = g4
-    #  well_only                    = 1
-    #[../]
-    #[./g_eta5]
-    #  type = BarrierFunctionMaterial
-    #  g_order = SIMPLE
-    #  eta = eta5
-    #  function_name  = g5
-    #  well_only                    = 1
-    #[../]
-    #[./Penalty1]
-    #  type = DerivativeParsedMaterial
-    #  f_name =Pen1
-    #  material_property_names = 'g1:=g1(eta1)  g2:=g2(eta2) g3:=g3(eta3)
-    #                             g4:=g4(eta4)  g5:=g5(eta5) '
-    #  function = '(g1+g2+g3+g4+g5)*0.0'
-    #  args = 'eta1 eta2 eta3 eta4 eta5'
-    #  derivative_order             = 1
-    #  outputs = exodus
-    #[../]
+    [./g_eta1]
+      type = BarrierFunctionMaterial
+      g_order = SIMPLE
+      eta = eta1
+      function_name  = g1
+      well_only                    = 1
+    [../]
+    [./g_eta2]
+      type = BarrierFunctionMaterial
+      g_order = SIMPLE
+      eta = eta2
+      function_name  = g2
+      well_only                    = 1
+    [../]
+    [./g_eta3]
+      type = BarrierFunctionMaterial
+      g_order = SIMPLE
+      eta = eta3
+      function_name  = g3
+      well_only                    = 1
+    [../]
+    [./g_eta4]
+      type = BarrierFunctionMaterial
+      g_order = SIMPLE
+      eta = eta4
+      function_name  = g4
+      well_only                    = 1
+    [../]
+    [./g_eta5]
+      type = BarrierFunctionMaterial
+      g_order = SIMPLE
+      eta = eta5
+      function_name  = g5
+      well_only                    = 1
+    [../]
+    [./Penalty1]
+      type = DerivativeParsedMaterial
+      f_name =Pen1
+      material_property_names = 'g1:=g1(eta1)  g2:=g2(eta2) g3:=g3(eta3)
+                                 g4:=g4(eta4)  g5:=g5(eta5) '
+      function = '(g1+g2+g3+g4+g5)*0.0'
+      args = 'eta1 eta2 eta3 eta4 eta5'
+      derivative_order             = 1
+      outputs = exodus
+    [../]
 
 
   #=====================================================================
@@ -609,13 +631,13 @@
     variable                     = eta1
     save_in                      = eta1Noise
   [../]
-  #[./ACBulkPen1]
-  #  type = AllenCahn
-  #  variable = eta1
-  #  args = 'eta2 eta3 eta4 eta5 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
+  [./ACBulkPen1]
+    type = AllenCahn
+    variable = eta1
+    args = 'eta2 eta3 eta4 eta5 Te c'
+    mob_name = Leta
+    f_name = Pen1
+  [../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -653,13 +675,13 @@
     variable                     = eta2
     save_in                      = eta2Noise
   [../]
-  #[./ACBulkPen2]
-  #  type = AllenCahn
-  #  variable = eta2
-  #  args = 'eta1 eta3 eta4 eta5 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
+  [./ACBulkPen2]
+    type = AllenCahn
+    variable = eta2
+    args = 'eta1 eta3 eta4 eta5 Te c'
+    mob_name = Leta
+    f_name = Pen1
+  [../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -697,13 +719,13 @@
     variable                     = eta3
     save_in                      = eta3Noise
   [../]
-  #[./ACBulkPen3]
-  #  type = AllenCahn
-  #  variable = eta3
-  #  args = 'eta2 eta1 eta4 eta5 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
+  [./ACBulkPen3]
+    type = AllenCahn
+    variable = eta3
+    args = 'eta2 eta1 eta4 eta5 Te c'
+    mob_name = Leta
+    f_name = Pen1
+  [../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -741,13 +763,13 @@
     variable                     = eta4
     save_in                      = eta4Noise
   [../]
-  #[./ACBulkPen4]
-  #  type = AllenCahn
-  #  variable = eta4
-  #  args = 'eta2 eta3 eta1 eta5 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
+  [./ACBulkPen4]
+    type = AllenCahn
+    variable = eta4
+    args = 'eta2 eta3 eta1 eta5 Te c'
+    mob_name = Leta
+    f_name = Pen1
+  [../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -785,13 +807,13 @@
     variable                     = eta5
     save_in                      = eta5Noise
   [../]
-  #[./ACBulkPen5]
-  #  type = AllenCahn
-  #  variable = eta5
-  #  args = 'eta2 eta3 eta4 eta1 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
+  [./ACBulkPen5]
+    type = AllenCahn
+    variable = eta5
+    args = 'eta2 eta3 eta4 eta1 Te c'
+    mob_name = Leta
+    f_name = Pen1
+  [../]
 
   #--------------------------------------------------------------------------
   # Langrange Eta
@@ -825,15 +847,15 @@
   petsc_options_value = 'asm      ilu          nonzero'
 
   l_max_its = 40
-  nl_max_its = 20
+  nl_max_its = 30
   nl_abs_tol = 1e-8
-  end_time = 5.0
-   dtmax   = 5.0e-4
+  end_time = 2.2
+   dtmax   = 1.0e-2
    start_time                 = 0
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
-    dt = 5.0e-6
+    dt = 1.0e-5
     cutback_factor = 0.8
     growth_factor = 1.5
     optimal_iterations = 8
@@ -841,10 +863,10 @@
 []
 
 [Outputs]
-  interval                       = 10
+  interval                       = 1
   exodus = true
-  console = false
+  console = true
   print_perf_log = true
   output_initial = true
-  #print_linear_residuals         = 0
+  print_linear_residuals         = 0
 []

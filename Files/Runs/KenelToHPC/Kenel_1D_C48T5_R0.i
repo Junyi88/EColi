@@ -165,7 +165,7 @@
     #function                     = '2000.0-1706.0*tanh(2.402*time)'
     #function                     = '2000.0-1702.0*tanh(1.111*time)'
     #function                     = '2000.0-1708.0*tanh(0.6115*time)'
-    function                     = '2000.0-1710.0*tanh(0.3942*time)'
+    function                     = '2000.0-1710.0*tanh(0.3942*t)'
     type                         = FunctionAux
     variable                     = Te
   [../]

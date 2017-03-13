@@ -1,8 +1,10 @@
 #====================================================================
 # Global Params
 [GlobalParams]
-  outputs = exodus
-  penalty = 1e3
+  #outputs = exodus
+  #penalty = 1e3
+  displacements = 'disp_x disp_y'
+  #order = second
 []
 
 #====================================================================
@@ -11,8 +13,8 @@
   type = GeneratedMesh
   dim = 2
   elem_type = QUAD4
-  nx = 200
-  ny = 200
+  nx = 15
+  ny = 15
   nz = 0
   xmin = 0
   xmax = 1.0e1
@@ -65,13 +67,33 @@
     order = FIRST
     family = LAGRANGE
   [../]
+
+  [./q1]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  [./q2]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  [./LaQ]   # Lagrangian
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  [./disp_x]
+  [../]
+  [./disp_y]
+  [../]
 []
 
 [ICs]
   #====================================================================
   [./ConstantIC_0_eta1]
     type                         = ConstantIC
-    value                        = 0.90
+    value                        = 0.025
     variable                     = eta1
   [../]
   [./ConstantIC_0_eta2]
@@ -91,14 +113,25 @@
   [../]
   [./ConstantIC_0_eta5]
     type                         = ConstantIC
-    value                        = 0.025
+    value                        = 0.9
     variable                     = eta5
   [../]
 
   [./ConstantIC_0_c]
     type                         = ConstantIC
-    value                        = 0.46
+    value                        = 0.45
     variable                     = c
+  [../]
+
+  [./ConstantIC_0_q1]
+    type                         = ConstantIC
+    value                        = 0.70710678118
+    variable                     = q1
+  [../]
+  [./ConstantIC_0_q2]
+    type                         = ConstantIC
+    value                        = 0.70710678118
+    variable                     = q2
   [../]
 []
 
@@ -110,6 +143,18 @@
       auto_direction = 'x y'
     [../]
   [../]
+  #[./bottom_y]
+  #  type = PresetBC
+  #  variable = disp_y
+  #  boundary = 'bottom'
+  #  value = 0
+  #[../]
+  #[./bottom_x]
+  #  type = PresetBC
+  #  variable = disp_x
+  #  boundary = 'bottom'
+  #  value = 0
+  #[../]
 []
 
 [UserObjects]
@@ -155,17 +200,36 @@
     order = FIRST
     family = LAGRANGE
   [../]
+
+  [./grad_q1x]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./grad_q2x]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+
+  [./grad_q1y]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./grad_q2y]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
 []
 
 #====================================================================
 # AuxKernels
 [AuxKernels]
   [./FunctionAux1]
-    function                     = '2000.0-1709.0*tanh(9.452*t)'
+    #function                     = '2000.0-1709.0*tanh(9.452*t)'
     #function                     = '2000.0-1706.0*tanh(2.402*time)'
     #function                     = '2000.0-1702.0*tanh(1.111*time)'
     #function                     = '2000.0-1708.0*tanh(0.6115*time)'
     #function                     = '2000.0-1710.0*tanh(0.3942*time)'
+    function                     = '1325.0'
     type                         = FunctionAux
     variable                     = Te
   [../]
@@ -174,17 +238,149 @@
     type                         = FunctionAux
     variable                     = time
   [../]
+
+  [./VariableGradientComponent1]
+    component                    = 'x'                            # The gradient component to compute
+    gradient_variable            = 'q1'                  # The variable from which to compute the gradient component
+    seed                         = 0                           # The seed for the master random number generator
+    type                         = VariableGradientComponent
+    variable                     = 'grad_q1x'                  # The name of the variable that this object applies to
+  [../]
+
+  [./VariableGradientComponent2]
+    component                    = 'x'                            # The gradient component to compute
+    gradient_variable            = 'q2'                  # The variable from which to compute the gradient component
+    seed                         = 0                           # The seed for the master random number generator
+    type                         = VariableGradientComponent
+    variable                     = 'grad_q2x'                  # The name of the variable that this object applies to
+  [../]
+  [./VariableGradientComponent3]
+    component                    = 'y'                            # The gradient component to compute
+    gradient_variable            = 'q1'                  # The variable from which to compute the gradient component
+    seed                         = 0                           # The seed for the master random number generator
+    type                         = VariableGradientComponent
+    variable                     = 'grad_q1y'                  # The name of the variable that this object applies to
+  [../]
+
+  [./VariableGradientComponent4]
+    component                    = 'y'                            # The gradient component to compute
+    gradient_variable            = 'q2'                  # The variable from which to compute the gradient component
+    seed                         = 0                           # The seed for the master random number generator
+    type                         = VariableGradientComponent
+    variable                     = 'grad_q2y'                  # The name of the variable that this object applies to
+  [../]
 []
 
 ##===============================================================
 # Materials
 [Materials]
+
+
+
+  [./ComputeVariableEigenstrain]
+    args                         = 'eta4'                  # variable dependencies for the prefactor
+    eigen_base                   = '0.056 0.9375 0.0 0.0 0.0 0.0'                  # Vector of values defining the constant base tensor for the Eigenstrain
+    eigenstrain_name             = Ei1                  # Material property name for the eigenstrain tensor computed by this model. ...
+    type                         = ComputeVariableEigenstrain
+    prefactor                    = hx4
+  [../]
+
+  [./hx4]
+    type = DerivativeParsedMaterial
+    f_name = hx4
+    function = 'eta4^2'
+    args = 'eta4'
+    derivative_order             = 1
+    outputs = exodus
+  [../]
+
+  [./elasticity_tensor]
+    type = ComputeElasticityTensor
+    fill_method                  = symmetric9
+    C_ijkl                       = '0.22 0.0623 0.0623 0.175 0.0887 0.175 0.04315 0.0622 0.0622'
+  [../]
+
+  [./strain]
+    type = ComputeSmallStrain
+    displacements = 'disp_x disp_y'
+    #eigenstrain_names            = Ei1
+  [../]
+  [./stress]
+    type = ComputeLinearElasticStress
+  [../]
+
+
+  [./ElasticEnergyMaterial]
+    args                         = 'eta4'                  # Arguments of F() - use vector coupling
+    derivative_order             = 3                           # Maximum order of derivatives taken (2 or 3)
+    f_name                       = FEl                           # Base name of the free energy function (used to name the material properties)
+    outputs                      = none                        # Vector of output names were you would like to restrict the output of ...
+    type                         = ElasticEnergyMaterial
+  [../]
   # Shared Constants
   [./consts]
     type = GenericConstantMaterial
-    prop_names  = 'Leta  kappaEta kappa_c'
-   prop_values = '6.4e2 0.0105e-2  0.0625e-8'
+    prop_names  = 'Leta  kappaEta kappa_c kappaQ'
+   prop_values = '6.4e2 0.0625e-2  0.0625e-8 0.09765625e-2'
       #prop_values = '6.4e2 0.0625e-2  0.26e-4  0.0625e-6'
+  [../]
+
+
+  [./HQ]
+    type = DerivativeParsedMaterial
+    f_name = HQ
+    function = '(0.25e-2)*Te'
+    args = 'Te'
+    derivative_order             = 1
+    outputs = exodus
+  [../]
+
+  [./PQ]
+    type = DerivativeParsedMaterial
+    f_name = PQ
+    function = '(eta2^2)+(eta3^2)+(eta4^2)+(eta5^2)'
+    args = 'eta2 eta3 eta4 eta5'
+    derivative_order             = 1
+  [../]
+
+  # Mobility
+  [./LQ]
+    type = DerivativeParsedMaterial
+    f_name = LQ
+    constant_names = 'LQMin LQMax'
+    constant_expressions = '1e-4 0.64e2'
+    function = 'LQMax+(LQMin-LQMax)*(1.0-(eta1^3)*(10.0-15.0*eta1+6.0*(eta1^2)))'
+    #function = '0.0'
+    args = 'eta1'
+    derivative_order             = 1
+    outputs = exodus
+  [../]
+
+  # Angle
+  [./phase_free_energy_hq1]
+    type = DerivativeParsedMaterial
+    f_name = hq1
+    function = 'q1^2'
+    args = 'q1'
+  derivative_order             = 1
+  [../]
+
+  [./phase_free_energy_hq2]
+    type = DerivativeParsedMaterial
+    f_name = hq2
+    function = 'q2^2'
+    args = 'q2'
+  derivative_order             = 1
+  [../]
+
+  [./MagNoiseQ]
+    type = ParsedMaterial
+    f_name = MagNoiseQ
+    args = 'Te time'
+    #constant_names = 'A B'
+    #constant_expressions = '0.001 0.006908'
+    function = '(2.0e2)*exp(-30.0*time)'
+    #outputs = exodus
   [../]
 
   # Penalty
@@ -540,6 +736,10 @@
 # Kernels
 [Kernels]
 
+  [./TensorMechanics]
+      displacements = 'disp_x disp_y'
+    [../]
+
 #==========================================================
 # Concentration
   # Cs
@@ -616,7 +816,19 @@
   #  mob_name = Leta
   #  f_name = Pen1
   #[../]
-
+  [./PusztaiBulkEta1]
+    Correction_y0   = 1.0e1
+    Correction_Z   = 1.0e-1
+    Args                         = 'c Te eta2 eta3 eta4 eta5'
+    Qs                           = 'q1 q2'
+    H_name                       = 'HQ'
+    L_name                       = 'Leta'
+    P_name                       = 'PQ'
+    type                         = PusztaiACBulk
+    variable                     = eta1
+    variable_H                   = 1
+    variable_L                   = 1
+  [../]
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
   # Eta2
@@ -660,7 +872,19 @@
   #  mob_name = Leta
   #  f_name = Pen1
   #[../]
-
+  [./PusztaiBulkEta2]
+    Correction_y0   = 1.0e1
+    Correction_Z   = 1.0e-1
+    Args                         = 'c Te eta1 eta3 eta4 eta5'
+    Qs                           = 'q1 q2'
+    H_name                       = 'HQ'
+    L_name                       = 'Leta'
+    P_name                       = 'PQ'
+    type                         = PusztaiACBulk
+    variable                     = eta2
+    variable_H                   = 1
+    variable_L                   = 1
+  [../]
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
   # Eta3
@@ -704,7 +928,19 @@
   #  mob_name = Leta
   #  f_name = Pen1
   #[../]
-
+  [./PusztaiBulkEta3]
+    Correction_y0   = 1.0e1
+    Correction_Z   = 1.0e-1
+    Args                         = 'c Te eta2 eta1 eta4 eta5'
+    Qs                           = 'q1 q2'
+    H_name                       = 'HQ'
+    L_name                       = 'Leta'
+    P_name                       = 'PQ'
+    type                         = PusztaiACBulk
+    variable                     = eta3
+    variable_H                   = 1
+    variable_L                   = 1
+  [../]
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
   # Eta4
@@ -718,6 +954,12 @@
     args = 'eta2 eta3 eta1 eta5 Te c'
     mob_name = Leta
     f_name = F
+  [../]
+  [./ACBulk4El]
+    type = AllenCahn
+    variable = eta4
+    mob_name = Leta
+    f_name = FEl
   [../]
   [./ACInterface4]
     type = ACMultiInterface
@@ -748,7 +990,19 @@
   #  mob_name = Leta
   #  f_name = Pen1
   #[../]
-
+  [./PusztaiBulkEta4]
+    Correction_y0   = 1.0e1
+    Correction_Z   = 1.0e-1
+    Args                         = 'c Te eta2 eta3 eta1 eta5'
+    Qs                           = 'q1 q2'
+    H_name                       = 'HQ'
+    L_name                       = 'Leta'
+    P_name                       = 'PQ'
+    type                         = PusztaiACBulk
+    variable                     = eta4
+    variable_H                   = 1
+    variable_L                   = 1
+  [../]
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
   # Eta5
@@ -792,7 +1046,19 @@
   #  mob_name = Leta
   #  f_name = Pen1
   #[../]
-
+  [./PusztaiBulkEta1]
+    Correction_y0   = 1.0e1
+    Correction_Z   = 1.0e-1
+    Args                         = 'c Te eta2 eta3 eta4 eta1'
+    Qs                           = 'q1 q2'
+    H_name                       = 'HQ'
+    L_name                       = 'Leta'
+    P_name                       = 'PQ'
+    type                         = PusztaiACBulk
+    variable                     = eta5
+    variable_H                   = 1
+    variable_L                   = 1
+  [../]
   #--------------------------------------------------------------------------
   # Langrange Eta
   [./SwitchingFunctionConstraintLagrange]
@@ -804,6 +1070,104 @@
     variable                     = La_eta
   [../]
 
+
+  # -----------------------------------------------------------
+  # Q1
+    [./q1_dot]
+      type                         = TimeDerivative
+      variable                     = q1
+    [../]
+
+    [./PusztaiInterface1]
+      Correction_y0                      = 1.0e1
+      Correction_Z                      = 1.0e-1
+      Args                         = 'eta1 eta2 eta3 eta4 eta5 c Te'
+      Qs                           =  'q2'
+      H_name                       = 'HQ'
+      L_name                       = 'LQ '
+      P_name                       = 'PQ'
+      type                         = PusztaiQsBulk
+      variable                     = q1
+      variable_H                   = 1
+      variable_L                   = 1
+    [../]
+
+    [./SwitchingFunctionConstraintq1]
+      h_name                       = hq1
+      implicit                     = 1
+      lambda                       = LaQ
+      type                         = SwitchingFunctionConstraintEta
+      variable                     = q1
+    [../]
+
+    [./ACInterfaceQ1]
+      args                         =  'eta1 eta2 eta3 eta4 eta5 c q2'
+      kappa_name                   = 'kappaQ'
+      mob_name                     = 'LQ'
+      type                         = ACInterface
+      variable                     = 'q1'
+      variable_L                   = 1
+    [../]
+
+    [./LangevinNoise_q1]
+      amplitude                    = 1.0
+      multiplier                   = MagNoiseQ
+      seed                         = 801
+      type                         = LangevinNoise
+      variable                     = q1
+      #save_in                      = q1Noise
+    [../]
+    # -----------------------------------------------------------
+    # Q2
+    [./q2_dot]
+      type                         = TimeDerivative
+      variable                     = q2
+    [../]
+
+    [./SwitchingFunctionConstraintq2]
+      h_name                       = hq2
+      implicit                     = 1
+      lambda                       = LaQ
+      type                         = SwitchingFunctionConstraintEta
+      variable                     = q2
+    [../]
+
+    [./PusztaiInterface2]
+      Correction_y0                     = 1.0e1
+      Correction_Z                      = 1.0e-1
+      Args                         = 'eta1 eta2 eta3 eta4 eta5 c Te'
+      Qs                           =  'q1'
+      H_name                       = 'HQ'
+      implicit                     = 1
+      L_name                     = 'LQ '
+      P_name                       = 'PQ'
+      type                         = PusztaiQsBulk
+      variable                     = q2
+      variable_H                   = 1
+
+      variable_L                   = 1
+    [../]
+
+    [./ACInterfaceQ2]
+      args                         =  'eta1 eta2 eta3 eta4 eta5 c q1'
+      kappa_name                   = 'kappaQ'
+      mob_name                     = 'LQ'
+      type                         = ACInterface
+      variable                     = 'q2'
+      variable_L                   = 1
+    [../]
+
+    #--------------------------------------------------------------------------
+    # Langrange Q
+    [./SwitchingFunctionConstraintLagrangeQ]
+      enable                       = 1
+      epsilon                      = 1e-09
+      etas                         = 'q1 q2'
+      h_names                      = 'hq1 hq2'
+      implicit                     = 1
+      type                         = SwitchingFunctionConstraintLagrange
+      variable                     = LaQ
+    [../]
 []
 
 ##===============================================================
@@ -841,10 +1205,10 @@
 []
 
 [Outputs]
-  interval                       = 10
+  interval                       = 1
   exodus = true
-  console = false
+  console = true
   print_perf_log = true
   output_initial = true
-  #print_linear_residuals         = 0
+  print_linear_residuals         = 0
 []

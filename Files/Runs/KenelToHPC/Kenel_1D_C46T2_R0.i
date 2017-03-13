@@ -162,7 +162,7 @@
 [AuxKernels]
   [./FunctionAux1]
     #function                     = '2000.0-1709.0*tanh(9.452*time)'
-    function                     = '2000.0-1706.0*tanh(2.402*time)'
+    function                     = '2000.0-1706.0*tanh(2.402*t)'
     #function                     = '2000.0-1702.0*tanh(1.111*time)'
     #function                     = '2000.0-1708.0*tanh(0.6115*time)'
     #function                     = '2000.0-1710.0*tanh(0.3942*time)'

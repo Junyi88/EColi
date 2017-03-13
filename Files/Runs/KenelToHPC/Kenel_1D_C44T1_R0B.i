@@ -97,7 +97,7 @@
 
   [./ConstantIC_0_c]
     type                         = ConstantIC
-    value                        = 0.46
+    value                        = 0.44
     variable                     = c
   [../]
 []
@@ -183,7 +183,7 @@
   [./consts]
     type = GenericConstantMaterial
     prop_names  = 'Leta  kappaEta kappa_c'
-   prop_values = '6.4e2 0.0105e-2  0.0625e-8'
+   prop_values = '6.4e2 0.0625e-2  0.0625e-8'
       #prop_values = '6.4e2 0.0625e-2  0.26e-4  0.0625e-6'
   [../]
 
