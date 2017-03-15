@@ -597,13 +597,16 @@
   [./LQ]
     type = DerivativeParsedMaterial
     f_name = LQ
-    constant_names = 'LQMin LQMax'
-    #constant_expressions = '1e-4 0.64e2'
-    constant_expressions = '1e-3 0.64e3'
+    #constant_names = 'LQMin LQMax'
+    ##constant_expressions = '1e-4 0.64e2'
+    #constant_expressions = '1e-3 0.64e3'
+    constant_names = 'L00 L11 L10 L01'
+    constant_expressions = '0.64e3 0.64e1 1e-2 0.64e3'
     material_property_names = 'h1:=h1(eta1)  hp1:=hp1(phi1)'
-    function = 'LQMax+(LQMin-LQMax)*(1.0-(eta1^3)*(10.0-15.0*eta1+6.0*(eta1^2)))'
+    #function = 'LQMax+(LQMin-LQMax)*(1.0-(eta1^3)*(10.0-15.0*eta1+6.0*(eta1^2)))'
     #function = '0.0'
     #function = 'LQMin+(LQMax-LQMin)*(h1*hp1+0.0*h1-hp1+1.0)'
+    function = '(L11+L00-L10-L01)*h1*hp1+hp1*(L10-L00)+h1*(L01-L00)+L00'
     args = 'eta1 phi1'
     derivative_order             = 1
     outputs = exodus
@@ -922,13 +925,13 @@
     variable_H                   = 1
     variable_L                   = 1
   [../]
-  [./ACBal1]
-    type = AllenCahn
-    variable = eta1
-    args = 'eta1 phi1'
-    mob_name = Leta
-    f_name = FBal
-  [../]
+  #[./ACBal1]
+  #  type = AllenCahn
+  #  variable = eta1
+  #  args = 'eta1 phi1'
+  #  mob_name = Leta
+  #  f_name = FBal
+  #[../]
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
   # Eta2
@@ -975,13 +978,13 @@
     type                         = TimeDerivative
     variable                     = phi1
   [../]
-  #[./ACBulkphi1]
-  #  type = AllenCahn
-  #  variable = phi1
-  #  args = 'Te c'
-  #  mob_name = Lphi
-  #  f_name = Fphi
-  #[../]
+  [./ACBulkphi1]
+    type = AllenCahn
+    variable = phi1
+    args = 'Te c'
+    mob_name = Lphi
+    f_name = Fphi
+  [../]
   [./ACBulkphi1pen]
     type = AllenCahn
     variable = phi1
@@ -989,13 +992,13 @@
     mob_name = Lphi
     f_name = Fphipen
   [../]
-  [./ACBalphi1]
-    type = AllenCahn
-    variable = phi1
-    args = 'eta1 phi1'
-    mob_name = Lphi
-    f_name = FBal
-  [../]
+  #[./ACBalphi1]
+  #  type = AllenCahn
+  #  variable = phi1
+  #  args = 'eta1 phi1'
+  #  mob_name = Lphi
+  #  f_name = FBal
+  #[../]
   [./ACInterfacephi1]
     type = ACMultiInterface
     variable = phi1
