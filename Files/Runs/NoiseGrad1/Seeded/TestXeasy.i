@@ -13,8 +13,8 @@
   type = GeneratedMesh
   dim = 2
   elem_type = QUAD4
-  nx = 100
-  ny = 100
+  nx = 400
+  ny = 1
   nz = 0
   xmin = 0
   xmax = 1.0e1
