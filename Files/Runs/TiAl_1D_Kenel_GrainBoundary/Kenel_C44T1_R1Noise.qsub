@@ -1,0 +1,15 @@
+#!/bin/sh
+#PBS -j oe
+#PBS -l walltime=12:00:00,select=1:ncpus=16:mpiprocs=16:mem=3072mb
+#
+
+module load mpi
+module load vtk
+module load gcc
+module load mooseframework
+# module load intel-suite mpi
+
+cp -r $WORK/DropZone/TiAl_1D_Kenel_GrainBoundary/*.i $TMPDIR
+cp -r $WORK/DropZone/TiAl_1D_Kenel_GrainBoundary/Kenel_C44T1_R0Noise_out.e $TMPDIR
+pbsexec -grace 60 mpiexec $WORK/mooseFR/EColi/EColi-opt -i ./Kenel_C44T1_R1Noise.i
+cp -f $TMPDIR/*.e  $WORK/DropZone/TiAl_1D_Kenel_GrainBoundary/

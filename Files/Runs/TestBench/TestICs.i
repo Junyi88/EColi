@@ -11,8 +11,8 @@
   type = GeneratedMesh
   dim = 2
   elem_type = QUAD4
-  nx = 200
-  ny = 200
+  nx = 50
+  ny = 50
   nz = 0
   xmin = 0
   xmax = 1.0e1
@@ -65,6 +65,16 @@
     order = FIRST
     family = LAGRANGE
   [../]
+
+  [./q1]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  [./q2]
+    order = FIRST
+    family = LAGRANGE
+  [../]
 []
 
 [ICs]
@@ -101,14 +111,21 @@
     variable                     = c
   [../]
 
-  [./RandomIC]
+  [./RandomIC1]
     enable                 = 1                           # Set the enabled status of the MooseObject.
     max                    = 1                           # Upper bound of the randomly generated values
     min                    = 0                           # Lower bound of the randomly generated values
-    seed                   = 1328947193827                           # Seed value for the random number generator
+    seed                   = 13289                           # Seed value for the random number generator
     type                   = RandomIC
     variable               = q1                 # The variable this initial condition is supposed to provide values for.
   [../]
+
+  #[./FunctionIC1]
+  #  enable                       = 1                           # Set the enabled status of the MooseObject.
+  #  function                     = '1.0-q1'                 # The initial condition function.
+  #  type                         = FunctionIC
+  #  variable                     = q2                 # The variable this initial condition is supposed to provide values for.
+  #[../]
 []
 
 #====================================================================
@@ -552,35 +569,44 @@
 #==========================================================
 # Concentration
   # Cs
+  [./c_dot]
+    variable = c
+    type = TimeDerivative
+  [../]
   [./w_dot]
     variable = w
-    v = c
-    type = CoupledTimeDerivative
-  [../]
-  [./coupled_res]
-    args = 'eta1 eta2 eta3 eta4 eta5 Te c'
-    variable = w
-    type = SplitCHWRes
-    mob_name = M
-  [../]
-  [./coupled_parsed]
-    args = 'eta1 eta2 eta3 eta4 eta5 Te'
-    variable = c
-    type = SplitCHParsed
-    f_name = F
-    kappa_name = kappa_c
-    w = w
+    type = TimeDerivative
   [../]
 
-  [./ConservedLangevinNoise]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseC
-    noise                        = ConservedNormalNoise1
-    seed                         = 201
-    type                         = ConservedLangevinNoise
-    variable                     = c
-    save_in                      = CNoise
-  [../]
+  #[./w_dot]
+  #  variable = w
+  #  v = c
+  #  type = CoupledTimeDerivative
+  #[../]
+  #[./coupled_res]
+  #  args = 'eta1 eta2 eta3 eta4 eta5 Te c'
+  #  variable = w
+  #  type = SplitCHWRes
+  #  mob_name = M
+  #[../]
+  #[./coupled_parsed]
+  #  args = 'eta1 eta2 eta3 eta4 eta5 Te'
+  #  variable = c
+  #  type = SplitCHParsed
+  #  f_name = F
+  #  kappa_name = kappa_c
+  #  w = w
+  #[../]
+
+  #[./ConservedLangevinNoise]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseC
+  #  noise                        = ConservedNormalNoise1
+  #  seed                         = 201
+  #  type                         = ConservedLangevinNoise
+  #  variable                     = c
+  #  save_in                      = CNoise
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -589,42 +615,6 @@
     type                         = TimeDerivative
     variable                     = eta1
   [../]
-  [./ACBulk1]
-    type = AllenCahn
-    variable = eta1
-    args = 'eta2 eta3 eta4 eta5 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface1]
-    type = ACMultiInterface
-    variable = eta1
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta1]
-    h_name                       = h1
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta1
-  [../]
-  [./LangevinNoise_eta1]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1001
-    type                         = LangevinNoise
-    variable                     = eta1
-    save_in                      = eta1Noise
-  [../]
-  #[./ACBulkPen1]
-  #  type = AllenCahn
-  #  variable = eta1
-  #  args = 'eta2 eta3 eta4 eta5 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -633,42 +623,6 @@
     type                         = TimeDerivative
     variable                     = eta2
   [../]
-  [./ACBulk2]
-    type = AllenCahn
-    variable = eta2
-    args = 'eta1 eta3 eta4 eta5 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface2]
-    type = ACMultiInterface
-    variable = eta2
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta2]
-    h_name                       = h2
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta2
-  [../]
-  [./LangevinNoise_eta2]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1201
-    type                         = LangevinNoise
-    variable                     = eta2
-    save_in                      = eta2Noise
-  [../]
-  #[./ACBulkPen2]
-  #  type = AllenCahn
-  #  variable = eta2
-  #  args = 'eta1 eta3 eta4 eta5 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -677,42 +631,6 @@
     type                         = TimeDerivative
     variable                     = eta3
   [../]
-  [./ACBulk3]
-    type = AllenCahn
-    variable = eta3
-    args = 'eta1 eta2 eta4 eta5 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface3]
-    type = ACMultiInterface
-    variable = eta3
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta3]
-    h_name                       = h3
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta3
-  [../]
-  [./LangevinNoise_eta3]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1301
-    type                         = LangevinNoise
-    variable                     = eta3
-    save_in                      = eta3Noise
-  [../]
-  #[./ACBulkPen3]
-  #  type = AllenCahn
-  #  variable = eta3
-  #  args = 'eta2 eta1 eta4 eta5 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -721,42 +639,6 @@
     type                         = TimeDerivative
     variable                     = eta4
   [../]
-  [./ACBulk4]
-    type = AllenCahn
-    variable = eta4
-    args = 'eta2 eta3 eta1 eta5 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface4]
-    type = ACMultiInterface
-    variable = eta4
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta4]
-    h_name                       = h4
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta4
-  [../]
-  [./LangevinNoise_eta4]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1401
-    type                         = LangevinNoise
-    variable                     = eta4
-    save_in                      = eta4Noise
-  [../]
-  #[./ACBulkPen4]
-  #  type = AllenCahn
-  #  variable = eta4
-  #  args = 'eta2 eta3 eta1 eta5 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -765,42 +647,6 @@
     type                         = TimeDerivative
     variable                     = eta5
   [../]
-  [./ACBulk5]
-    type = AllenCahn
-    variable = eta5
-    args = 'eta2 eta3 eta4 eta1 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface5]
-    type = ACMultiInterface
-    variable = eta5
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta5]
-    h_name                       = h5
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta5
-  [../]
-  [./LangevinNoise_eta5]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 5001
-    type                         = LangevinNoise
-    variable                     = eta5
-    save_in                      = eta5Noise
-  [../]
-  #[./ACBulkPen5]
-  #  type = AllenCahn
-  #  variable = eta5
-  #  args = 'eta2 eta3 eta4 eta1 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
-  #[../]
 
   #--------------------------------------------------------------------------
   # Langrange Eta
@@ -813,6 +659,16 @@
     variable                     = La_eta
   [../]
 
+
+  [./q1_dot]
+    variable = q1
+    type = TimeDerivative
+  [../]
+
+  [./q2_dot]
+    variable = q2
+    type = TimeDerivative
+  [../]
 []
 
 ##===============================================================
@@ -850,9 +706,9 @@
 []
 
 [Outputs]
-  interval                       = 10
+  interval                       = 1
   exodus = true
-  console = false
+  console = true
   print_perf_log = true
   output_initial = true
   #print_linear_residuals         = 0
