@@ -11,8 +11,8 @@
   type = GeneratedMesh
   dim = 2
   elem_type = QUAD4
-  nx = 200
-  ny = 1
+  nx = 50
+  ny = 50
   nz = 0
   xmin = 0
   xmax = 1.0e1
@@ -66,21 +66,35 @@
     family = LAGRANGE
   [../]
 
-  #----------
-    [./q1]
-      order = FIRST
-      family = LAGRANGE
-    [../]
+  [./q1]
+    order = FIRST
+    family = LAGRANGE
+  [../]
 
-    [./q2]
-      order = FIRST
-      family = LAGRANGE
-    [../]
+  [./q2]
+    order = FIRST
+    family = LAGRANGE
+  [../]
 
-    [./LaQ]   # Lagrangian
-      order = FIRST
-      family = LAGRANGE
-    [../]
+  [./SWT]
+    #order = FIRST
+    #family = LAGRANGE
+  [../]
+
+  [./S]
+    #order = FIRST
+    #family = LAGRANGE
+  [../]
+
+  [./R]
+    #order = FIRST
+    #family = LAGRANGE
+  [../]
+
+  [./MORON]
+    #order = FIRST
+    #family = LAGRANGE
+  [../]
 []
 
 [ICs]
@@ -113,19 +127,135 @@
 
   [./ConstantIC_0_c]
     type                         = ConstantIC
-    value                        = 0.44
+    value                        = 0.46
     variable                     = c
   [../]
 
-  [./ConstantIC_0_q1]
-    type                         = ConstantIC
-    value                        = 0.7071067812
-    variable                     = q1
+  [./RandomIC1]
+    enable                 = 1                           # Set the enabled status of the MooseObject.
+    max                    = 1                           # Upper bound of the randomly generated values
+    min                    = 0                           # Lower bound of the randomly generated values
+    seed                   = 13289                           # Seed value for the random number generator
+    type                   = RandomIC
+    variable               = R                 # The variable this initial condition is supposed to provide values for.
   [../]
-  [./ConstantIC_0_q2]
-    type                         = ConstantIC
-    value                        = 0.7071067812
-    variable                     = q2
+
+  #[./FunctionIC1]
+  #  enable                       = 1                           # Set the enabled status of the MooseObject.
+  #  function                     = '1.0-q1'                 # The initial condition function.
+  #  type                         = FunctionIC
+  #  variable                     = q2                 # The variable this initial condition is supposed to provide values for.
+  #[../]
+
+  [./MultiSmoothCircleIC]
+    3D_spheres                   = 0                           # in 3D, whether the objects are spheres or columns
+    bubspac                      = 1.0                  # minimum spacing of bubbles, measured from center to center
+    enable                       = 1                           # Set the enabled status of the MooseObject.
+    int_width                    = 0                           # The interfacial width of the void surface.  Defaults to sharp interface
+    invalue                      = 1.2                  # The variable value inside the circle
+    numbub                       = 2                  # The number of bubbles to place
+    numtries                     = 1000                        # The number of tries
+    outvalue                     = 0.2                  # The variable value outside the circle
+    radius                       = 2                 # Mean radius value for the circles
+    radius_variation             = 0                          # Plus or minus fraction of random variation in the bubble radius for uniform, ...
+                                                               # standard deviation for normal
+    radius_variation_type        = none                        # Type of distribution that random circle radii will follow
+    rand_seed                    = 12345                       # Seed value for the random number generator
+    type                         = MultiSmoothCircleIC
+    variable                     = S                  # The variable this initial condition is supposed to provide values for.
+    zero_gradient                = 0                           # Set the gradient DOFs to zero. This can avoid numerical problems with ...
+                                                               # higher order shape functions and overlapping circles.
+  [../]
+  #
+  [./MultiSmoothCircleIC2]
+    3D_spheres                   = 0                           # in 3D, whether the objects are spheres or columns
+    bubspac                      = 1.0                  # minimum spacing of bubbles, measured from center to center
+    enable                       = 1                           # Set the enabled status of the MooseObject.
+    int_width                    = 0                           # The interfacial width of the void surface.  Defaults to sharp interface
+    invalue                      = 1                  # The variable value inside the circle
+    numbub                       = 2                  # The number of bubbles to place
+    numtries                     = 1000                        # The number of tries
+    outvalue                     = 0                  # The variable value outside the circle
+    radius                       = 2                 # Mean radius value for the circles
+    radius_variation             = 0                           # Plus or minus fraction of random variation in the bubble radius for uniform, ...
+                                                               # standard deviation for normal
+    radius_variation_type        = none                        # Type of distribution that random circle radii will follow
+    rand_seed                    = 12345                       # Seed value for the random number generator
+    type                         = MultiSmoothCircleIC
+    variable                     = SWT                  # The variable this initial condition is supposed to provide values for.
+    zero_gradient                = 0                           # Set the gradient DOFs to zero. This can avoid numerical problems with ...
+                                                               # higher order shape functions and overlapping circles.
+  [../]
+
+  #
+  #[./RndSmoothCircleIC]
+  #  3D_spheres             = 1                           # in 3D, whether the objects are spheres or columns
+  #  block                  =                             # The list of block ids (SubdomainID) that this object will be applied
+  #  boundary               =                             # The list of boundary IDs from the mesh where this boundary condition ...
+  #                                                       # applies
+  #  control_tags           =                             # Adds user-defined labels for accessing object parameters via control ...
+  #                                                       # logic.
+  #  enable                 = 1                           # Set the enabled status of the MooseObject.
+  #  int_width              = 0                           # The interfacial width of the void surface.  Defaults to sharp interface
+  #  invalue                = (required)                  # The variable value inside the circle
+  #  outvalue               = (required)                  # The variable value outside the circle
+  #  radius                 = (required)                  # The radius of a circle
+  #  rand_seed              = 12345                       # Seed value for the random number generator
+  #  type                   = RndSmoothCircleIC
+  #  variable               = (required)                  # The variable this initial condition is supposed to provide values for.
+  #  variation_invalue      = (required)                  # Plus or minus this amount on the invalue
+  #  variation_outvalue     = (required)                  # Plus or minus this amount on the outvalue
+  #  x1                     = (required)                  # The x coordinate of the circle center
+  #  y1                     = (required)                  # The y coordinate of the circle center
+  #  z1                     = 0                           # The z coordinate of the circle center
+  #  zero_gradient          = 0                           # Set the gradient DOFs to zero. This can avoid numerical problems with ...
+  #                                                       # higher order shape functions and overlapping circles.
+  #[../]
+  #
+  #[./RndSmoothCircleIC]
+  #  3D_spheres             = 1                           # in 3D, whether the objects are spheres or columns
+  #  block                  =                             # The list of block ids (SubdomainID) that this object will be applied
+  #  boundary               =                             # The list of boundary IDs from the mesh where this boundary condition ...
+  #                                                       # applies
+  #  control_tags           =                             # Adds user-defined labels for accessing object parameters via control ...
+  #                                                       # logic.
+  #  enable                 = 1                           # Set the enabled status of the MooseObject.
+  #  int_width              = 0                           # The interfacial width of the void surface.  Defaults to sharp interface
+  #  invalue                = (required)                  # The variable value inside the circle
+  #  outvalue               = (required)                  # The variable value outside the circle
+  #  radius                 = (required)                  # The radius of a circle
+  #  rand_seed              = 12345                       # Seed value for the random number generator
+  #  type                   = RndSmoothCircleIC
+  #  variable               = (required)                  # The variable this initial condition is supposed to provide values for.
+  #  variation_invalue      = (required)                  # Plus or minus this amount on the invalue
+  #  variation_outvalue     = (required)                  # Plus or minus this amount on the outvalue
+  #  x1                     = (required)                  # The x coordinate of the circle center
+  #  y1                     = (required)                  # The y coordinate of the circle center
+  #  z1                     = 0                           # The z coordinate of the circle center
+  #  zero_gradient          = 0                           # Set the gradient DOFs to zero. This can avoid numerical problems with ...
+  #                                                       # higher order shape functions and overlapping circles.
+  #[../]
+  [./JunyiMultiSmoothCircleIC1]
+    3D_spheres             = 1                           # in 3D, whether the objects are spheres or columns
+    bubspac                = 3.0                  # minimum spacing of bubbles, measured from center to center
+    enable                 = 1                           # Set the enabled status of the MooseObject. ...
+                                                         # Group: Advanced
+    int_width              = 0                           # The interfacial width of the void surface.  Defaults to sharp interface
+    invalue                = 2.5                  # The variable value inside the circle
+    numbub                 = 3                  # The number of bubbles to place
+    numtries               = 1000                        # The number of tries
+    outvalue               = 0.0                  # The variable value outside the circle
+    radius                 = 1.0                  # Mean radius value for the circles
+    radius_variation       = 0                           # Plus or minus fraction of random variation in the bubble radius for uniform, ...
+                                                         # standard deviation for normal
+    radius_variation_type  = none                        # Type of distribution that random circle radii will follow
+    randPoint_seed         = 12345                       # Seed value for the random number generator
+    randVal_seed           = 1335                       # Seed value for the random number generator
+    type                   = JunyiMultiSmoothCircleIC
+    variable               = MORON                # The variable this initial condition is supposed to provide values for.
+    variation_invalue      = 2.0                  # Plus or minus this amount on the invalue
+    zero_gradient          = 0                           # Set the gradient DOFs to zero. This can avoid numerical problems with ...
+                                                         # higher order shape functions and overlapping circles.
   [../]
 []
 
@@ -183,49 +313,13 @@
     family = LAGRANGE
   [../]
 
-  [./grad_q1x]
-    order = CONSTANT
-    family = MONOMIAL
+  [./Junyi1]
+    #order = FIRST
+    #family = LAGRANGE
   [../]
-  [./grad_q2x]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-
-  [./grad_q1y]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-  [./grad_q2y]
-    order = CONSTANT
-    family = MONOMIAL
-  [../]
-
-  [./VariableGradientComponent1]
-    component                    = 'x'                            # The gradient component to compute
-    gradient_variable            = 'q1'                  # The variable from which to compute the gradient component
-    type                         = VariableGradientComponent
-    variable                     = 'grad_q1x'                  # The name of the variable that this object applies to
-  [../]
-
-  [./VariableGradientComponent2]
-    component                    = 'x'                            # The gradient component to compute
-    gradient_variable            = 'q2'                  # The variable from which to compute the gradient component
-    type                         = VariableGradientComponent
-    variable                     = 'grad_q2x'                  # The name of the variable that this object applies to
-  [../]
-  [./VariableGradientComponent3]
-    component                    = 'y'                            # The gradient component to compute
-    gradient_variable            = 'q1'                  # The variable from which to compute the gradient component
-    type                         = VariableGradientComponent
-    variable                     = 'grad_q1y'                  # The name of the variable that this object applies to
-  [../]
-
-  [./VariableGradientComponent4]
-    component                    = 'y'                            # The gradient component to compute
-    gradient_variable            = 'q2'                  # The variable from which to compute the gradient component
-    type                         = VariableGradientComponent
-    variable                     = 'grad_q2y'                  # The name of the variable that this object applies to
+  [./Junyi2]
+    #order = FIRST
+    #family = LAGRANGE
   [../]
 []
 
@@ -233,7 +327,11 @@
 # AuxKernels
 [AuxKernels]
   [./FunctionAux1]
-    function                     = 'if(t<=2.0,1830.0-725*t,400)'
+    function                     = '2000.0-1709.0*tanh(9.452*t)'
+    #function                     = '2000.0-1706.0*tanh(2.402*time)'
+    #function                     = '2000.0-1702.0*tanh(1.111*time)'
+    #function                     = '2000.0-1708.0*tanh(0.6115*time)'
+    #function                     = '2000.0-1710.0*tanh(0.3942*time)'
     type                         = FunctionAux
     variable                     = Te
   [../]
@@ -242,129 +340,84 @@
     type                         = FunctionAux
     variable                     = time
   [../]
+
+  [./JunyiAngle2Value1]
+    #function                     = 't'
+    type                         = JunyiAngle2Value
+    Switch                       = SWT
+    SwitchValues                 = S
+    RndValues                    = R
+    Component                    = 1
+    variable                     = Junyi1
+  [../]
+  [./JunyiAngle2Value2]
+    #function                     = 't'
+    type                         = JunyiAngle2Value
+    Switch                       = SWT
+    SwitchValues                 = S
+    RndValues                    = R
+    Component                    = 2
+    variable                     = Junyi2
+  [../]
 []
 
 ##===============================================================
 # Materials
 [Materials]
-
-
-  [./HQ]
-    type = DerivativeParsedMaterial
-    f_name = HQ
-    function = '(0.25e-2)*Te'
-    #function = '1.0'
-    args = 'Te'
-    derivative_order             = 1
-    outputs = exodus
-  [../]
-
-  [./PQ]
-    type = DerivativeParsedMaterial
-    f_name = PQ
-    function = '(1.0-eta1)^2'
-    args = 'eta1'
-    derivative_order             = 1
-  [../]
-  # Angle
-  [./phase_free_energy_hq1]
-    type = DerivativeParsedMaterial
-    f_name = hq1
-    function = 'q1^2'
-    args = 'q1'
-  derivative_order             = 1
-  [../]
-
-  [./phase_free_energy_hq2]
-    type = DerivativeParsedMaterial
-    f_name = hq2
-    function = 'q2^2'
-    args = 'q2'
-  derivative_order             = 1
-  [../]
-
-  # Mobility
-  [./LQ]
-    type = DerivativeParsedMaterial
-    f_name = LQ
-    constant_names = 'LQMin LQMax'
-    constant_expressions = '1e-4 0.64e2'
-    #constant_expressions = '1e-3 0.64e3'
-    #constant_names = 'L00 L11 L10 L01'
-    #constant_expressions = '0.64e3 0.64e1 1e-2 0.64e3'
-    #material_property_names = 'h1:=h1(eta1)  hp1:=hp1(phi1)'
-    function = 'LQMax+(LQMin-LQMax)*(1.0-(eta1^3)*(10.0-15.0*eta1+6.0*(eta1^2)))'
-    #function = '0.0'
-    #function = 'LQMin+(LQMax-LQMin)*(h1*hp1+0.0*h1-hp1+1.0)'
-    #function = '(L11+L00-L10-L01)*h1*hp1+hp1*(L10-L00)+h1*(L01-L00)+L00'
-    args = 'eta1'  
-    derivative_order             = 1
-    outputs = exodus
-  [../]
-  [./MagNoiseQ]
-    type = ParsedMaterial
-    f_name = MagNoiseQ
-    args = 'Te time'
-    #constant_names = 'A B'
-    #constant_expressions = '0.001 0.006908'
-    function = 'if(time<=0.01,(3.0e2)*exp(-30.0*time),0.0)'
-    #outputs = exodus
-  [../]
-
   # Shared Constants
   [./consts]
     type = GenericConstantMaterial
-    prop_names  = 'Leta  kappaEta kappa_c kappaQ'
-   prop_values = '6.4e2 0.0105e-2  0.0625e-8 1.0e-8'
+    prop_names  = 'Leta  kappaEta kappa_c'
+   prop_values = '6.4e2 0.0105e-2  0.0625e-8'
       #prop_values = '6.4e2 0.0625e-2  0.26e-4  0.0625e-6'
   [../]
 
   # Penalty
-    [./g_eta1]
-      type = BarrierFunctionMaterial
-      g_order = SIMPLE
-      eta = eta1
-      function_name  = g1
-      well_only                    = 1
-    [../]
-    [./g_eta2]
-      type = BarrierFunctionMaterial
-      g_order = SIMPLE
-      eta = eta2
-      function_name  = g2
-      well_only                    = 1
-    [../]
-    [./g_eta3]
-      type = BarrierFunctionMaterial
-      g_order = SIMPLE
-      eta = eta3
-      function_name  = g3
-      well_only                    = 1
-    [../]
-    [./g_eta4]
-      type = BarrierFunctionMaterial
-      g_order = SIMPLE
-      eta = eta4
-      function_name  = g4
-      well_only                    = 1
-    [../]
-    [./g_eta5]
-      type = BarrierFunctionMaterial
-      g_order = SIMPLE
-      eta = eta5
-      function_name  = g5
-      well_only                    = 1
-    [../]
-    [./Penalty1]
-      type = DerivativeParsedMaterial
-      f_name =Pen1
-      material_property_names = 'g1:=g1(eta1)  g2:=g2(eta2) g3:=g3(eta3)
-                                 g4:=g4(eta4)  g5:=g5(eta5) '
-      function = '(g1+g2+g3+g4+g5)*0.0'
-      args = 'eta1 eta2 eta3 eta4 eta5'
-      derivative_order             = 1
-      outputs = exodus
-    [../]
+    #[./g_eta1]
+    #  type = BarrierFunctionMaterial
+    #  g_order = SIMPLE
+    #  eta = eta1
+    #  function_name  = g1
+    #  well_only                    = 1
+    #[../]
+    #[./g_eta2]
+    #  type = BarrierFunctionMaterial
+    #  g_order = SIMPLE
+    #  eta = eta2
+    #  function_name  = g2
+    #  well_only                    = 1
+    #[../]
+    #[./g_eta3]
+    #  type = BarrierFunctionMaterial
+    #  g_order = SIMPLE
+    #  eta = eta3
+    #  function_name  = g3
+    #  well_only                    = 1
+    #[../]
+    #[./g_eta4]
+    #  type = BarrierFunctionMaterial
+    #  g_order = SIMPLE
+    #  eta = eta4
+    #  function_name  = g4
+    #  well_only                    = 1
+    #[../]
+    #[./g_eta5]
+    #  type = BarrierFunctionMaterial
+    #  g_order = SIMPLE
+    #  eta = eta5
+    #  function_name  = g5
+    #  well_only                    = 1
+    #[../]
+    #[./Penalty1]
+    #  type = DerivativeParsedMaterial
+    #  f_name =Pen1
+    #  material_property_names = 'g1:=g1(eta1)  g2:=g2(eta2) g3:=g3(eta3)
+    #                             g4:=g4(eta4)  g5:=g5(eta5) '
+    #  function = '(g1+g2+g3+g4+g5)*0.0'
+    #  args = 'eta1 eta2 eta3 eta4 eta5'
+    #  derivative_order             = 1
+    #  outputs = exodus
+    #[../]
 
 
   #=====================================================================
@@ -671,39 +724,51 @@
 # =======================================================
 # Kernels
 [Kernels]
-
+  [./MORON_dot]
+    variable = MORON
+    type = TimeDerivative
+  [../]
 #==========================================================
 # Concentration
   # Cs
+  [./c_dot]
+    variable = c
+    type = TimeDerivative
+  [../]
   [./w_dot]
     variable = w
-    v = c
-    type = CoupledTimeDerivative
-  [../]
-  [./coupled_res]
-    args = 'eta1 eta2 eta3 eta4 eta5 Te c'
-    variable = w
-    type = SplitCHWRes
-    mob_name = M
-  [../]
-  [./coupled_parsed]
-    args = 'eta1 eta2 eta3 eta4 eta5 Te'
-    variable = c
-    type = SplitCHParsed
-    f_name = F
-    kappa_name = kappa_c
-    w = w
+    type = TimeDerivative
   [../]
 
-  [./ConservedLangevinNoise]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseC
-    noise                        = ConservedNormalNoise1
-    seed                         = 201
-    type                         = ConservedLangevinNoise
-    variable                     = c
-    save_in                      = CNoise
-  [../]
+  #[./w_dot]
+  #  variable = w
+  #  v = c
+  #  type = CoupledTimeDerivative
+  #[../]
+  #[./coupled_res]
+  #  args = 'eta1 eta2 eta3 eta4 eta5 Te c'
+  #  variable = w
+  #  type = SplitCHWRes
+  #  mob_name = M
+  #[../]
+  #[./coupled_parsed]
+  #  args = 'eta1 eta2 eta3 eta4 eta5 Te'
+  #  variable = c
+  #  type = SplitCHParsed
+  #  f_name = F
+  #  kappa_name = kappa_c
+  #  w = w
+  #[../]
+
+  #[./ConservedLangevinNoise]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseC
+  #  noise                        = ConservedNormalNoise1
+  #  seed                         = 201
+  #  type                         = ConservedLangevinNoise
+  #  variable                     = c
+  #  save_in                      = CNoise
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -712,98 +777,13 @@
     type                         = TimeDerivative
     variable                     = eta1
   [../]
-  [./ACBulk1]
-    type = AllenCahn
-    variable = eta1
-    args = 'eta2 eta3 eta4 eta5 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface1]
-    type = ACMultiInterface
-    variable = eta1
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta1]
-    h_name                       = h1
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta1
-  [../]
-  [./LangevinNoise_eta1]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1001
-    type                         = LangevinNoise
-    variable                     = eta1
-    save_in                      = eta1Noise
-  [../]
-  [./ACBulkPen1]
-    type = AllenCahn
-    variable = eta1
-    args = 'eta2 eta3 eta4 eta5 Te c'
-    mob_name = Leta
-    f_name = Pen1
-  [../]
 
-  [./PusztaiBulkEta1]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta1
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
   # Eta2
   [./eta2_dot]
     type                         = TimeDerivative
     variable                     = eta2
-  [../]
-  [./ACBulk2]
-    type = AllenCahn
-    variable = eta2
-    args = 'eta1 eta3 eta4 eta5 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface2]
-    type = ACMultiInterface
-    variable = eta2
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta2]
-    h_name                       = h2
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta2
-  [../]
-  [./LangevinNoise_eta2]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1201
-    type                         = LangevinNoise
-    variable                     = eta2
-    save_in                      = eta2Noise
-  [../]
-  [./ACBulkPen2]
-    type = AllenCahn
-    variable = eta2
-    args = 'eta1 eta3 eta4 eta5 Te c'
-    mob_name = Leta
-    f_name = Pen1
   [../]
 
   #--------------------------------------------------------------------------
@@ -813,42 +793,6 @@
     type                         = TimeDerivative
     variable                     = eta3
   [../]
-  [./ACBulk3]
-    type = AllenCahn
-    variable = eta3
-    args = 'eta1 eta2 eta4 eta5 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface3]
-    type = ACMultiInterface
-    variable = eta3
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta3]
-    h_name                       = h3
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta3
-  [../]
-  [./LangevinNoise_eta3]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1301
-    type                         = LangevinNoise
-    variable                     = eta3
-    save_in                      = eta3Noise
-  [../]
-  [./ACBulkPen3]
-    type = AllenCahn
-    variable = eta3
-    args = 'eta2 eta1 eta4 eta5 Te c'
-    mob_name = Leta
-    f_name = Pen1
-  [../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -857,42 +801,6 @@
     type                         = TimeDerivative
     variable                     = eta4
   [../]
-  [./ACBulk4]
-    type = AllenCahn
-    variable = eta4
-    args = 'eta2 eta3 eta1 eta5 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface4]
-    type = ACMultiInterface
-    variable = eta4
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta4]
-    h_name                       = h4
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta4
-  [../]
-  [./LangevinNoise_eta4]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1401
-    type                         = LangevinNoise
-    variable                     = eta4
-    save_in                      = eta4Noise
-  [../]
-  [./ACBulkPen4]
-    type = AllenCahn
-    variable = eta4
-    args = 'eta2 eta3 eta1 eta5 Te c'
-    mob_name = Leta
-    f_name = Pen1
-  [../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -900,42 +808,6 @@
   [./eta5_dot]
     type                         = TimeDerivative
     variable                     = eta5
-  [../]
-  [./ACBulk5]
-    type = AllenCahn
-    variable = eta5
-    args = 'eta2 eta3 eta4 eta1 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface5]
-    type = ACMultiInterface
-    variable = eta5
-    etas = 'eta1 eta2 eta3 eta4 eta5'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
-  [./SwitchingFunctionConstraintEta5]
-    h_name                       = h5
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta5
-  [../]
-  [./LangevinNoise_eta5]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 5001
-    type                         = LangevinNoise
-    variable                     = eta5
-    save_in                      = eta5Noise
-  [../]
-  [./ACBulkPen5]
-    type = AllenCahn
-    variable = eta5
-    args = 'eta2 eta3 eta4 eta1 Te c'
-    mob_name = Leta
-    f_name = Pen1
   [../]
 
   #--------------------------------------------------------------------------
@@ -949,130 +821,31 @@
     variable                     = La_eta
   [../]
 
-  # -----------------------------------------------------------
-  # Q1
-    [./q1_dot]
-      type                         = TimeDerivative
-      variable                     = q1
-    [../]
 
-    [./PusztaiInterface1]
-      Correction_y0                      = 1.0
-      Correction_Z                      = 1.0
-      Args                         = 'eta1 eta2 c Te'
-      Qs                           =  'q2'
-      H_name                       = 'HQ'
-      L_name                       = 'LQ '
-      P_name                       = 'PQ'
-      type                         = PusztaiQsBulk
-      variable                     = q1
-      variable_H                   = 1
-      variable_L                   = 1
-    [../]
+  [./q1_dot]
+    variable = q1
+    type = TimeDerivative
+  [../]
 
-    #[./PusztaiInterface1eta]
-    #  Correction_y0                      = 1.0
-    #  Correction_Z                      = 1.0
-    #  Args                         = 'eta1 eta2 phi1 c Te'
-    #  Qs                           =  'q2'
-    #  H_name                       = 'HQeta'
-    #  L_name                       = 'LQ '
-    #  P_name                       = 'h1'
-    #  type                         = PusztaiQsBulk
-    #  variable                     = q1
-    #  variable_H                   = 1
-    #  variable_L                   = 1
-    #[../]
+  [./q2_dot]
+    variable = q2
+    type = TimeDerivative
+  [../]
 
-    [./SwitchingFunctionConstraintq1]
-      h_name                       = hq1
-      implicit                     = 1
-      lambda                       = LaQ
-      type                         = SwitchingFunctionConstraintEta
-      variable                     = q1
-    [../]
+  [./S_dot]
+    variable = S
+    type = TimeDerivative
+  [../]
 
-    #[./ACInterfaceQ1]
-    #  args                         =  'eta1 eta2 phi1 c q2'
-    #  kappa_name                   = 'kappaQ'
-    #  mob_name                     = 'LQ'
-    #  type                         = ACInterface
-    #  variable                     = 'q1'
-    #  variable_L                   = 1
-    #[../]
-    [./LangevinNoise_q1]
-      amplitude                    = 1.0
-      multiplier                   = MagNoiseQ
-      seed                         = 8432541
-      type                         = LangevinNoise
-      variable                     = q1
-      #save_in                      = q1Noise
-    [../]
-    # -----------------------------------------------------------
-    # Q2
-    [./q2_dot]
-      type                         = TimeDerivative
-      variable                     = q2
-    [../]
+  [./SWT_dot]
+    variable = SWT
+    type = TimeDerivative
+  [../]
 
-    [./SwitchingFunctionConstraintq2]
-      h_name                       = hq2
-      implicit                     = 1
-      lambda                       = LaQ
-      type                         = SwitchingFunctionConstraintEta
-      variable                     = q2
-    [../]
-
-    [./PusztaiInterface2]
-      Correction_y0                     = 1.0
-      Correction_Z                      = 1.0
-      Args                         = 'eta1 eta2 c Te'
-      Qs                           =  'q1'
-      H_name                       = 'HQ'
-      implicit                     = 1
-      L_name                     = 'LQ '
-      P_name                       = 'PQ'
-      type                         = PusztaiQsBulk
-      variable                     = q2
-      variable_H                   = 1
-
-      variable_L                   = 1
-    [../]
-    #[./PusztaiInterface2eta]
-    #  Correction_y0                     = 1.0
-    #  Correction_Z                      = 1.0
-    #  Args                         = 'eta1 eta2 phi1 c Te'
-    #  Qs                           =  'q1'
-    #  H_name                       = 'HQeta'
-    #  implicit                     = 1
-    #  L_name                     = 'LQ '
-    #  P_name                       = 'h1'
-    #  type                         = PusztaiQsBulk
-    #  variable                     = q2
-    #  variable_H                   = 1
-    #
-    #  variable_L                   = 1
-    #[../]
-    #[./ACInterfaceQ2]
-    #  args                         =  'eta1 eta2 phi1 c q1'
-    #  kappa_name                   = 'kappaQ'
-    #  mob_name                     = 'LQ'
-    #  type                         = ACInterface
-    #  variable                     = 'q2'
-    #  variable_L                   = 1
-    #[../]
-
-    #--------------------------------------------------------------------------
-    # Langrange Q
-    [./SwitchingFunctionConstraintLagrangeQ]
-      enable                       = 1
-      epsilon                      = 1e-09
-      etas                         = 'q1 q2'
-      h_names                      = 'hq1 hq2'
-      implicit                     = 1
-      type                         = SwitchingFunctionConstraintLagrange
-      variable                     = LaQ
-    [../]
+  [./R_dot]
+    variable = R
+    type = TimeDerivative
+  [../]
 []
 
 ##===============================================================
@@ -1094,25 +867,38 @@
   petsc_options_value = 'asm      ilu          nonzero'
 
   l_max_its = 40
-  nl_max_its = 30
+  nl_max_its = 20
   nl_abs_tol = 1e-8
-  end_time = 2.2
-   dtmax   = 1.0e-2
+  end_time = 5.0
+   dtmax   = 1.0e-1
    start_time                 = 0
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
-    dt = 1.0e-5
+    dt = 5.0e-6
     cutback_factor = 0.8
     growth_factor = 1.5
     optimal_iterations = 8
   [../]
 []
 
+[Postprocessors]
+  #[./ave_stress_bottom]
+  #  type = SideAverageValue
+  #  variable = stress_zz
+  #  boundary = bottom
+  #[../]
+  #[./ave_strain_bottom]
+  #  type = SideAverageValue
+  #  variable = strain_zz
+  #  boundary = bottom
+  #[../]
+[]
+
 [Outputs]
-  interval                       = 20
+  interval                       = 1
   exodus = true
-  console = false
+  console = true
   print_perf_log = true
   output_initial = true
   #print_linear_residuals         = 0

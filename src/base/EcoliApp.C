@@ -6,6 +6,10 @@
 
 #include "PusztaiACBulk.h" //Add
 #include "PusztaiQsBulk.h" //Add
+#include "JunyiAngle2Value.h" //Add
+#include "JunyiSmoothCircleBaseIC.h" //Add
+#include "JunyiMultiSmoothCircleIC.h" //Add
+
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -43,8 +47,11 @@ extern "C" void EcoliApp__registerObjects(Factory & factory) { EcoliApp::registe
 void
 EcoliApp::registerObjects(Factory & factory)
 {
-  registerKernel(PusztaiACBulk);
-  registerKernel(PusztaiQsBulk);
+  registerKernel(PusztaiACBulk); //Add
+  registerKernel(PusztaiQsBulk); //Add
+  registerAuxKernel(JunyiAngle2Value); //Add
+  // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
+  registerInitialCondition(JunyiMultiSmoothCircleIC); //Add
 }
 
 // External entry point for dynamic syntax association
