@@ -337,9 +337,11 @@
   [./strain]
     type = ComputeSmallStrain
     displacements = 'disp_x disp_y'
+
   [../]
   [./stress]
     type = ComputeLinearElasticStress
+    eigenstrain_names        = EigenStrain
   [../]
 
   # Shared Constants
