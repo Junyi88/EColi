@@ -9,18 +9,7 @@
 #====================================================================
 # Mesh
 [Mesh]
-  type = GeneratedMesh
-  dim = 2
-  elem_type = QUAD4
-  nx = 200
-  ny = 200
-  nz = 0
-  xmin = 0
-  xmax = 1.0e1
-  ymin = 0
-  ymax = 1.0e1
-  zmin = 0
-  zmax = 0
+  file =/work/jl1908/DropZone/GrainKenel/Strains/Kenel_1D_C46T1S_R0_out.e
 []
 
 #====================================================================
@@ -28,131 +17,102 @@
 [Variables]
 
   [./disp_x]
+    initial_from_file_var = disp_x
+    initial_from_file_timestep = LATEST
   [../]
   [./disp_y]
+    initial_from_file_var = disp_y
+    initial_from_file_timestep = LATEST
   [../]
 
   # order parameter
   [./eta1]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta1
+    initial_from_file_timestep = LATEST
   [../]
 
   [./eta2]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta2
+    initial_from_file_timestep = LATEST
   [../]
 
   [./eta3]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta3
+    initial_from_file_timestep = LATEST
   [../]
 
   [./eta4]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta4
+    initial_from_file_timestep = LATEST
   [../]
 
   [./eta51]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta51
+    initial_from_file_timestep = LATEST
   [../]
   [./eta52]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta52
+    initial_from_file_timestep = LATEST
   [../]
   [./eta53]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta53
+    initial_from_file_timestep = LATEST
   [../]
   [./eta54]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta54
+    initial_from_file_timestep = LATEST
   [../]
   [./eta55]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta55
+    initial_from_file_timestep = LATEST
   [../]
   [./eta56]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = eta56
+    initial_from_file_timestep = LATEST
   [../]
 
   [./La_eta]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = La_eta
+    initial_from_file_timestep = LATEST
   [../]
 
   [./c]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = c
+    initial_from_file_timestep = LATEST
   [../]
 
   [./w]
     order = FIRST
     family = LAGRANGE
+    initial_from_file_var = w
+    initial_from_file_timestep = LATEST
   [../]
 []
 
-[ICs]
-  #====================================================================
-  [./ConstantIC_0_eta1]
-    type                         = ConstantIC
-    value                        = 0.91
-    variable                     = eta1
-  [../]
-  [./ConstantIC_0_eta2]
-    type                         = ConstantIC
-    value                        = 0.01
-    variable                     = eta2
-  [../]
-  [./ConstantIC_0_eta3]
-    type                         = ConstantIC
-    value                        = 0.01
-    variable                     = eta3
-  [../]
-  [./ConstantIC_0_eta4]
-    type                         = ConstantIC
-    value                        = 0.01
-    variable                     = eta4
-  [../]
-  [./ConstantIC_0_eta51]
-    type                         = ConstantIC
-    value                        = 0.01
-    variable                     = eta51
-  [../]
-  [./ConstantIC_0_eta52]
-    type                         = ConstantIC
-    value                        = 0.01
-    variable                     = eta52
-  [../]
-  [./ConstantIC_0_eta53]
-    type                         = ConstantIC
-    value                        = 0.01
-    variable                     = eta53
-  [../]
-  [./ConstantIC_0_eta54]
-    type                         = ConstantIC
-    value                        = 0.01
-    variable                     = eta54
-  [../]
-  [./ConstantIC_0_eta55]
-    type                         = ConstantIC
-    value                        = 0.01
-    variable                     = eta55
-  [../]
-  [./ConstantIC_0_eta56]
-    type                         = ConstantIC
-    value                        = 0.01
-    variable                     = eta56
-  [../]
-
-  [./ConstantIC_0_c]
-    type                         = ConstantIC
-    value                        = 0.46
-    variable                     = c
-  [../]
-[]
 
 #====================================================================
 # Boundary Conditions
@@ -1248,7 +1208,7 @@
   nl_abs_tol = 1e-8
   end_time = 5.0
    dtmax   = 5.0e-4
-   start_time                 = 0
+   start_time                 = 0.050359148954831
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
