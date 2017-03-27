@@ -9,7 +9,7 @@
 #=======================================================
 #:Mesh
 [Mesh] #Mesh: Load Mesh
-  file =/work/jl1908/DropZone/X1/Calculate_R1_out.e
+  file =./Files/Runs/SetupCoarse/SetupInitialConditions1_out.e
 []
 
 #=======================================================
@@ -19,101 +19,101 @@
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta1
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./eta2] # Beta
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta2
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./eta3] #Alpha
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta3
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./eta4] #Alpha2
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta4
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
 
  [./eta51] # Gamma
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta51
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./eta52] # Gamma
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta52
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./eta53] # Gamma
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta53
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./eta54] # Gamma
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta54
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./eta55] # Gamma
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta55
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./eta56] # Gamma
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = eta56
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
 
  [./c]
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = c
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./w]
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = w
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
 
  [./q1]
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = q1
-   initial_from_file_timestep = 14
+   initial_from_file_var = Preq1
+   initial_from_file_timestep = LATEST
  [../]
  [./q2]
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = q2
-   initial_from_file_timestep = 14
+   initial_from_file_var = Preq2
+   initial_from_file_timestep = LATEST
  [../]
 
  [./La_eta]
    order = FIRST
    family = LAGRANGE
    initial_from_file_var = La_eta
-   initial_from_file_timestep = 14
+   initial_from_file_timestep = LATEST
  [../]
  [./LaQ]
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = LaQ
-   initial_from_file_timestep = 14
+  # initial_from_file_var = LaQ
+  # initial_from_file_timestep = LATEST
  [../]
 
  [./disp_x]
@@ -167,6 +167,27 @@
   #[../]
   [./Te]
   [../]
+
+
+  [./total_strain_xx]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./total_strain_yy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./total_strain_xy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+
+
+
+  [./Von_Mises_stress]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
 []
 
 #=======================================================
@@ -193,6 +214,37 @@
     function                     = '2000.0-1000.0*t'
     type                         = FunctionAux
     variable                     = Te
+  [../]
+
+  [./Von_Mises_stress]
+    type = RankTwoScalarAux
+    variable = Von_Mises_stress
+    rank_two_tensor = stress
+    scalar_type = VonMisesStress
+  [../]
+
+  [./total_strain_xx]
+    type = RankTwoAux
+    variable = total_strain_xx
+    rank_two_tensor = total_strain
+    index_i = 0
+    index_j = 0
+  [../]
+
+  [./total_strain_yy]
+    type = RankTwoAux
+    variable = total_strain_yy
+    rank_two_tensor = total_strain
+    index_i = 1
+    index_j = 1
+  [../]
+
+  [./total_strain_xyx]
+    type = RankTwoAux
+    variable = total_strain_xy
+    rank_two_tensor = total_strain
+    index_i = 0
+    index_j = 1
   [../]
 []
 
@@ -382,8 +434,8 @@
                                                                # Group: Advanced
     f_name                       = Ftot                           # Base name of the free energy function (used to name the material properties)
     implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
-    outputs                      = none                        # Vector of output names were you would like to restrict the output of ...
-    sum_materials                = 'F FEl'                            # Base name of the free energy function (used to name the material properties)
+    outputs                      = exodus                        # Vector of output names were you would like to restrict the output of ...
+    sum_materials                = 'F FEl'                             # Base name of the free energy function (used to name the material properties)
     type                         = DerivativeSumMaterial
   [../]
 
@@ -394,7 +446,7 @@
     args = 'eta1'
     outputs = none
     derivative_order             = 1
-    outputs = none
+    #outputs = none
   [../]
   [./hL2]
     type = DerivativeParsedMaterial
@@ -403,7 +455,6 @@
     args = 'eta2'
     outputs = none
     derivative_order             = 1
-    outputs = none
   [../]
   [./hL3]
     type = DerivativeParsedMaterial
@@ -412,7 +463,6 @@
     args = 'eta3'
     outputs = none
     derivative_order             = 1
-    outputs = none
   [../]
   [./hL4]
     type = DerivativeParsedMaterial
@@ -421,7 +471,6 @@
     args = 'eta4'
     outputs = none
     derivative_order             = 1
-    outputs = none
   [../]
 
   [./hL51]
@@ -431,7 +480,6 @@
     args = 'eta51'
     outputs = none
     derivative_order             = 1
-    outputs = none
   [../]
   [./hL52]
     type = DerivativeParsedMaterial
@@ -440,7 +488,6 @@
     args = 'eta52'
     outputs = none
     derivative_order             = 1
-    outputs = none
   [../]
   [./hL53]
     type = DerivativeParsedMaterial
@@ -449,7 +496,6 @@
     args = 'eta53'
     outputs = none
     derivative_order             = 1
-    outputs = none
   [../]
   [./hL54]
     type = DerivativeParsedMaterial
@@ -458,7 +504,6 @@
     args = 'eta54'
     outputs = none
     derivative_order             = 1
-    outputs = none
   [../]
   [./hL55]
     type = DerivativeParsedMaterial
@@ -467,7 +512,6 @@
     args = 'eta55'
     outputs = none
     derivative_order             = 1
-    outputs = none
   [../]
   [./hL56]
     type = DerivativeParsedMaterial
@@ -476,7 +520,6 @@
     args = 'eta56'
     outputs = none
     derivative_order             = 1
-    outputs = none
   [../]
 
   #----------------------------------------------------
@@ -790,28 +833,26 @@
     weights = 'fe1 fe2 fe3 fe4 fe5 fe6'
     args = 'eta51 eta52 eta53 eta54 eta55 eta56'
       eigenstrain_name             = EigenStrain
-      outputs                      = exodus
   [../]
 
   [./ElasticEnergyMaterial]
     args                         = 'eta51 eta52 eta53 eta54 eta55 eta56'                  # Arguments of F() - use vector coupling
     derivative_order             = 2                          # Maximum order of derivatives taken (2 or 3)
     f_name                       = FEl                           # Base name of the free energy function (used to name the material properties)
-    #outputs                      = none                        # Vector of output names were you would like to restrict the output of ...
+    outputs = exodus                        # Vector of output names were you would like to restrict the output of ...
     type                         = ElasticEnergyMaterial
-    outputs                      = exodus
   [../]
 
   [./strain]
     type = ComputeSmallStrain
     displacements = 'disp_x disp_y'
     eigenstrain_names        = EigenStrain
-    outputs                      = exodus
+    outputs = exodus
   [../]
   [./stress]
     type = ComputeLinearElasticStress
     eigenstrain_names        = EigenStrain
-    outputs                      = exodus
+    outputs = exodus
   [../]
 
   #----------------------------------------------------
@@ -1202,7 +1243,7 @@
     variable = eta53
     args = 'eta2 eta3 eta4 eta1 eta52 eta51 eta54 eta55 eta56 Te c'
     mob_name = Leta
-    f_name = Ftot
+    f_name = F
   [../]
   [./ACInterface53]
     type = ACMultiInterface
@@ -1554,7 +1595,7 @@
   nl_abs_tol = 1e-8
   end_time = 2.2
    dtmax   = 1.0e-3
-   start_time                 = 0.01067148
+   start_time                 = 0.5
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
@@ -1570,8 +1611,8 @@
 [Outputs]
   interval                       = 1
   exodus = true
-  console = false
+  console = true
   print_perf_log = true
   output_initial = true
-  #print_linear_residuals         = 0
+  print_linear_residuals         = 0
 []

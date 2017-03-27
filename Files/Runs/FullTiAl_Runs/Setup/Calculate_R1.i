@@ -374,6 +374,19 @@
     outputs = none
   [../]
 
+  [./DerivativeSumMaterial]
+    args                         = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'                 # Arguments of the free energy functions being summed - use vector coupling
+    compute                      = 1                           # When false MOOSE will not call compute methods on this material, compute ...
+    derivative_order             = 2                           # Maximum order of derivatives taken (2 or 3)
+    enable                       = 1                           # Set the enabled status of the MooseObject. ...
+                                                               # Group: Advanced
+    f_name                       = Ftot                           # Base name of the free energy function (used to name the material properties)
+    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
+    outputs                      = none                        # Vector of output names were you would like to restrict the output of ...
+    sum_materials                = 'F FEl'                             # Base name of the free energy function (used to name the material properties)
+    type                         = DerivativeSumMaterial
+  [../]
+
   [./hL1]
     type = DerivativeParsedMaterial
     f_name = hL1
@@ -844,7 +857,7 @@
     args = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te'
     variable = c
     type = SplitCHParsed
-    f_name = F
+    f_name = Ftot
     kappa_name = kappa_c
     w = w
   [../]
@@ -871,7 +884,7 @@
     variable = eta1
     args = 'eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
     mob_name = Leta
-    f_name = F
+    f_name = Ftot
   [../]
   [./ACInterface1]
     type = ACMultiInterface
@@ -930,7 +943,7 @@
     variable = eta2
     args = 'eta1 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
     mob_name = Leta
-    f_name = F
+    f_name = Ftot
   [../]
   [./ACInterface2]
     type = ACMultiInterface
@@ -982,7 +995,7 @@
     variable = eta3
     args = 'eta1 eta2 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
     mob_name = Leta
-    f_name = F
+    f_name = Ftot
   [../]
   [./ACInterface3]
     type = ACMultiInterface
@@ -1033,7 +1046,7 @@
     variable = eta4
     args = 'eta2 eta3 eta1 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
     mob_name = Leta
-    f_name = F
+    f_name = Ftot
   [../]
   [./ACInterface4]
     type = ACMultiInterface
@@ -1084,7 +1097,7 @@
     variable = eta51
     args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta56 Te c'
     mob_name = Leta
-    f_name = F
+    f_name = Ftot
   [../]
   [./ACInterface51]
     type = ACMultiInterface
@@ -1135,7 +1148,7 @@
     variable = eta52
     args = 'eta2 eta3 eta4 eta1 eta51 eta53 eta54 eta55 eta56 Te c'
     mob_name = Leta
-    f_name = F
+    f_name = Ftot
   [../]
   [./ACInterface52]
     type = ACMultiInterface
@@ -1236,7 +1249,7 @@
     variable = eta54
     args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta51 eta55 eta56 Te c'
     mob_name = Leta
-    f_name = F
+    f_name = Ftot
   [../]
   [./ACInterface54]
     type = ACMultiInterface
@@ -1287,7 +1300,7 @@
     variable = eta55
     args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta51 eta56 Te c'
     mob_name = Leta
-    f_name = F
+    f_name = Ftot
   [../]
   [./ACInterface55]
     type = ACMultiInterface
@@ -1338,7 +1351,7 @@
     variable = eta56
     args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta51 Te c'
     mob_name = Leta
-    f_name = F
+    f_name = Ftot
   [../]
   [./ACInterface56]
     type = ACMultiInterface
