@@ -363,6 +363,13 @@
                                                                # Group: Advanced
     variable                     = (required)                  # The name of the variable that this object applies to
   [../]
+
+  [./Von_Mises_stress]
+    type = RankTwoScalarAux
+    variable = Von_Mises_stress
+    rank_two_tensor = stress
+    scalar_type = VonMisesStress
+  [../]
 []
 
 #=======================================================

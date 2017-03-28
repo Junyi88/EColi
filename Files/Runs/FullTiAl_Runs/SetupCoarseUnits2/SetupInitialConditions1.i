@@ -8,8 +8,19 @@
 
 #=======================================================
 #:Mesh
-[Mesh] #Mesh: Load Mesh
-  file =./Files/Runs/SetupCoarse/Calculate_R1_out.e
+[Mesh] #Mesh: Generate Mesh
+  type = GeneratedMesh
+  dim = 2
+  elem_type = QUAD4
+  nx = 50
+  ny = 50
+  nz = 0
+  xmin = 0
+  xmax = 5.0e1
+  ymin = 0
+  ymax = 5.0e1
+  zmin = 0
+  zmax = 0
 []
 
 #=======================================================
@@ -18,125 +29,195 @@
  [./eta1] # Liquid
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta1
-   initial_from_file_timestep = LATEST
  [../]
  [./eta2] # Beta
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta2
-   initial_from_file_timestep = LATEST
  [../]
  [./eta3] #Alpha
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta3
-   initial_from_file_timestep = LATEST
  [../]
  [./eta4] #Alpha2
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta4
-   initial_from_file_timestep = LATEST
  [../]
 
  [./eta51] # Gamma
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta51
-   initial_from_file_timestep = LATEST
  [../]
  [./eta52] # Gamma
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta52
-   initial_from_file_timestep = LATEST
  [../]
  [./eta53] # Gamma
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta53
-   initial_from_file_timestep = LATEST
  [../]
  [./eta54] # Gamma
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta54
-   initial_from_file_timestep = LATEST
  [../]
  [./eta55] # Gamma
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta55
-   initial_from_file_timestep = LATEST
  [../]
  [./eta56] # Gamma
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = eta56
-   initial_from_file_timestep = LATEST
  [../]
 
  [./c]
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = c
-   initial_from_file_timestep = LATEST
  [../]
  [./w]
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = w
-   initial_from_file_timestep = LATEST
  [../]
 
  [./q1]
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = q1
-   initial_from_file_timestep = LATEST
  [../]
  [./q2]
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = q2
-   initial_from_file_timestep = LATEST
  [../]
 
  [./La_eta]
    order = FIRST
    family = LAGRANGE
-   initial_from_file_var = La_eta
-   initial_from_file_timestep = LATEST
  [../]
- [./LaQ]
-   order = FIRST
-   family = LAGRANGE
-  # initial_from_file_var = LaQ
-  # initial_from_file_timestep = LATEST
- [../]
+ #[./LaQ]
+ #  order = FIRST
+ #  family = LAGRANGE
+ #[../]
+
 
  [./disp_x]
  [../]
  [./disp_y]
  [../]
 
- #[./SWITCH]
- #  order = FIRST
- #  family = LAGRANGE
- #[../]
- #[./SWITCH_ANGLE]
- #  order = FIRST
- #  family = LAGRANGE
- #[../]
- #[./RANDOM_ANGLE]
- #  order = FIRST
- #  family = LAGRANGE
- #[../]
+ [./SWITCH]
+   order = FIRST
+   family = LAGRANGE
+ [../]
+ [./SWITCH_ANGLE]
+   order = FIRST
+   family = LAGRANGE
+ [../]
+ [./RANDOM_ANGLE]
+   order = FIRST
+   family = LAGRANGE
+ [../]
 []
 
 #=======================================================
 #:ICs
+[ICs]
+  [./eta1_IC]
+    type                         = ConstantIC
+    value                        = 0.93
+    variable                     = eta1
+  [../]
+  [./eta2_IC]
+    type                         = ConstantIC
+    value                        = 0.01
+    variable                     = eta2
+  [../]
+  [./eta3_IC]
+    type                         = ConstantIC
+    value                        = 0.01
+    variable                     = eta3
+  [../]
+  [./eta4_IC]
+    type                         = ConstantIC
+    value                        = 0.01
+    variable                     = eta4
+  [../]
+
+  [./eta51_IC]
+    type                         = ConstantIC
+    value                        = 0.005
+    variable                     = eta51
+  [../]
+  [./eta51_IC]
+    type                         = ConstantIC
+    value                        = 0.005
+    variable                     = eta51
+  [../]
+  [./eta51_IC]
+    type                         = ConstantIC
+    value                        = 0.005
+    variable                     = eta51
+  [../]
+  [./eta51_IC]
+    type                         = ConstantIC
+    value                        = 0.005
+    variable                     = eta51
+  [../]
+  [./eta51_IC]
+    type                         = ConstantIC
+    value                        = 0.005
+    variable                     = eta51
+  [../]
+  [./eta51_IC]
+    type                         = ConstantIC
+    value                        = 0.005
+    variable                     = eta51
+  [../]
+
+  [./c_IC]
+    type                         = ConstantIC
+    value                        = 0.46
+    variable                     = c
+  [../]
+
+  [./SWITCH_IC]
+    3D_spheres             = 0
+    bubspac                = 3.5
+    invalue                = 1.0
+    numbub                 = 25
+    numtries               = 1000
+    outvalue               = 0.0
+    radius                 = 3.0
+    radius_variation       = 1.0
+    radius_variation_type  = NORMAL
+    randPoint_seed         = 1985
+    randVal_seed           = 35465
+    type                   = JunyiMultiSmoothCircleIC
+    variable               = SWITCH
+    variation_invalue      = 0.5235987756
+    zero_gradient          = 0
+  [../]
+  [./SWITCH_ANGLE_IC]
+    3D_spheres             = 0
+    bubspac                = 3.5
+    invalue                = 0.5235987756
+    numbub                 = 25
+    numtries               = 1000
+    outvalue               = 0.0
+    radius                 = 3.0
+    radius_variation       = 1.0
+    radius_variation_type  = NORMAL
+    randPoint_seed         = 1985
+    randVal_seed           = 35465
+    type                   = JunyiMultiSmoothCircleIC
+    variable               = SWITCH_ANGLE
+    variation_invalue      = 0.1745
+    zero_gradient          = 0
+  [../]
+  [./RANDOM_ANGLE_IC]
+    max                    = 0.6981317008
+    min                    = 0.3490658504
+    seed                   = 24579
+    type                   = RandomIC
+    variable               = RANDOM_ANGLE
+  [../]
+[]
 
 #=======================================================
 #:BCs
@@ -161,90 +242,38 @@
 #=======================================================
 #:AuxVariables
 [AuxVariables]
-  #[./Preq1]
-  #[../]
-  #[./Preq2]
-  #[../]
+  [./Preq1]
+  [../]
+  [./Preq2]
+  [../]
   [./Te]
-  [../]
-
-
-  [./total_strain_xx]
-    family = MONOMIAL
-    order = CONSTANT
-  [../]
-  [./total_strain_yy]
-    family = MONOMIAL
-    order = CONSTANT
-  [../]
-  [./total_strain_xy]
-    family = MONOMIAL
-    order = CONSTANT
-  [../]
-
-
-
-  [./Von_Mises_stress]
-    family = MONOMIAL
-    order = CONSTANT
   [../]
 []
 
 #=======================================================
 #:AuxKernels
 [AuxKernels]
-  #[./JunyiAngle2Value1]
-  #  type                         = JunyiAngle2Value
-  #  Switch                       = SWITCH
-  #  SwitchValues                 = SWITCH_ANGLE
-  #  RndValues                    = RANDOM_ANGLE
-  #  Component                    = 1
-  #  variable                     = Preq1
-  #[../]
-  #[./JunyiAngle2Value1]
-  #  type                         = JunyiAngle2Value
-  #  Switch                       = SWITCH
-  #  SwitchValues                 = SWITCH_ANGLE
-  #  RndValues                    = RANDOM_ANGLE
-  #  Component                    = 1
-  #  variable                     = Preq2
-  #[../]
+  [./JunyiAngle2Value1]
+    type                         = JunyiAngle2Value
+    Switch                       = SWITCH
+    SwitchValues                 = SWITCH_ANGLE
+    RndValues                    = RANDOM_ANGLE
+    Component                    = 1
+    variable                     = Preq1
+  [../]
+  [./JunyiAngle2Value2]
+    type                         = JunyiAngle2Value
+    Switch                       = SWITCH
+    SwitchValues                 = SWITCH_ANGLE
+    RndValues                    = RANDOM_ANGLE
+    Component                    = 2
+    variable                     = Preq2
+  [../]
 
   [./FunctionAuxTe]
     function                     = '2000.0-1000.0*t'
     type                         = FunctionAux
     variable                     = Te
-  [../]
-
-  [./Von_Mises_stress]
-    type = RankTwoScalarAux
-    variable = Von_Mises_stress
-    rank_two_tensor = stress
-    scalar_type = VonMisesStress
-  [../]
-
-  [./total_strain_xx]
-    type = RankTwoAux
-    variable = total_strain_xx
-    rank_two_tensor = total_strain
-    index_i = 0
-    index_j = 0
-  [../]
-
-  [./total_strain_yy]
-    type = RankTwoAux
-    variable = total_strain_yy
-    rank_two_tensor = total_strain
-    index_i = 1
-    index_j = 1
-  [../]
-
-  [./total_strain_xyx]
-    type = RankTwoAux
-    variable = total_strain_xy
-    rank_two_tensor = total_strain
-    index_i = 0
-    index_j = 1
   [../]
 []
 
@@ -254,9 +283,9 @@
   # Shared Constants
   [./consts]
     type = GenericConstantMaterial
-    prop_names  = 'Leta  kappaEta kappa_c w_ij kappaQ'
+    prop_names  = 'Leta  kappaEta kappa_c w_ij'
     #prop_values = '0.64e15 5.784626776e-14  0.0 5.784626776e-14'
-    prop_values = '0.64e3 5.784626776e-2  0.0 5.784626776e-2 1.0e-8'
+    prop_values = '0.64e3 5.784626776e-2  0.0 5.784626776e-2'
   [../]
 
   #=====================================================================
@@ -299,7 +328,7 @@
     type = DerivativeParsedMaterial
     f_name = LQ
     constant_names = 'LQMin LQMax'
-    constant_expressions = '1e-8 0.64e2'
+    constant_expressions = '1e-4 0.64e2'
     #constant_names = 'L00 L11 L10 L01'
     #constant_expressions = '0.64e3 0.64e1 1e-2 0.64e3'
     #material_property_names = 'h1:=h1(eta1)  hp1:=hp1(phi1)'
@@ -309,6 +338,7 @@
     derivative_order             = 1
     outputs = exodus
   [../]
+
   #=====================================================================
   # AllenCahn Stuff
   # Swtiching and well functions
@@ -410,7 +440,6 @@
     function_name                = getas
     g_order                      = SIMPLE
     type                         = CrossTermBarrierFunctionMaterial
-    outputs = none
   [../]
 
   [./free_energy]
@@ -423,20 +452,7 @@
     g=getas
     W = 1.0
     derivative_order             = 2
-    outputs = exodus
-  [../]
-
-  [./DerivativeSumMaterial]
-    args                         = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'                 # Arguments of the free energy functions being summed - use vector coupling
-    compute                      = 1                           # When false MOOSE will not call compute methods on this material, compute ...
-    derivative_order             = 2                           # Maximum order of derivatives taken (2 or 3)
-    enable                       = 1                           # Set the enabled status of the MooseObject. ...
-                                                               # Group: Advanced
-    f_name                       = Ftot                           # Base name of the free energy function (used to name the material properties)
-    implicit                     = 1                           # Determines whether this object is calculated using an implicit or explicit ...
-    outputs                      = exodus                        # Vector of output names were you would like to restrict the output of ...
-    sum_materials                = 'F FEl'                             # Base name of the free energy function (used to name the material properties)
-    type                         = DerivativeSumMaterial
+    outputs = none
   [../]
 
   [./hL1]
@@ -446,7 +462,7 @@
     args = 'eta1'
     outputs = none
     derivative_order             = 1
-    #outputs = none
+    outputs = none
   [../]
   [./hL2]
     type = DerivativeParsedMaterial
@@ -455,6 +471,7 @@
     args = 'eta2'
     outputs = none
     derivative_order             = 1
+    outputs = none
   [../]
   [./hL3]
     type = DerivativeParsedMaterial
@@ -463,6 +480,7 @@
     args = 'eta3'
     outputs = none
     derivative_order             = 1
+    outputs = none
   [../]
   [./hL4]
     type = DerivativeParsedMaterial
@@ -471,6 +489,7 @@
     args = 'eta4'
     outputs = none
     derivative_order             = 1
+    outputs = none
   [../]
 
   [./hL51]
@@ -480,6 +499,7 @@
     args = 'eta51'
     outputs = none
     derivative_order             = 1
+    outputs = none
   [../]
   [./hL52]
     type = DerivativeParsedMaterial
@@ -488,6 +508,7 @@
     args = 'eta52'
     outputs = none
     derivative_order             = 1
+    outputs = none
   [../]
   [./hL53]
     type = DerivativeParsedMaterial
@@ -496,6 +517,7 @@
     args = 'eta53'
     outputs = none
     derivative_order             = 1
+    outputs = none
   [../]
   [./hL54]
     type = DerivativeParsedMaterial
@@ -504,6 +526,7 @@
     args = 'eta54'
     outputs = none
     derivative_order             = 1
+    outputs = none
   [../]
   [./hL55]
     type = DerivativeParsedMaterial
@@ -512,6 +535,7 @@
     args = 'eta55'
     outputs = none
     derivative_order             = 1
+    outputs = none
   [../]
   [./hL56]
     type = DerivativeParsedMaterial
@@ -520,6 +544,7 @@
     args = 'eta56'
     outputs = none
     derivative_order             = 1
+    outputs = none
   [../]
 
   #----------------------------------------------------
@@ -839,7 +864,7 @@
     args                         = 'eta51 eta52 eta53 eta54 eta55 eta56'                  # Arguments of F() - use vector coupling
     derivative_order             = 2                          # Maximum order of derivatives taken (2 or 3)
     f_name                       = FEl                           # Base name of the free energy function (used to name the material properties)
-    outputs = exodus                        # Vector of output names were you would like to restrict the output of ...
+    outputs                      = exodus                        # Vector of output names were you would like to restrict the output of ...
     type                         = ElasticEnergyMaterial
   [../]
 
@@ -847,12 +872,10 @@
     type = ComputeSmallStrain
     displacements = 'disp_x disp_y'
     eigenstrain_names        = EigenStrain
-    outputs = exodus
   [../]
   [./stress]
     type = ComputeLinearElasticStress
     eigenstrain_names        = EigenStrain
-    outputs = exodus
   [../]
 
   #----------------------------------------------------
@@ -861,7 +884,7 @@
     type = ParsedMaterial
     f_name = MagNoiseEta
     #args = 'time'
-    function='1.0e-3'
+    function='2.0'
     outputs = none
   [../]
 
@@ -887,35 +910,43 @@
   #==========================================================
   # Concentration
   # Cs
+  [./c_dot]
+    variable = c
+    type = TimeDerivative
+  [../]
   [./w_dot]
     variable = w
-    v = c
-    type = CoupledTimeDerivative
+    type = TimeDerivative
   [../]
-  [./coupled_res]
-    args = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
-    variable = w
-    type = SplitCHWRes
-    mob_name = M
-  [../]
-  [./coupled_parsed]
-    args = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te'
-    variable = c
-    type = SplitCHParsed
-    f_name = Ftot
-    kappa_name = kappa_c
-    w = w
-  [../]
-
-  [./ConservedLangevinNoise]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseC
-    noise                        = ConservedNormalNoise1
-    seed                         = 201
-    type                         = ConservedLangevinNoise
-    variable                     = c
-    #save_in                      = CNoise
-  [../]
+  #[./w_dot]
+  #  variable = w
+  #  v = c
+  #  type = CoupledTimeDerivative
+  #[../]
+  #[./coupled_res]
+  #  args = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
+  #  variable = w
+  #  type = SplitCHWRes
+  #  mob_name = M
+  #[../]
+  #[./coupled_parsed]
+  #  args = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te'
+  #  variable = c
+  #  type = SplitCHParsed
+  #  f_name = F
+  #  kappa_name = kappa_c
+  #  w = w
+  #[../]
+  #
+  #[./ConservedLangevinNoise]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseC
+  #  noise                        = ConservedNormalNoise1
+  #  seed                         = 201
+  #  type                         = ConservedLangevinNoise
+  #  variable                     = c
+  #  #save_in                      = CNoise
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -924,58 +955,58 @@
     type                         = TimeDerivative
     variable                     = eta1
   [../]
-  [./ACBulk1]
-    type = AllenCahn
-    variable = eta1
-    args = 'eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
-    mob_name = Leta
-    f_name = Ftot
-  [../]
-  [./ACInterface1]
-    type = ACMultiInterface
-    variable = eta1
-    etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
-                   kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
+  #[./ACBulk1]
+  #  type = AllenCahn
+  #  variable = eta1
+  #  args = 'eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
+  #[./ACInterface1]
+  #  type = ACMultiInterface
+  #  variable = eta1
+  #  etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  mob_name = Leta
+  #  kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
+  #                 kappaEta kappaEta kappaEta kappaEta kappaEta'
+  #[../]
   [./SwitchingFunctionConstraintEta1]
-    h_name                       = hL1
+    h_name                       = h1
     implicit                     = 1
     lambda                       = La_eta
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta1
   [../]
-  [./LangevinNoise_eta1]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1001
-    type                         = LangevinNoise
-    variable                     = eta1
-    #save_in                      = eta1Noise
-  [../]
-  #[./ACBulkPen1]
-  #  type = AllenCahn
-  #  variable = eta1
-  #  args = 'eta2 eta3 eta4 eta5 Te c'
-  #  mob_name = Leta
-  #  f_name = Pen1
+  #[./LangevinNoise_eta1]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 1001
+  #  type                         = LangevinNoise
+  #  variable                     = eta1
+  #  #save_in                      = eta1Noise
   #[../]
-
-  [./PusztaiBulkEta1]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2 eta3 eta4 eta51
-                                    eta52 eta53 eta54 eta55 eta56'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta1
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  ##[./ACBulkPen1]
+  ##  type = AllenCahn
+  ##  variable = eta1
+  ##  args = 'eta2 eta3 eta4 eta5 Te c'
+  ##  mob_name = Leta
+  ##  f_name = Pen1
+  ##[../]
+  #
+  #[./PusztaiBulkEta1]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta2 eta3 eta4 eta51
+  #                                  eta52 eta53 eta54 eta55 eta56'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta1
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
   # Eta2
@@ -983,50 +1014,50 @@
     type                         = TimeDerivative
     variable                     = eta2
   [../]
-  [./ACBulk2]
-    type = AllenCahn
-    variable = eta2
-    args = 'eta1 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
-    mob_name = Leta
-    f_name = Ftot
-  [../]
-  [./ACInterface2]
-    type = ACMultiInterface
-    variable = eta2
-    etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
-                   kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
+  #[./ACBulk2]
+  #  type = AllenCahn
+  #  variable = eta2
+  #  args = 'eta1 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
+  #[./ACInterface2]
+  #  type = ACMultiInterface
+  #  variable = eta2
+  #  etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  mob_name = Leta
+  #  kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
+  #                 kappaEta kappaEta kappaEta kappaEta kappaEta'
+  #[../]
   [./SwitchingFunctionConstraintEta2]
-    h_name                       = hL2
+    h_name                       = h2
     implicit                     = 1
     lambda                       = La_eta
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta2
   [../]
-  [./LangevinNoise_eta2]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1201
-    type                         = LangevinNoise
-    variable                     = eta2
-    #save_in                      = eta2Noise
-  [../]
-
-  [./PusztaiBulkEta2]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta1 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta2
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  #[./LangevinNoise_eta2]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 1201
+  #  type                         = LangevinNoise
+  #  variable                     = eta2
+  #  #save_in                      = eta2Noise
+  #[../]
+  #
+  #[./PusztaiBulkEta2]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta1 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta2
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -1035,49 +1066,49 @@
     type                         = TimeDerivative
     variable                     = eta3
   [../]
-  [./ACBulk3]
-    type = AllenCahn
-    variable = eta3
-    args = 'eta1 eta2 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
-    mob_name = Leta
-    f_name = Ftot
-  [../]
-  [./ACInterface3]
-    type = ACMultiInterface
-    variable = eta3
-    etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
-                   kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
+  #[./ACBulk3]
+  #  type = AllenCahn
+  #  variable = eta3
+  #  args = 'eta1 eta2 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
+  #[./ACInterface3]
+  #  type = ACMultiInterface
+  #  variable = eta3
+  #  etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  mob_name = Leta
+  #  kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
+  #                 kappaEta kappaEta kappaEta kappaEta kappaEta'
+  #[../]
   [./SwitchingFunctionConstraintEta3]
-    h_name                       = hL3
+    h_name                       = h3
     implicit                     = 1
     lambda                       = La_eta
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta3
   [../]
-  [./LangevinNoise_eta3]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1301
-    type                         = LangevinNoise
-    variable                     = eta3
-    #save_in                      = eta3Noise
-  [../]
-  [./PusztaiBulkEta3]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2 eta1 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta3
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  #[./LangevinNoise_eta3]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 1301
+  #  type                         = LangevinNoise
+  #  variable                     = eta3
+  #  #save_in                      = eta3Noise
+  #[../]
+  #[./PusztaiBulkEta3]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta2 eta1 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta3
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -1086,13 +1117,13 @@
     type                         = TimeDerivative
     variable                     = eta4
   [../]
-  [./ACBulk4]
-    type = AllenCahn
-    variable = eta4
-    args = 'eta2 eta3 eta1 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
-    mob_name = Leta
-    f_name = Ftot
-  [../]
+  #[./ACBulk4]
+  #  type = AllenCahn
+  #  variable = eta4
+  #  args = 'eta2 eta3 eta1 eta51 eta52 eta53 eta54 eta55 eta56 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
   [./ACInterface4]
     type = ACMultiInterface
     variable = eta4
@@ -1101,34 +1132,34 @@
     kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
                    kappaEta kappaEta kappaEta kappaEta kappaEta'
   [../]
-  [./SwitchingFunctionConstraintEta4]
-    h_name                       = hL4
-    implicit                     = 1
-    lambda                       = La_eta
-    type                         = SwitchingFunctionConstraintEta
-    variable                     = eta4
-  [../]
-  [./LangevinNoise_eta4]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 1401
-    type                         = LangevinNoise
-    variable                     = eta4
-    #save_in                      = eta4Noise
-  [../]
-  [./PusztaiBulkEta4]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2 eta3 eta1 eta51 eta52 eta53 eta54 eta55 eta56'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta4
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  #[./SwitchingFunctionConstraintEta4]
+  #  h_name                       = h4
+  #  implicit                     = 1
+  #  lambda                       = La_eta
+  #  type                         = SwitchingFunctionConstraintEta
+  #  variable                     = eta4
+  #[../]
+  #[./LangevinNoise_eta4]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 1401
+  #  type                         = LangevinNoise
+  #  variable                     = eta4
+  #  #save_in                      = eta4Noise
+  #[../]
+  #[./PusztaiBulkEta4]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta2 eta3 eta1 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta4
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -1137,21 +1168,21 @@
     type                         = TimeDerivative
     variable                     = eta51
   [../]
-  [./ACBulk51]
-    type = AllenCahn
-    variable = eta51
-    args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta56 Te c'
-    mob_name = Leta
-    f_name = Ftot
-  [../]
-  [./ACInterface51]
-    type = ACMultiInterface
-    variable = eta51
-    etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
-                   kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
+  #[./ACBulk51]
+  #  type = AllenCahn
+  #  variable = eta51
+  #  args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta56 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
+  #[./ACInterface51]
+  #  type = ACMultiInterface
+  #  variable = eta51
+  #  etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  mob_name = Leta
+  #  kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
+  #                 kappaEta kappaEta kappaEta kappaEta kappaEta'
+  #[../]
   [./SwitchingFunctionConstraintEta51]
     h_name                       = hL51
     implicit                     = 1
@@ -1159,27 +1190,27 @@
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta51
   [../]
-  [./LangevinNoise_eta51]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 5001
-    type                         = LangevinNoise
-    variable                     = eta51
-    #save_in                      = eta5Noise
-  [../]
-  [./PusztaiBulkEta51]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta56'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta51
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  #[./LangevinNoise_eta51]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 5001
+  #  type                         = LangevinNoise
+  #  variable                     = eta51
+  #  #save_in                      = eta5Noise
+  #[../]
+  #[./PusztaiBulkEta51]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta56'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta51
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -1188,21 +1219,21 @@
     type                         = TimeDerivative
     variable                     = eta52
   [../]
-  [./ACBulk52]
-    type = AllenCahn
-    variable = eta52
-    args = 'eta2 eta3 eta4 eta1 eta51 eta53 eta54 eta55 eta56 Te c'
-    mob_name = Leta
-    f_name = Ftot
-  [../]
-  [./ACInterface52]
-    type = ACMultiInterface
-    variable = eta52
-    etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
-                   kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
+  #[./ACBulk52]
+  #  type = AllenCahn
+  #  variable = eta52
+  #  args = 'eta2 eta3 eta4 eta1 eta51 eta53 eta54 eta55 eta56 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
+  #[./ACInterface52]
+  #  type = ACMultiInterface
+  #  variable = eta52
+  #  etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  mob_name = Leta
+  #  kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
+  #                 kappaEta kappaEta kappaEta kappaEta kappaEta'
+  #[../]
   [./SwitchingFunctionConstraintEta52]
     h_name                       = hL52
     implicit                     = 1
@@ -1210,27 +1241,27 @@
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta52
   [../]
-  [./LangevinNoise_eta52]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 5201
-    type                         = LangevinNoise
-    variable                     = eta52
-    #save_in                      = eta5Noise
-  [../]
-  [./PusztaiBulkEta52]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2 eta3 eta4 eta1 eta51 eta53 eta54 eta55 eta56'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta52
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  #[./LangevinNoise_eta52]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 5201
+  #  type                         = LangevinNoise
+  #  variable                     = eta52
+  #  #save_in                      = eta5Noise
+  #[../]
+  #[./PusztaiBulkEta52]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta2 eta3 eta4 eta1 eta51 eta53 eta54 eta55 eta56'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta52
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
 
   #--------------------------------------------------------------------------
   # Eta53
@@ -1238,21 +1269,21 @@
     type                         = TimeDerivative
     variable                     = eta53
   [../]
-  [./ACBulk53]
-    type = AllenCahn
-    variable = eta53
-    args = 'eta2 eta3 eta4 eta1 eta52 eta51 eta54 eta55 eta56 Te c'
-    mob_name = Leta
-    f_name = F
-  [../]
-  [./ACInterface53]
-    type = ACMultiInterface
-    variable = eta53
-    etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
-                   kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
+  #[./ACBulk53]
+  #  type = AllenCahn
+  #  variable = eta53
+  #  args = 'eta2 eta3 eta4 eta1 eta52 eta51 eta54 eta55 eta56 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
+  #[./ACInterface53]
+  #  type = ACMultiInterface
+  #  variable = eta53
+  #  etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  mob_name = Leta
+  #  kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
+  #                 kappaEta kappaEta kappaEta kappaEta kappaEta'
+  #[../]
   [./SwitchingFunctionConstraintEta53]
     h_name                       = hL53
     implicit                     = 1
@@ -1260,27 +1291,27 @@
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta53
   [../]
-  [./LangevinNoise_eta53]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 5301
-    type                         = LangevinNoise
-    variable                     = eta53
-    #save_in                      = eta5Noise
-  [../]
-  [./PusztaiBulkEta53]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta51 eta54 eta55 eta56'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta53
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  #[./LangevinNoise_eta53]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 5301
+  #  type                         = LangevinNoise
+  #  variable                     = eta53
+  #  #save_in                      = eta5Noise
+  #[../]
+  #[./PusztaiBulkEta53]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta51 eta54 eta55 eta56'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta53
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -1289,21 +1320,21 @@
     type                         = TimeDerivative
     variable                     = eta54
   [../]
-  [./ACBulk54]
-    type = AllenCahn
-    variable = eta54
-    args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta51 eta55 eta56 Te c'
-    mob_name = Leta
-    f_name = Ftot
-  [../]
-  [./ACInterface54]
-    type = ACMultiInterface
-    variable = eta54
-    etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
-                   kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
+  #[./ACBulk54]
+  #  type = AllenCahn
+  #  variable = eta54
+  #  args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta51 eta55 eta56 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
+  #[./ACInterface54]
+  #  type = ACMultiInterface
+  #  variable = eta54
+  #  etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  mob_name = Leta
+  #  kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
+  #                 kappaEta kappaEta kappaEta kappaEta kappaEta'
+  #[../]
   [./SwitchingFunctionConstraintEta54]
     h_name                       = hL54
     implicit                     = 1
@@ -1311,27 +1342,27 @@
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta54
   [../]
-  [./LangevinNoise_eta54]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 5401
-    type                         = LangevinNoise
-    variable                     = eta54
-    #save_in                      = eta5Noise
-  [../]
-  [./PusztaiBulkEta54]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta53 eta51 eta55 eta56'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta54
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  #[./LangevinNoise_eta54]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 5401
+  #  type                         = LangevinNoise
+  #  variable                     = eta54
+  #  #save_in                      = eta5Noise
+  #[../]
+  #[./PusztaiBulkEta54]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta53 eta51 eta55 eta56'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta54
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -1340,21 +1371,21 @@
     type                         = TimeDerivative
     variable                     = eta55
   [../]
-  [./ACBulk55]
-    type = AllenCahn
-    variable = eta55
-    args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta51 eta56 Te c'
-    mob_name = Leta
-    f_name = Ftot
-  [../]
-  [./ACInterface55]
-    type = ACMultiInterface
-    variable = eta55
-    etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
-                   kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
+  #[./ACBulk55]
+  #  type = AllenCahn
+  #  variable = eta55
+  #  args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta51 eta56 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
+  #[./ACInterface55]
+  #  type = ACMultiInterface
+  #  variable = eta55
+  #  etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  mob_name = Leta
+  #  kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
+  #                 kappaEta kappaEta kappaEta kappaEta kappaEta'
+  #[../]
   [./SwitchingFunctionConstraintEta55]
     h_name                       = hL55
     implicit                     = 1
@@ -1362,27 +1393,27 @@
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta55
   [../]
-  [./LangevinNoise_eta55]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 5501
-    type                         = LangevinNoise
-    variable                     = eta55
-    #save_in                      = eta5Noise
-  [../]
-  [./PusztaiBulkEta55]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta51 eta56'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta55
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  #[./LangevinNoise_eta55]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 5501
+  #  type                         = LangevinNoise
+  #  variable                     = eta55
+  #  #save_in                      = eta5Noise
+  #[../]
+  #[./PusztaiBulkEta55]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta51 eta56'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta55
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
 
   #--------------------------------------------------------------------------
   # Allen-Cahn Equation
@@ -1391,21 +1422,21 @@
     type                         = TimeDerivative
     variable                     = eta56
   [../]
-  [./ACBulk56]
-    type = AllenCahn
-    variable = eta56
-    args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta51 Te c'
-    mob_name = Leta
-    f_name = Ftot
-  [../]
-  [./ACInterface56]
-    type = ACMultiInterface
-    variable = eta56
-    etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
-    mob_name = Leta
-    kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
-                   kappaEta kappaEta kappaEta kappaEta kappaEta'
-  [../]
+  #[./ACBulk56]
+  #  type = AllenCahn
+  #  variable = eta56
+  #  args = 'eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta51 Te c'
+  #  mob_name = Leta
+  #  f_name = F
+  #[../]
+  #[./ACInterface56]
+  #  type = ACMultiInterface
+  #  variable = eta56
+  #  etas = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56'
+  #  mob_name = Leta
+  #  kappa_names = 'kappaEta kappaEta kappaEta kappaEta kappaEta
+  #                 kappaEta kappaEta kappaEta kappaEta kappaEta'
+  #[../]
   [./SwitchingFunctionConstraintEta56]
     h_name                       = hL56
     implicit                     = 1
@@ -1413,27 +1444,27 @@
     type                         = SwitchingFunctionConstraintEta
     variable                     = eta56
   [../]
-  [./LangevinNoise_eta56]
-    amplitude                    = 1.0
-    multiplier                   = MagNoiseEta
-    seed                         = 5601
-    type                         = LangevinNoise
-    variable                     = eta56
-    #save_in                      = eta5Noise
-  [../]
-  [./PusztaiBulkEta56]
-    Correction_y0   = 1.0
-    Correction_Z   = 1.0
-    Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta51'
-    Qs                           = 'q1 q2'
-    H_name                       = 'HQ'
-    L_name                       = 'Leta'
-    P_name                       = 'PQ'
-    type                         = PusztaiACBulk
-    variable                     = eta56
-    variable_H                   = 1
-    variable_L                   = 1
-  [../]
+  #[./LangevinNoise_eta56]
+  #  amplitude                    = 1.0
+  #  multiplier                   = MagNoiseEta
+  #  seed                         = 5601
+  #  type                         = LangevinNoise
+  #  variable                     = eta56
+  #  #save_in                      = eta5Noise
+  #[../]
+  #[./PusztaiBulkEta56]
+  #  Correction_y0   = 1.0
+  #  Correction_Z   = 1.0
+  #  Args                         = 'c Te eta2 eta3 eta4 eta1 eta52 eta53 eta54 eta55 eta51'
+  #  Qs                           = 'q1 q2'
+  #  H_name                       = 'HQ'
+  #  L_name                       = 'Leta'
+  #  P_name                       = 'PQ'
+  #  type                         = PusztaiACBulk
+  #  variable                     = eta56
+  #  variable_H                   = 1
+  #  variable_L                   = 1
+  #[../]
 
 
   #--------------------------------------------------------------------------
@@ -1455,36 +1486,36 @@
       variable                     = q1
     [../]
 
-    [./PusztaiInterface1]
-      Correction_y0                      = 1.0
-      Correction_Z                      = 1.0
-      Args                         = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 c Te'
-      Qs                           =  'q2'
-      H_name                       = 'HQ'
-      L_name                       = 'LQ '
-      P_name                       = 'PQ'
-      type                         = PusztaiQsBulk
-      variable                     = q1
-      variable_H                   = 1
-      variable_L                   = 1
-    [../]
-
-    [./SwitchingFunctionConstraintq1]
-      h_name                       = hq1
-      implicit                     = 1
-      lambda                       = LaQ
-      type                         = SwitchingFunctionConstraintEta
-      variable                     = q1
-    [../]
-
-    [./ACInterfaceQ1]
-      args                         =  'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c q2'
-      kappa_name                   = 'kappaQ'
-      mob_name                     = 'LQ'
-      type                         = ACInterface
-      variable                     = 'q1'
-      variable_L                   = 1
-    [../]
+    #[./PusztaiInterface1]
+    #  Correction_y0                      = 1.0
+    #  Correction_Z                      = 1.0
+    #  Args                         = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 c Te'
+    #  Qs                           =  'q2'
+    #  H_name                       = 'HQ'
+    #  L_name                       = 'LQ '
+    #  P_name                       = 'PQ'
+    #  type                         = PusztaiQsBulk
+    #  variable                     = q1
+    #  variable_H                   = 1
+    #  variable_L                   = 1
+    #[../]
+    #
+    #[./SwitchingFunctionConstraintq1]
+    #  h_name                       = hq1
+    #  implicit                     = 1
+    #  lambda                       = LaQ
+    #  type                         = SwitchingFunctionConstraintEta
+    #  variable                     = q1
+    #[../]
+    #
+    #[./ACInterfaceQ1]
+    #  args                         =  'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c q2'
+    #  kappa_name                   = 'kappaQ'
+    #  mob_name                     = 'LQ'
+    #  type                         = ACInterface
+    #  variable                     = 'q1'
+    #  variable_L                   = 1
+    #[../]
     #[./LangevinNoise_q1]
     #  amplitude                    = 1.0
     #  multiplier                   = MagNoiseQ
@@ -1500,79 +1531,79 @@
       variable                     = q2
     [../]
 
-    [./SwitchingFunctionConstraintq2]
-      h_name                       = hq2
-      implicit                     = 1
-      lambda                       = LaQ
-      type                         = SwitchingFunctionConstraintEta
-      variable                     = q2
-    [../]
-
-    [./PusztaiInterface2]
-      Correction_y0                     = 1.0
-      Correction_Z                      = 1.0
-      Args                         = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 c Te'
-      Qs                           =  'q1'
-      H_name                       = 'HQ'
-      implicit                     = 1
-      L_name                     = 'LQ '
-      P_name                       = 'PQ'
-      type                         = PusztaiQsBulk
-      variable                     = q2
-      variable_H                   = 1
-
-      variable_L                   = 1
-    [../]
-    [./ACInterfaceQ2]
-      args                         =  'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c q1'
-      kappa_name                   = 'kappaQ'
-      mob_name                     = 'LQ'
-      type                         = ACInterface
-      variable                     = 'q2'
-      variable_L                   = 1
-    [../]
+    #[./SwitchingFunctionConstraintq2]
+    #  h_name                       = hq2
+    #  implicit                     = 1
+    #  lambda                       = LaQ
+    #  type                         = SwitchingFunctionConstraintEta
+    #  variable                     = q2
+    #[../]
+    #
+    #[./PusztaiInterface2]
+    #  Correction_y0                     = 1.0
+    #  Correction_Z                      = 1.0
+    #  Args                         = 'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 c Te'
+    #  Qs                           =  'q1'
+    #  H_name                       = 'HQ'
+    #  implicit                     = 1
+    #  L_name                     = 'LQ '
+    #  P_name                       = 'PQ'
+    #  type                         = PusztaiQsBulk
+    #  variable                     = q2
+    #  variable_H                   = 1
+    #
+    #  variable_L                   = 1
+    #[../]
+    #[./ACInterfaceQ2]
+    #  args                         =  'eta1 eta2 eta3 eta4 eta51 eta52 eta53 eta54 eta55 eta56 Te c q1'
+    #  kappa_name                   = 'kappaQ'
+    #  mob_name                     = 'LQ'
+    #  type                         = ACInterface
+    #  variable                     = 'q2'
+    #  variable_L                   = 1
+    #[../]
 
     #--------------------------------------------------------------------------
     # Langrange Q
-    [./SwitchingFunctionConstraintLagrangeQ]
-      enable                       = 1
-      epsilon                      = 1e-09
-      etas                         = 'q1 q2'
-      h_names                      = 'hq1 hq2'
-      implicit                     = 1
-      type                         = SwitchingFunctionConstraintLagrange
-      variable                     = LaQ
-    [../]
+    #[./SwitchingFunctionConstraintLagrangeQ]
+    #  enable                       = 1
+    #  epsilon                      = 1e-09
+    #  etas                         = 'q1 q2'
+    #  h_names                      = 'hq1 hq2'
+    #  implicit                     = 1
+    #  type                         = SwitchingFunctionConstraintLagrange
+    #  variable                     = LaQ
+    #[../]
 
     # SWITCH
-      #[./SWITCH_dot]
-      #  type                         = TimeDerivative
-      #  variable                     = SWITCH
-      #[../]
-      #[./SWITCH_ANGLE_dot]
-      #  type                         = TimeDerivative
-      #  variable                     = SWITCH_ANGLE
-      #[../]
-      #[./RANDOM_ANGLE_dot]
-      #  type                         = TimeDerivative
-      #  variable                     = RANDOM_ANGLE
-      #[../]
+      [./SWITCH_dot]
+        type                         = TimeDerivative
+        variable                     = SWITCH
+      [../]
+      [./SWITCH_ANGLE_dot]
+        type                         = TimeDerivative
+        variable                     = SWITCH_ANGLE
+      [../]
+      [./RANDOM_ANGLE_dot]
+        type                         = TimeDerivative
+        variable                     = RANDOM_ANGLE
+      [../]
 []
 
 ##===============================================================
 ##: Postprocessors
-#[Postprocessors]
-#  [./ave_stress_bottom]
-#    type = SideAverageValue
-#    variable = stress_zz
-#    boundary = bottom
-#  [../]
-#  [./ave_strain_bottom]
-#    type = SideAverageValue
-#    variable = total_strain_zz
-#    boundary = bottom
-#  [../]
-#[]
+[Postprocessors]
+  #[./ave_stress_bottom]
+  #  type = SideAverageValue
+  #  variable = stress_zz
+  #  boundary = bottom
+  #[../]
+  #[./ave_strain_bottom]
+  #  type = SideAverageValue
+  #  variable = total_strain_zz
+  #  boundary = bottom
+  #[../]
+[]
 
 ##===============================================================
 ##: Preconditioning
@@ -1595,11 +1626,11 @@
   nl_abs_tol = 1e-8
   end_time = 2.2
    dtmax   = 1.0e-3
-   start_time                 = 0.5
+   start_time                 = 0.00778596352
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
-    dt = 1.0e-6
+    dt = 1.0e-4
     cutback_factor = 0.8
     growth_factor = 1.5
     optimal_iterations = 12
