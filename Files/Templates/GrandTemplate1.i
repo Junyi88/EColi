@@ -146,6 +146,29 @@
                                                          # higher order shape functions and overlapping circles.
   [../]
 
+  [./SmoothCircleIC]
+    3D_spheres             = 1                           # in 3D, whether the objects are spheres or columns
+    block                  =                             # The list of block ids (SubdomainID) that this object will be applied
+    boundary               =                             # The list of boundary IDs from the mesh where this boundary condition ...
+                                                         # applies
+    control_tags           =                             # Adds user-defined labels for accessing object parameters via control ...
+                                                         # logic. ...
+                                                         # Group: Advanced
+    enable                 = 1                           # Set the enabled status of the MooseObject. ...
+                                                         # Group: Advanced
+    int_width              = 0                           # The interfacial width of the void surface.  Defaults to sharp interface
+    invalue                = (required)                  # The variable value inside the circle
+    outvalue               = (required)                  # The variable value outside the circle
+    radius                 = (required)                  # The radius of a circle
+    rand_seed              = 12345                       # Seed value for the random number generator
+    type                   = SmoothCircleIC
+    variable               = (required)                  # The variable this initial condition is supposed to provide values for.
+    x1                     = (required)                  # The x coordinate of the circle center
+    y1                     = (required)                  # The y coordinate of the circle center
+    z1                     = 0                           # The z coordinate of the circle center
+    zero_gradient          = 0                           # Set the gradient DOFs to zero. This can avoid numerical problems with ...
+                                                         # higher order shape functions and overlapping circles.
+  [../]
 []
 
 #=======================================================
@@ -375,6 +398,18 @@
 #=======================================================
 #:Materials
 [Materials]
+
+  [./TimeStepMaterial]
+    compute                      = 1                           # When false MOOSE will not call compute methods on this material, compute ...
+    enable                       = 1
+    implicit                     = 1
+    outputs                      = none
+    prop_dt                      = dt                          # Material property to store the current dt
+    prop_time                    = time                        # Material property to store the current time
+    prop_time_step               = time_step                   # Material property to store the current time step number
+    type                         = TimeStepMaterial
+  [../]
+
   # Shared Constants
   [./consts]
     type = GenericConstantMaterial
