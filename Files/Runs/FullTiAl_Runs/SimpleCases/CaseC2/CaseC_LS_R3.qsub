@@ -1,0 +1,20 @@
+#!/bin/sh
+#PBS -j oe
+#PBS -l walltime=18:00:00,select=1:ncpus=16:mpiprocs=16:mem=3072mb
+#
+
+module load mpi
+module load vtk
+module load gcc
+module load mooseframework
+# module load intel-suite mpi
+
+cp -r $WORK/DropZone/SimpleCases/CaseC/CaseC_LS_R3.i $TMPDIR
+cp -r $WORK/DropZone/SimpleCases/CaseC/CaseC_LS_R2_out.e $TMPDIR
+pbsexec -grace 60 mpiexec $WORK/mooseFR/EColi/EColi-opt -i ./CaseC_LS_R3.i
+
+sftp -b $HOME/Scripts/MoveFiles.sh jl1908@me-yw1107.me.ic.ac.uk
+
+cp -f $TMPDIR/CaseC_LS_R3*.e  $WORK/DropZone/SimpleCases/CaseC
+
+#qsub $WORK/DropZone/KenelToHPC/Kenel_1D_C48T1_R0.qsub
