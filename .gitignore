@@ -149,3 +149,5 @@ out.xyz
 .jitcache/
 /lib/*.so.*
 *.directory
+*jitcache*
+*tmp*
