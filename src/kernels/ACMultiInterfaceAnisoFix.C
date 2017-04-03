@@ -78,54 +78,56 @@ ACMultiInterfaceAnisoFix::computeQpResidual()
   RealGradient _kappa_detaA;
   RealGradient _kappa_detaB;
 
-  std::ofstream myfile;  //Junyi Debug
-  myfile.open ("CheckValues.txt",std::ios::app); //Junyi Debug
-  myfile << "W===========================.\n"; //Junyi Debug
-
   Real sum = 0.0;
   for (unsigned int b = 0; b < _num_etas; ++b)
   {
-   _kappa_detaA=kappaXgradeta(b,_grad_eta_a[_qp]);
-   _kappa_detaB=kappaXgradeta(b,(*_grad_eta[b])[_qp]);
     // skip the diagonal term (does not contribute)
     if (b == _a) continue;
-    sum += (*_kappa[b])[_qp] * (
+
+    _kappa_detaA=kappaXgradeta(b,_grad_eta_a[_qp]);
+    _kappa_detaB=kappaXgradeta(b,(*_grad_eta[b])[_qp]);
+    sum += (
                // order 1 terms
-               2.0 * _test[_i][_qp] * (_eta_a[_qp] * (*_grad_eta[b])[_qp] - (*_eta[b])[_qp] * _grad_eta_a[_qp]) * (*_grad_eta[b])[_qp]
+               2.0 * _test[_i][_qp] * (_eta_a[_qp] * (*_grad_eta[b])[_qp] - (*_eta[b])[_qp] * _grad_eta_a[_qp]) * _kappa_detaB
                // volume terms
              + ( - (   _eta_a[_qp] * (*_eta[b])[_qp] * _grad_test[_i][_qp]
                      + _test[_i][_qp] * (*_eta[b])[_qp] * _grad_eta_a[_qp]
                      + _test[_i][_qp] * _eta_a[_qp] * (*_grad_eta[b])[_qp]
-                   ) * (*_grad_eta[b])[_qp])
+                   ) * _kappa_detaB
              - ( - (   (*_eta[b])[_qp] * (*_eta[b])[_qp] * _grad_test[_i][_qp]
                      + 2.0 * _test[_i][_qp] * (*_eta[b])[_qp] * (*_grad_eta[b])[_qp]
-                   ) * _grad_eta_a[_qp])
+                   ) * _kappa_detaA))
            );
   }
 
-  myfile.close(); //Junyi Debug
   return _L[_qp] * sum;
 }
 
 Real
 ACMultiInterfaceAnisoFix::computeQpJacobian()
 {
+  RealGradient _kappa_detaB;
+  RealGradient _kappa_dphi;
+
   Real sum = 0.0;
   for (unsigned int b = 0; b < _num_etas; ++b)
   {
     // skip the diagonal term (does not contribute)
     if (b == _a) continue;
 
-    sum += (*_kappa[b])[_qp] * (
-         2.0 * _test[_i][_qp] * ( (_phi[_j][_qp] * (*_grad_eta[b])[_qp] - (*_eta[b])[_qp] * _grad_phi[_j][_qp]) * (*_grad_eta[b])[_qp] )
+    _kappa_detaB=kappaXgradeta(b,(*_grad_eta[b])[_qp]);
+    _kappa_dphi=kappaXgradeta(b,_grad_phi[_j][_qp]);
+
+    sum += (
+         2.0 * _test[_i][_qp] * ( (_phi[_j][_qp] * (*_grad_eta[b])[_qp] - (*_eta[b])[_qp] * _grad_phi[_j][_qp]) * _kappa_detaB
       + ( - (   _phi[_j][_qp] * (*_eta[b])[_qp] * _grad_test[_i][_qp]
               + _test[_i][_qp] * (*_eta[b])[_qp] * _grad_phi[_j][_qp]
               + _test[_i][_qp] * _phi[_j][_qp] * (*_grad_eta[b])[_qp]
-            ) * (*_grad_eta[b])[_qp]
+            ) * _kappa_detaB
         )
       - ( - (   (*_eta[b])[_qp] * (*_eta[b])[_qp] * _grad_test[_i][_qp]
               + 2.0 * _test[_i][_qp] * (*_eta[b])[_qp] * (*_grad_eta[b])[_qp]
-            ) * _grad_phi[_j][_qp]
+            ) * _kappa_dphi)
         )
     );
   }
@@ -139,26 +141,34 @@ ACMultiInterfaceAnisoFix::computeQpOffDiagJacobian(unsigned int jvar)
   const VariableValue & _eta_a = _u;
   const VariableGradient & _grad_eta_a = _grad_u;
 
+  RealGradient _kappa_detaA;
+  RealGradient _kappa_detaB;
+  RealGradient _kappa_dphi;
+
   const int b = _eta_vars[jvar];
   if (b < 0) return 0.0;
 
-  return _L[_qp] * (*_kappa[b])[_qp] * (
+  _kappa_detaA=kappaXgradeta(b,_grad_eta_a[_qp]);
+  _kappa_detaB=kappaXgradeta(b,(*_grad_eta[b])[_qp]);
+  _kappa_dphi=kappaXgradeta(b,_grad_phi[_j][_qp]);
+
+  return _L[_qp] * (
              2.0 * _test[_i][_qp] * (
-                 (_eta_a[_qp] * _grad_phi[_j][_qp] - _phi[_j][_qp] * _grad_eta_a[_qp]) * (*_grad_eta[b])[_qp]
-               + (_eta_a[_qp] * (*_grad_eta[b])[_qp] - (*_eta[b])[_qp] * _grad_eta_a[_qp]) * _grad_phi[_j][_qp]
+                 (_eta_a[_qp] * _grad_phi[_j][_qp] - _phi[_j][_qp] * _grad_eta_a[_qp]) * _kappa_detaB
+               + (_eta_a[_qp] * (*_grad_eta[b])[_qp] - (*_eta[b])[_qp] * _grad_eta_a[_qp]) * _kappa_dphi
              )
            + ( - (   _eta_a[_qp] * _phi[_j][_qp] * _grad_test[_i][_qp]
                    + _test[_i][_qp] * _phi[_j][_qp] * _grad_eta_a[_qp]
                    + _test[_i][_qp] * _eta_a[_qp] * _grad_phi[_j][_qp]
-                 ) * (*_grad_eta[b])[_qp]
+                 ) * _kappa_detaB
                - (   _eta_a[_qp] * (*_eta[b])[_qp] * _grad_test[_i][_qp]
                    + _test[_i][_qp] * (*_eta[b])[_qp] * _grad_eta_a[_qp]
                    + _test[_i][_qp] * _eta_a[_qp] * (*_grad_eta[b])[_qp]
-                 ) * _grad_phi[_j][_qp]
+                 ) * _kappa_dphi
              )
            - ( - (   2.0 * (*_eta[b])[_qp] * _phi[_j][_qp] * _grad_test[_i][_qp]
                    + 2.0 * _test[_i][_qp] * (_phi[_j][_qp] * (*_grad_eta[b])[_qp] + (*_eta[b])[_qp] * _grad_phi[_j][_qp])
-                 ) * _grad_eta_a[_qp])
+                 ) * _kappa_detaA)
          );
 }
 
