@@ -22,6 +22,7 @@ InputParameters validParams<ACMultiInterfaceAnisoFix>()
   params.addRequiredCoupledVar("etas", "All eta_i order parameters of the multiphase problem");
   params.addRequiredParam<std::vector<MaterialPropertyName> >("kappa_names", "The kappa used with the kernel");
   params.addParam<MaterialPropertyName>("mob_name", "L", "The mobility used with the kernel");
+  params.addParam<unsigned int>("num_dim", 2, "Number of dimension");
   return params;
 }
 
@@ -32,11 +33,12 @@ ACMultiInterfaceAnisoFix::ACMultiInterfaceAnisoFix(const InputParameters & param
     _grad_eta(_num_etas),
     _eta_vars(_fe_problem.getNonlinearSystemBase().nVariables(), -1),
     _kappa_names(getParam<std::vector<MaterialPropertyName> >("kappa_names")),
-    _kappa(_num_etas),
-    _L(getMaterialProperty<Real>("mob_name"))
+    _kappa(_num_etas*2),
+    _L(getMaterialProperty<Real>("mob_name")),
+    _num_dim(getParam<unsigned int>("num_dim"))
 {
-  if (_num_etas != _kappa_names.size())
-    mooseError("Supply the same nummber of etas and kappa_names.");
+  // if (_num_etas != _kappa_names.size())
+  //   mooseError("Supply the same nummber of etas and kappa_names.");
 
   unsigned int nvariables = _fe_problem.getNonlinearSystemBase().nVariables();
 
@@ -57,6 +59,12 @@ ACMultiInterfaceAnisoFix::ACMultiInterfaceAnisoFix(const InputParameters & param
       a = i;
 
     // get gradient prefactors
+  //  _kappa[i] = &getMaterialPropertyByName<Real>(_kappa_names[i]);
+  }
+
+  for (unsigned int i = 0; i < _num_etas*_num_dim; ++i)
+  {
+
     _kappa[i] = &getMaterialPropertyByName<Real>(_kappa_names[i]);
   }
 
@@ -72,6 +80,12 @@ ACMultiInterfaceAnisoFix::computeQpResidual()
   const VariableValue & _eta_a = _u;
   const VariableGradient & _grad_eta_a = _grad_u;
 
+  VariableGradient _kappa_detaA=_grad_u;
+  VariableGradient _kappa_detaB=_grad_u;
+  int nK = 0;
+
+
+
   std::ofstream myfile;  //Junyi Debug
   myfile.open ("CheckValues.txt",std::ios::app); //Junyi Debug
   myfile << "W===========================.\n"; //Junyi Debug
@@ -80,10 +94,20 @@ ACMultiInterfaceAnisoFix::computeQpResidual()
   myfile << "_grad_ux="<<(_grad_u[0](0))<<std::endl; //Junyi Debug
   myfile << "_grad_ux="<<(_grad_u[0](1))<<std::endl; //Junyi Debug
   myfile << "_grad_ux="<<(_grad_u[0](2))<<std::endl; //Junyi Debug
-  myfile << "_num_etas="<<_num_etas<<std::endl;
+  myfile << "_num_etas="<<_num_etas<<std::endl; //Junyi Debug
+  myfile << "_kappa_detaA1="<<_kappa_detaA[0]<<std::endl; //Junyi Debug
+  myfile << "_kappa_detaB1="<<_kappa_detaB[0]<<std::endl; //Junyi Debug
+
   Real sum = 0.0;
   for (unsigned int b = 0; b < _num_etas; ++b)
   {
+   //
+   myfile << "b="<<b<<std::endl; //Junyi Debug
+   _kappa_detaA=multiplyFixedkappa(b,_kappa_detaA);
+   myfile << "moron"<<std::endl; //Junyi Debug
+   _kappa_detaB=multiplyFixedkappa(b,(*_grad_eta[b]));
+   myfile << "_kappa_detaA2="<<_kappa_detaA[0]<<std::endl; //Junyi Debug
+   myfile << "_kappa_detaB2="<<_kappa_detaB[0]<<std::endl; //Junyi Debug
     // skip the diagonal term (does not contribute)
     if (b == _a) continue;
     myfile << "b,a="<<b<<','<<_a<<std::endl; //Junyi Debug
@@ -158,4 +182,30 @@ ACMultiInterfaceAnisoFix::computeQpOffDiagJacobian(unsigned int jvar)
                    + 2.0 * _test[_i][_qp] * (_phi[_j][_qp] * (*_grad_eta[b])[_qp] + (*_eta[b])[_qp] * _grad_phi[_j][_qp])
                  ) * _grad_eta_a[_qp])
          );
+}
+
+
+VariableGradient
+ACMultiInterfaceAnisoFix::multiplyFixedkappa(const int b,const VariableGradient gradeta)
+{
+  VariableGradient kappadeta=gradeta;
+  Real xxx;
+  Real xxx2;
+    //  kappadeta(2)=0.0;
+
+    std::ofstream myfile;  //Junyi Debug
+    myfile.open ("CheckValues.txt",std::ios::app); //Junyi Debug
+   myfile << "x1"<<std::endl; //Junyi Debug
+  for (unsigned int i = 0; i < _num_dim; ++i)
+    {
+      myfile << "_qp=="<<_qp<<std::endl; //Junyi Debug
+      xxx=(gradeta[_qp](i));
+      xxx2=(*_kappa[b+i * _num_etas])[_qp];
+      kappadeta[_qp](i)=xxx2 * xxx;
+
+    }
+
+  myfile << "x2"<<std::endl; //Junyi Debug
+  myfile.close();
+  return kappadeta;
 }

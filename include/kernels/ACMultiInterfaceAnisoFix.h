@@ -60,7 +60,7 @@ protected:
 
   // Additional Stuff
   unsigned int _num_dim;
-
+  VariableGradient multiplyFixedkappa(const int b,const VariableGradient gradeta);
 };
 
 #endif //ACMULTIINTERFACE_H
