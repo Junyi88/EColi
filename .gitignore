@@ -146,5 +146,8 @@ out.xyz
 # Junyi's Files
 /Exclude/*
 *.e
-/.jitcache/*
+.jitcache/
 /lib/*.so.*
+*.directory
+*jitcache*
+*tmp*
