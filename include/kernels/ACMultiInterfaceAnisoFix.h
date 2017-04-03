@@ -40,6 +40,7 @@ protected:
   virtual Real computeQpOffDiagJacobian(unsigned int);
 
   /// Order parameters
+  unsigned int _num_dim;
   unsigned int _num_etas;
   std::vector<const VariableValue *> _eta;
   std::vector<const VariableGradient *> _grad_eta;
@@ -58,9 +59,8 @@ protected:
   const MaterialProperty<Real> & _L;
 
 
-  // Additional Stuff
-  unsigned int _num_dim;
-  VariableGradient multiplyFixedkappa(const int b,const VariableGradient gradeta);
+  // Multiplication
+  RealGradient kappaXgradeta(const int b,const RealGradient gradeta);
 };
 
 #endif //ACMULTIINTERFACE_H
