@@ -58,7 +58,7 @@
     enable                 = 1
     invalue                = 0.01
     outvalue               = 0.99
-    radius                 = 8
+    radius                 = 10
     type                   = SmoothCircleIC
     variable               = eta1
     x1                     = 25.0
@@ -70,7 +70,7 @@
     enable                 = 1
     invalue                = 0.99
     outvalue               = 0.01
-    radius                 = 8
+    radius                 = 10
     type                   = SmoothCircleIC
     variable               = eta2
     x1                     = 25.0
@@ -82,7 +82,7 @@
     enable                 = 1
     invalue                = 0.3
     outvalue               = 0.3
-    radius                 = 8
+    radius                 = 10
     type                   = SmoothCircleIC
     variable               = c
     x1                     = 25.0
@@ -189,7 +189,7 @@
   [./consts]
     type = GenericConstantMaterial
     prop_names  = 'Leta  kappaEta kappaEta2 kappa_c'
-    prop_values = '0.64e15 10.0e-16 10.0e-15  10.0e-18'
+    prop_values = '0.64e15 10.0e-15 20.0e-14  10.0e-18'
         #prop_values = '0.64e15 7.91e-9  0.0'
   [../]
 
