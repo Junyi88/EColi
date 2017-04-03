@@ -9,7 +9,7 @@
 #include "JunyiAngle2Value.h" //Add
 #include "JunyiSmoothCircleBaseIC.h" //Add
 #include "JunyiMultiSmoothCircleIC.h" //Add
-
+#include "ACMultiInterfaceAnisoFix.h"
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -49,6 +49,7 @@ EcoliApp::registerObjects(Factory & factory)
 {
   registerKernel(PusztaiACBulk); //Add
   registerKernel(PusztaiQsBulk); //Add
+  registerKernel(ACMultiInterfaceAnisoFix); //Add
   registerAuxKernel(JunyiAngle2Value); //Add
   // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
   registerInitialCondition(JunyiMultiSmoothCircleIC); //Add
