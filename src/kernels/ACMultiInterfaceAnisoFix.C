@@ -6,6 +6,7 @@
 /****************************************************************/
 
 #include "ACMultiInterfaceAnisoFix.h"
+#include "MooseVariable.h"
 #include "NonlinearSystem.h"
 
 // #include <cmath>
