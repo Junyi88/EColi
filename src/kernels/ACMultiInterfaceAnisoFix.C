@@ -65,7 +65,7 @@ ACMultiInterfaceAnisoFix::ACMultiInterfaceAnisoFix(const InputParameters & param
     _kappa[i] = &getMaterialPropertyByName<Real>(_kappa_names[i]);
 
   if (a < 0)
-    mooseError("Kernel variable must be listed in etas for ACMultiInterfaceAnisoFix kernel " << name());
+    mooseError("Kernel variable must be listed in etas for ACMultiInterfaceAnisoFix kernel " ,name());
   else
     _a = a;
 }
