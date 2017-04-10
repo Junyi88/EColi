@@ -1,0 +1,10 @@
+# http://mooseframework.org/wiki/debugging/
+# http://www.yolinux.com/TUTORIALS/GDB-Commands.html
+# break ClassName::functionName
+# break filename:line-number
+# bt
+
+gdb --args EColi-dbg -i ./InputFiles/CrashingCode.i
+b Adaptivity::adaptMesh
+b GradientJumpIndicator::computeQpIntegral()
+b MPI_Abort
