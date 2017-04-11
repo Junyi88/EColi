@@ -13,9 +13,9 @@
   type = GeneratedMesh
   dim = 3
   elem_type = Hex8
-  nx = 4
-  ny = 4
-  nz = 2
+  nx = 2
+  ny = 2
+  nz = 1
   xmin = -10.0e-1
   xmax = 10.0e-1
   ymin = -10.0e-1
@@ -455,19 +455,19 @@
 ##: Executioner
 [Executioner]
   type = Transient
-  solve_type = 'NEWTON'  # OR PJFNK
+  solve_type = 'JFNK'  # OR PJFNK
   petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
   petsc_options_value = 'asm      ilu          nonzero'
   l_max_its = 40
   nl_max_its = 30
-  nl_abs_tol = 1e-8
+  nl_abs_tol = 1e-12
   end_time = 1.0
    dtmax   = 1.0e-2
    start_time                 = 0.0
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
-    dt = 1.0e-3
+    dt = 1.0e-6
     cutback_factor = 0.8
     growth_factor = 1.5
     optimal_iterations = 30

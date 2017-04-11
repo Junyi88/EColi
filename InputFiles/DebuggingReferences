@@ -14,6 +14,11 @@
 # break /home/jl1908/projects/moose/modules/tensor_mechanics/src/utils/MultiPlasticityRawComponentAssembler.C:610 if (intnl_old.size() == _num_models)
 # break /home/jl1908/projects/moose/modules/tensor_mechanics/src/utils/MultiPlasticityRawComponentAssembler.C:610 if (intnl_old.size() != _num_models)
 gdb --args EColi-dbg -i ./InputFiles/CrashingCode.i
+
+b Kernel::computeOffDiagJacobian if (jvar != _var.number())
 b Adaptivity::adaptMesh
 b GradientJumpIndicator::computeQpIntegral()
 b MPI_Abort
+
+MultiPlasticityRawComponentAssembler::returnMapAll if (intnl_old.size() != _num_models)
+MultiPlasticityRawComponentAssembler::returnMapAll if (intnl.size() != _num_models)

@@ -13,16 +13,16 @@
   type = GeneratedMesh
   dim = 3
   elem_type = Hex8
-  nx = 2
-  ny = 2
-  nz = 1
-  xmin = -5.0
-  xmax = 5.0
-  ymin = -5.0
-  ymax = 5.0
+  nx = 4
+  ny = 4
+  nz = 2
+  xmin = -10.0e-1
+  xmax = 10.0e-1
+  ymin = -10.0e-1
+  ymax = 10.0e-1
   zmin = 0.0
-  zmax =0.5
-  partitioner      = linear
+  zmax =2.5e-1
+  #partitioner      = linear
 []
 
 #=======================================================
@@ -45,10 +45,9 @@
 #=======================================================
 #:BCs
 [BCs]
-
   [./FunctionNeumannBC_Laser]
     boundary                     = front
-    function                     = '(2*200.0/(3.141592654*(0.26^2)))*exp(-2.0*((x)^2+(y)^2)/(0.26^2))'
+    function                     = '(2*20.0/(3.141592654*(0.26^2)))*exp(-2.0*((x)^2+(y)^2)/(0.26^2))'
     save_in                      = LaserPower
     type                         = FunctionNeumannBC
     variable                     = Te

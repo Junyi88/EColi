@@ -61,7 +61,6 @@
   [../]
 []
 
-
 #=======================================================
 #:Adaptivity
 [Adaptivity]
@@ -84,7 +83,6 @@
       outputs                    = exodus
     [../]
   [../]
-
 []
 
 #=======================================================
@@ -120,30 +118,30 @@
     order = CONSTANT
   [../]
 
-  [./Pstrain_xx]
-    family = MONOMIAL
-    order = CONSTANT
-  [../]
-  [./Pstrain_yy]
-    family = MONOMIAL
-    order = CONSTANT
-  [../]
-  [./Pstrain_zz]
-    family = MONOMIAL
-    order = CONSTANT
-  [../]
-  [./Pstrain_xy]
-    family = MONOMIAL
-    order = CONSTANT
-  [../]
-  [./Pstrain_xz]
-    family = MONOMIAL
-    order = CONSTANT
-  [../]
-  [./Pstrain_yz]
-    family = MONOMIAL
-    order = CONSTANT
-  [../]
+  #[./Pstrain_xx]
+  #  family = MONOMIAL
+  #  order = CONSTANT
+  #[../]
+  #[./Pstrain_yy]
+  #  family = MONOMIAL
+  #  order = CONSTANT
+  #[../]
+  #[./Pstrain_zz]
+  #  family = MONOMIAL
+  #  order = CONSTANT
+  #[../]
+  #[./Pstrain_xy]
+  #  family = MONOMIAL
+  #  order = CONSTANT
+  #[../]
+  #[./Pstrain_xz]
+  #  family = MONOMIAL
+  #  order = CONSTANT
+  #[../]
+  #[./Pstrain_yz]
+  #  family = MONOMIAL
+  #  order = CONSTANT
+  #[../]
 
   [./stress_xx]
     family = MONOMIAL
@@ -222,48 +220,48 @@
     index_j = 2
   [../]
 
-  [./Pstrain_xx]
-    type = RankTwoAux
-    variable = Pstrain_xx
-    rank_two_tensor = plastic_strain
-    index_i = 0
-    index_j = 0
-  [../]
-  [./Pstrain_yy]
-    type = RankTwoAux
-    variable = Pstrain_yy
-    rank_two_tensor = plastic_strain
-    index_i = 1
-    index_j = 1
-  [../]
-  [./Pstrain_zz]
-    type = RankTwoAux
-    variable = Pstrain_zz
-    rank_two_tensor = plastic_strain
-    index_i = 2
-    index_j = 2
-  [../]
-  [./Pstrain_xy]
-    type = RankTwoAux
-    variable = Pstrain_xy
-    rank_two_tensor = plastic_strain
-    index_i = 0
-    index_j = 1
-  [../]
-  [./Pstrain_xz]
-    type = RankTwoAux
-    variable = Pstrain_xz
-    rank_two_tensor = plastic_strain
-    index_i = 0
-    index_j = 2
-  [../]
-  [./Pstrain_yz]
-    type = RankTwoAux
-    variable = Pstrain_yz
-    rank_two_tensor = plastic_strain
-    index_i = 1
-    index_j = 2
-  [../]
+  #[./Pstrain_xx]
+  #  type = RankTwoAux
+  #  variable = Pstrain_xx
+  #  rank_two_tensor = plastic_strain
+  #  index_i = 0
+  #  index_j = 0
+  #[../]
+  #[./Pstrain_yy]
+  #  type = RankTwoAux
+  #  variable = Pstrain_yy
+  #  rank_two_tensor = plastic_strain
+  #  index_i = 1
+  #  index_j = 1
+  #[../]
+  #[./Pstrain_zz]
+  #  type = RankTwoAux
+  #  variable = Pstrain_zz
+  #  rank_two_tensor = plastic_strain
+  #  index_i = 2
+  #  index_j = 2
+  #[../]
+  #[./Pstrain_xy]
+  #  type = RankTwoAux
+  #  variable = Pstrain_xy
+  #  rank_two_tensor = plastic_strain
+  #  index_i = 0
+  #  index_j = 1
+  #[../]
+  #[./Pstrain_xz]
+  #  type = RankTwoAux
+  #  variable = Pstrain_xz
+  #  rank_two_tensor = plastic_strain
+  #  index_i = 0
+  #  index_j = 2
+  #[../]
+  #[./Pstrain_yz]
+  #  type = RankTwoAux
+  #  variable = Pstrain_yz
+  #  rank_two_tensor = plastic_strain
+  #  index_i = 1
+  #  index_j = 2
+  #[../]
 
   [./stress_xx]
     type = RankTwoAux
@@ -348,37 +346,17 @@
   [./strain]
     type = ComputeFiniteStrain
     displacements = 'disp_x disp_y disp_z'
-    eigenstrain_names        = EigenStrain
   [../]
 
   [./stress]
-    #type = ComputeFiniteStrainElasticStress
-    type = ComputeMultiPlasticityStress
-    ep_plastic_tolerance = 1e-9
-    plastic_models = J2
+    type = ComputeFiniteStrainElasticStress
+    #type = ComputeMultiPlasticityStress
+    #ep_plastic_tolerance = 1e-9
+    #plastic_models = J2
   [../]
 
 #===================================================
-  [./ComputeVariableEigenstrain]
-    args                         = 'Te'
-    eigen_base                   = '11.8e-6 11.8e-6 11.8e-6 0 0 0'
-    eigenstrain_name             = EigenStrain
-    outputs                      = exodus
-    prefactor                    = Tediff
-    type                         = ComputeVariableEigenstrain
-    #use_displaced_mesh           = 0
-    #incremental_form             = 0
-  [../]
 
-  [./Tediff]
-    type = DerivativeParsedMaterial
-    f_name = Tediff
-    function = 'Te-273.15'
-    args = 'Te'
-    derivative_order             = 1
-    outputs = none
-  [../]
-  #
   [./specific_heat]
     type = ParsedMaterial
     f_name = specific_heat
@@ -397,7 +375,7 @@
 
 #=======================================================
 #:UserObjects
-[UserObjects]
+#[UserObjects]
   #[./str]
   #  execute_on                   = TIMESTEP_END
   #  #internal_0                   = 0
@@ -407,19 +385,19 @@
   #  value_residual               =  644.68
   #[../]
 
-  [./str]
-    execute_on                   = TIMESTEP_END
-    type                         = TensorMechanicsHardeningConstant
-    value                      = 300.0
-  [../]
-
-  [./J2]
-    type = TensorMechanicsPlasticJ2
-    yield_strength = str
-    yield_function_tolerance = 1E-3
-    internal_constraint_tolerance = 1E-9
-  [../]
-[]
+  #[./str]
+  #  execute_on                   = TIMESTEP_END
+  #  type                         = TensorMechanicsHardeningConstant
+  #  value                      = 300.0
+  #[../]
+  #
+  #[./J2]
+  #  type = TensorMechanicsPlasticJ2
+  #  yield_strength = str
+  #  yield_function_tolerance = 1E-3
+  #  internal_constraint_tolerance = 1E-9
+  #[../]
+#[]
 
 #=======================================================
 #:Kernels
@@ -427,7 +405,6 @@
   ## Eigenstrains
   [./TensorMechanics]
       displacements = 'disp_x disp_y disp_z'
-      eigenstrain_names        = EigenStrain
   [../]
 
   #==============================
@@ -467,7 +444,7 @@
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
-    dt = 1.0e-3
+    dt = 1.0e-5
     cutback_factor = 0.8
     growth_factor = 1.5
     optimal_iterations = 30
