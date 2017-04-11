@@ -3,7 +3,16 @@
 # break ClassName::functionName
 # break filename:line-number
 # bt
+#set logging on
+#set logging off
+#show logging
+#set logging file Junyi.log
+#  MultiPlasticityRawComponentAssembler::returnMapAll
+# print variable-name
+# break MultiPlasticityRawComponentAssembler:returnMapAll if intnl_old.size() != _num_models
 
+# break /home/jl1908/projects/moose/modules/tensor_mechanics/src/utils/MultiPlasticityRawComponentAssembler.C:610 if (intnl_old.size() == _num_models)
+# break /home/jl1908/projects/moose/modules/tensor_mechanics/src/utils/MultiPlasticityRawComponentAssembler.C:610 if (intnl_old.size() != _num_models)
 gdb --args EColi-dbg -i ./InputFiles/CrashingCode.i
 b Adaptivity::adaptMesh
 b GradientJumpIndicator::computeQpIntegral()

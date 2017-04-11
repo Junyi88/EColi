@@ -48,7 +48,7 @@
 
   [./FunctionNeumannBC_Laser]
     boundary                     = front
-    function                     = '(2*0.2/(3.141592654*(0.26^2)))*exp(-2.0*((x)^2+(y-10.0*t)^2)/(0.26^2))'
+    function                     = '(2*200.0/(3.141592654*(0.26^2)))*exp(-2.0*((x)^2+(y)^2)/(0.26^2))'
     save_in                      = LaserPower
     type                         = FunctionNeumannBC
     variable                     = Te
@@ -64,29 +64,29 @@
 
 #=======================================================
 #:Adaptivity
-[Adaptivity]
-  marker = errorfrac
-  step=10
-
-  [./Indicators]
-    [./error]
-      type = GradientJumpIndicator
-      variable = Te
-      outputs                    = exodus
-    [../]
-  [../]
-
-  [./Markers]
-    [./errorfrac]
-      type = ErrorToleranceMarker
-      refine = 1e-4
-      coarsen = 0.0
-      indicator = error
-      outputs                    = exodus
-    [../]
-  [../]
-
-[]
+#[Adaptivity]
+#  marker = errorfrac
+#  #step=10
+#
+#  [./Indicators]
+#    [./error]
+#      type = GradientJumpIndicator
+#      variable = Te
+#      outputs                    = exodus
+#    [../]
+#  [../]
+#
+#  [./Markers]
+#    [./errorfrac]
+#      type = ErrorToleranceMarker
+#      refine = 1e-4
+#      coarsen = 0.0
+#      indicator = error
+#      outputs                    = exodus
+#    [../]
+#  [../]
+#
+#[]
 
 #=======================================================
 #:AuxVariables
@@ -356,6 +356,7 @@
   [../]
 
   [./stress]
+    #type = ComputeFiniteStrainElasticStress
     type = ComputeMultiPlasticityStress
     ep_plastic_tolerance = 1e-9
     plastic_models = J2
@@ -370,7 +371,7 @@
     outputs                      = exodus
     prefactor                    = Tediff                           # Name of material defining the variable dependence
     type                         = ComputeVariableEigenstrain
-    use_displaced_mesh           = 0
+    #use_displaced_mesh           = 0
     #incremental_form             = 0
   [../]
 
@@ -402,13 +403,18 @@
 #=======================================================
 #:UserObjects
 [UserObjects]
+  #[./str]
+  #  execute_on                   = TIMESTEP_END
+  #  #internal_0                   = 0                           # The cutoff of internal parameter
+  #  rate                         = 397.6262
+  #  type                         = TensorMechanicsHardeningCutExponential
+  #  value_0                      = 376.7034                  # The value of the parameter for all internal_parameter <= internal_0
+  #  value_residual               =  644.68
+  #[../]
   [./str]
     execute_on                   = TIMESTEP_END
-    internal_0                   = 0                           # The cutoff of internal parameter
-    rate                         = 397.6262
-    type                         = TensorMechanicsHardeningCutExponential
-    value_0                      = 376.7034                  # The value of the parameter for all internal_parameter <= internal_0
-    value_residual               =  644.68
+    type                         = TensorMechanicsHardeningConstant
+    value                      = 300.0                  # The value of the parameter for all internal_parameter <= internal_0
   [../]
 
   [./J2]

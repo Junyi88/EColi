@@ -22,7 +22,7 @@
   ymax = 5.0
   zmin = 0.0
   zmax =0.5
-  #partitioner      = linear
+  partitioner      = linear
 []
 
 #=======================================================
@@ -45,10 +45,9 @@
 #=======================================================
 #:BCs
 [BCs]
-
   [./FunctionNeumannBC_Laser]
     boundary                     = front
-    function                     = '(2*0.2/(3.141592654*(0.26^2)))*exp(-2.0*((x)^2+(y-10.0*t)^2)/(0.26^2))'
+        function                     = '(2*200.0/(3.141592654*(0.26^2)))*exp(-2.0*((x)^2+(y)^2)/(0.26^2))'
     save_in                      = LaserPower
     type                         = FunctionNeumannBC
     variable                     = Te
@@ -64,34 +63,32 @@
 
 #=======================================================
 #:Adaptivity
-#[Adaptivity]
-#  marker = errorfrac
-#  step=10
-#
-#  [./Indicators]
-#    [./error]
-#      type = GradientJumpIndicator
-#      variable = Te
-#      outputs                    = exodus
-#    [../]
-#  [../]
-#
-#  [./Markers]
-#    [./errorfrac]
-#      type = ErrorToleranceMarker
-#      refine = 1e-4
-#      coarsen = 0.0
-#      indicator = error
-#      outputs                    = exodus
-#    [../]
-#  [../]
-#
-#[]
+[Adaptivity]
+  marker = errorfrac
+  #step=10
+  [./Indicators]
+    [./error]
+      type = GradientJumpIndicator
+      variable = Te
+      outputs                    = exodus
+    [../]
+  [../]
+
+  [./Markers]
+    [./errorfrac]
+      type = ErrorToleranceMarker
+      refine = 1e-4
+      coarsen = 0.0
+      indicator = error
+      outputs                    = exodus
+    [../]
+  [../]
+
+[]
 
 #=======================================================
 #:AuxVariables
 [AuxVariables]
-
   [./LaserPower]
     order = FIRST
     family = LAGRANGE
@@ -122,30 +119,30 @@
     order = CONSTANT
   [../]
 
-  #[./Pstrain_xx]
-  #  family = MONOMIAL
-  #  order = CONSTANT
-  #[../]
-  #[./Pstrain_yy]
-  #  family = MONOMIAL
-  #  order = CONSTANT
-  #[../]
-  #[./Pstrain_zz]
-  #  family = MONOMIAL
-  #  order = CONSTANT
-  #[../]
-  #[./Pstrain_xy]
-  #  family = MONOMIAL
-  #  order = CONSTANT
-  #[../]
-  #[./Pstrain_xz]
-  #  family = MONOMIAL
-  #  order = CONSTANT
-  #[../]
-  #[./Pstrain_yz]
-  #  family = MONOMIAL
-  #  order = CONSTANT
-  #[../]
+  [./Pstrain_xx]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./Pstrain_yy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./Pstrain_zz]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./Pstrain_xy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./Pstrain_xz]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./Pstrain_yz]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
 
   [./stress_xx]
     family = MONOMIAL
@@ -181,7 +178,6 @@
 #=======================================================
 #:AuxKernels
 [AuxKernels]
-
   [./strain_xx]
     type = RankTwoAux
     variable = strain_xx
@@ -225,48 +221,48 @@
     index_j = 2
   [../]
 
-  #[./Pstrain_xx]
-  #  type = RankTwoAux
-  #  variable = Pstrain_xx
-  #  rank_two_tensor = plastic_strain
-  #  index_i = 0
-  #  index_j = 0
-  #[../]
-  #[./Pstrain_yy]
-  #  type = RankTwoAux
-  #  variable = Pstrain_yy
-  #  rank_two_tensor = plastic_strain
-  #  index_i = 1
-  #  index_j = 1
-  #[../]
-  #[./Pstrain_zz]
-  #  type = RankTwoAux
-  #  variable = Pstrain_zz
-  #  rank_two_tensor = plastic_strain
-  #  index_i = 2
-  #  index_j = 2
-  #[../]
-  #[./Pstrain_xy]
-  #  type = RankTwoAux
-  #  variable = Pstrain_xy
-  #  rank_two_tensor = plastic_strain
-  #  index_i = 0
-  #  index_j = 1
-  #[../]
-  #[./Pstrain_xz]
-  #  type = RankTwoAux
-  #  variable = Pstrain_xz
-  #  rank_two_tensor = plastic_strain
-  #  index_i = 0
-  #  index_j = 2
-  #[../]
-  #[./Pstrain_yz]
-  #  type = RankTwoAux
-  #  variable = Pstrain_yz
-  #  rank_two_tensor = plastic_strain
-  #  index_i = 1
-  #  index_j = 2
-  #[../]
+  [./Pstrain_xx]
+    type = RankTwoAux
+    variable = Pstrain_xx
+    rank_two_tensor = plastic_strain
+    index_i = 0
+    index_j = 0
+  [../]
+  [./Pstrain_yy]
+    type = RankTwoAux
+    variable = Pstrain_yy
+    rank_two_tensor = plastic_strain
+    index_i = 1
+    index_j = 1
+  [../]
+  [./Pstrain_zz]
+    type = RankTwoAux
+    variable = Pstrain_zz
+    rank_two_tensor = plastic_strain
+    index_i = 2
+    index_j = 2
+  [../]
+  [./Pstrain_xy]
+    type = RankTwoAux
+    variable = Pstrain_xy
+    rank_two_tensor = plastic_strain
+    index_i = 0
+    index_j = 1
+  [../]
+  [./Pstrain_xz]
+    type = RankTwoAux
+    variable = Pstrain_xz
+    rank_two_tensor = plastic_strain
+    index_i = 0
+    index_j = 2
+  [../]
+  [./Pstrain_yz]
+    type = RankTwoAux
+    variable = Pstrain_yz
+    rank_two_tensor = plastic_strain
+    index_i = 1
+    index_j = 2
+  [../]
 
   [./stress_xx]
     type = RankTwoAux
@@ -327,22 +323,21 @@
     variable                     = Te
   [../]
 []
+
 #=======================================================
 #:Materials
 [Materials]
-
   [./TimeStepMaterial]
-    compute                      = 1                           # When false MOOSE will not call compute methods on this material, compute ...
+    compute                      = 1
     enable                       = 1
     implicit                     = 1
     outputs                      = none
-    prop_dt                      = dt                          # Material property to store the current dt
-    prop_time                    = time                        # Material property to store the current time
-    prop_time_step               = time_step                   # Material property to store the current time step number
+    prop_dt                      = dt
+    prop_time                    = time
+    prop_time_step               = time_step
     type                         = TimeStepMaterial
   [../]
 
-  # Eigenstrain
   [./elasticity_tensor]
     type = ComputeElasticityTensor
     fill_method                  = symmetric9
@@ -356,30 +351,30 @@
   [../]
 
   [./stress]
-    type = ComputeFiniteStrainElasticStress
-    #ep_plastic_tolerance = 1e-9
-    #plastic_models = J2
-    #perform_finite_strain_rotations = 0
+    #type = ComputeFiniteStrainElasticStress
+    type = ComputeMultiPlasticityStress
+    ep_plastic_tolerance = 1e-9
+    plastic_models = J2
   [../]
 
 #===================================================
   [./ComputeVariableEigenstrain]
-    args                         = 'Te'                  # variable dependencies for the prefactor
-    eigen_base                   = '11.8e-6 11.8e-6 11.8e-6 0 0 0'                 # Vector of values defining the constant base tensor for the Eigenstrain
+    args                         = 'Te'
+    eigen_base                   = '11.8e-6 11.8e-6 11.8e-6 0 0 0'
     eigenstrain_name             = EigenStrain
     outputs                      = exodus
-    prefactor                    = Tediff                           # Name of material defining the variable dependence
+    prefactor                    = Tediff
     type                         = ComputeVariableEigenstrain
     #use_displaced_mesh           = 0
     #incremental_form             = 0
   [../]
-  #
+
   [./Tediff]
     type = DerivativeParsedMaterial
     f_name = Tediff
     function = 'Te-273.15'
     args = 'Te'
-    derivative_order             = 2
+    derivative_order             = 1
     outputs = none
   [../]
   #
@@ -390,34 +385,40 @@
     args = 'Te'
     outputs = exodus
   [../]
-  #
-  ## Heat
+
+  # Heat
   [./Heat1]
     type = GenericConstantMaterial
     prop_names = 'thermal_conductivity density'
-    prop_values = '15.0 4000e-12' # W/m*K, J/kg-K, kg/m^3 @ 296K48
+    prop_values = '15.0 4000e-12'
   [../]
 []
 
 #=======================================================
 #:UserObjects
-#[UserObjects]
-#  [./str]
-#    execute_on                   = TIMESTEP_END
-#    internal_0                   = 0                           # The cutoff of internal parameter
-#    rate                         = 397.6262
-#    type                         = TensorMechanicsHardeningCutExponential
-#    value_0                      = 376.7034                  # The value of the parameter for all internal_parameter <= internal_0
-#    value_residual               =  644.68
-#  [../]
-#
-#  [./J2]
-#    type = TensorMechanicsPlasticJ2
-#    yield_strength = str
-#    yield_function_tolerance = 1E-3
-#    internal_constraint_tolerance = 1E-9
-#  [../]
-#[]
+[UserObjects]
+  #[./str]
+  #  execute_on                   = TIMESTEP_END
+  #  #internal_0                   = 0
+  #  rate                         = 397.6262
+  #  type                         = TensorMechanicsHardeningCutExponential
+  #  value_0                      = 376.7034
+  #  value_residual               =  644.68
+  #[../]
+
+  [./str]
+    execute_on                   = TIMESTEP_END
+    type                         = TensorMechanicsHardeningConstant
+    value                      = 300.0
+  [../]
+
+  [./J2]
+    type = TensorMechanicsPlasticJ2
+    yield_strength = str
+    yield_function_tolerance = 1E-3
+    internal_constraint_tolerance = 1E-9
+  [../]
+[]
 
 #=======================================================
 #:Kernels
