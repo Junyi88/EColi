@@ -13,9 +13,9 @@
   type = GeneratedMesh
   dim = 3
   elem_type = Hex8
-  nx = 5
-  ny = 5
-  nz = 2
+  nx = 2
+  ny = 2
+  nz = 1
   xmin = -10.0e-1
   xmax = 10.0e-1
   ymin = -10.0e-1
@@ -47,7 +47,7 @@
 [BCs]
   [./FunctionNeumannBC_Laser]
     boundary                     = front
-    function                     = '(2*200.0/(3.141592654*(0.26^2)))*exp(-2.0*((x)^2+(y)^2)/(0.26^2))'
+    function                     = '(2*2.0/(3.141592654*(0.26^2)))*exp(-2.0*((x)^2+(y)^2)/(0.26^2))'
     save_in                      = LaserPower
     type                         = FunctionNeumannBC
     variable                     = Te
@@ -453,7 +453,7 @@
 ##: Executioner
 [Executioner]
   type = Transient
-  solve_type = 'NEWTON'  # OR PJFNK
+  solve_type = 'JFNK'  # OR PJFNK
   petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
   petsc_options_value = 'asm      ilu          nonzero'
   l_max_its = 40
