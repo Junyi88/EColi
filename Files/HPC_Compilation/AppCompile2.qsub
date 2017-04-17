@@ -1,0 +1,37 @@
+#!/bin/sh
+#PBS -j oe
+#PBS -l walltime=12:00:00,select=1:ncpus=16:mpiprocs=16:mem=15200mb
+#
+
+module load mpi
+module load vtk
+module load gcc
+module load mooseframework
+# module load intel-suite mpi
+
+cd $WORK/mooseFR
+
+echo "Start cloning repos"
+# Old Repo
+# git clone -b HPC https://github.com/Junyi88/J1stork.git
+# git clone -b SetupNewApp https://github.com/Junyi88/EColi.git
+# git clone https://github.com/Junyi88/EColi.git
+echo "Done cloning repos"
+
+echo "QZ Start Build libmesh"
+cd $WORK/mooseFR/moose/scripts
+$WORK/mooseFR/moose/scripts/update_and_rebuild_libmesh.sh
+cd $WORK/mooseFR
+echo "QZ Finish Build libmesh"
+
+echo "QZ Start Build EColi"
+cd EColi
+make -j16
+cd ..
+echo "QZ Finish Build EColi"
+
+# cp -r $WORK/DropZone/MyRuns/* $TMPDIR
+# mpiexec ./EColi/EColi-opt -i $WORK/DropZone/MyRuns/Fattbert1D_Con1_R0.i
+# cp $TMPDIR/*.e $WORK/Outputs
+
+echo "QZ Done"
