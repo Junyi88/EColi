@@ -9,7 +9,8 @@
 #include "JunyiAngle2Value.h" //Add
 #include "JunyiSmoothCircleBaseIC.h" //Add
 #include "JunyiMultiSmoothCircleIC.h" //Add
-#include "ACMultiInterfaceAnisoFix.h"
+#include "ACMultiInterfaceAnisoFix.h" //Add
+#include "SwitchingFunctionMaterialNoOver.h" //Add
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -53,6 +54,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerAuxKernel(JunyiAngle2Value); //Add
   // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
   registerInitialCondition(JunyiMultiSmoothCircleIC); //Add
+  registerMaterial(SwitchingFunctionMaterialNoOver); //Add
 }
 
 // External entry point for dynamic syntax association
