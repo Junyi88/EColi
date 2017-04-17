@@ -9,8 +9,11 @@
 #include "JunyiAngle2Value.h" //Add
 #include "JunyiSmoothCircleBaseIC.h" //Add
 #include "JunyiMultiSmoothCircleIC.h" //Add
+
 #include "ACMultiInterfaceAnisoFix.h" //Add
 #include "SwitchingFunctionMaterialNoOver.h" //Add
+#include "HeatConduction2.h"
+
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -51,6 +54,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(PusztaiACBulk); //Add
   registerKernel(PusztaiQsBulk); //Add
   registerKernel(ACMultiInterfaceAnisoFix); //Add
+  registerKernel(HeatConduction2Kernel); //Add
   registerAuxKernel(JunyiAngle2Value); //Add
   // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
   registerInitialCondition(JunyiMultiSmoothCircleIC); //Add

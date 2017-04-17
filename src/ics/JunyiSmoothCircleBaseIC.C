@@ -9,7 +9,6 @@
 #include "MooseMesh.h"
 #include "MooseVariable.h"						  
 
-
 template<>
 InputParameters validParams<JunyiSmoothCircleBaseIC>()
 {
