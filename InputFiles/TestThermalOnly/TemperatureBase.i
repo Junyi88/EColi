@@ -47,8 +47,8 @@
 
 #=======================================================
 #:Adaptivity
-[Adaptivity]
-  marker = errorfrac
+#[Adaptivity]
+  #marker = errorfrac
   #step=10
   #[./Indicators]
   #  [./error]
@@ -67,7 +67,7 @@
   #    outputs                    = exodus
   #  [../]
   #[../]
-[]
+#[]
 
 #=======================================================
 #:AuxVariables

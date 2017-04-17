@@ -22,3 +22,15 @@ b MPI_Abort
 
 MultiPlasticityRawComponentAssembler::returnMapAll if (intnl_old.size() != _num_models)
 MultiPlasticityRawComponentAssembler::returnMapAll if (intnl.size() != _num_models)
+
+b MooseApp::run
+b MooseApp::setupOptions
+b MooseApp::runInputFile
+b MooseApp::executeExecutioner
+b ActionWarehouse::executeActionsWithAction
+b ActionWarehouse::executeAllActions
+b Transient::preStep
+b Transient::takeStep
+b Transient::endStep
+b Transient::postStep
+b Transient::endStep
