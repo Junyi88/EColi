@@ -22,7 +22,7 @@ echo "QZ Start Build J1Stork"
 cd EColi
 make -j16
 cd ..
-echo "QZ Finish Build J1Stork
+echo "QZ Finish Build J1Stork"
 
 # cp -r $WORK/DropZone/MyRuns/* $TMPDIR
 # mpiexec ./EColi/EColi-opt -i $WORK/DropZone/MyRuns/Fattbert1D_Con1_R0.i
