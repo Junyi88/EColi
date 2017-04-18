@@ -14,13 +14,19 @@ validParams<SwitchingFunctionMaterialLagrange>()
   params.addClassDescription("Helper material to provide h(eta) and its derivative in one of two "
                              "polynomial forms.\nSIMPLE: 3*eta^2-2*eta^3\nHIGH: "
                              "eta^3*(6*eta^2-15*eta+10)");
-  MooseEnum h_order("SIMPLE=0 HIGH", "SIMPLE");
   params.set<std::string>("function_name") = std::string("h");
+  params.addParam<Real>("Correction_Z", 0.01, "ReflectPoint");
   return params;
 }
 
 SwitchingFunctionMaterialLagrange::SwitchingFunctionMaterialLagrange(const InputParameters & parameters)
-  : OrderParameterFunctionMaterial(parameters)
+  : OrderParameterFunctionMaterial(parameters),
+    _Z1(getParam<Real>("Correction_Z")),
+    _A1(1.0/_Z1),
+    _B1(_Z1/exp(_A1*_Z1)),
+    _Z2(1.0-_Z1),
+    _A2(1.0/(1.0-_Z2)),
+    _B2((1.0-_Z2)/exp(-_A2*_Z2))
 {
 }
 
@@ -36,17 +42,17 @@ SwitchingFunctionMaterialLagrange::computeQpProperties()
       _prop_d2f[_qp] = 0.0;
 
 
-  if (n<0.0)
+  if (n<_Z1)
   {
-    _prop_f[_qp] = 0.0;
-    _prop_df[_qp] = 0.0;
-    _prop_d2f[_qp] = 0.0;
+    _prop_f[_qp] = _B1*exp(_A1*n);
+    _prop_df[_qp] = _A1*_prop_f[_qp];
+    _prop_d2f[_qp] =_A1*_prop_df[_qp];
   }
-  if (n>1.0)
+  if (n>_Z2)
   {
-    _prop_f[_qp] = 1.0;
-    _prop_df[_qp] = 0.0;
-    _prop_d2f[_qp] = 0.0;
+    _prop_f[_qp] = 1.0-_B2*exp(-_A2*n);
+    _prop_df[_qp] = _A2*_B2*exp(-_A2*n);
+    _prop_d2f[_qp] = -_A2*_prop_df[_qp];
   }
 
 

@@ -29,7 +29,13 @@ public:
 
 protected:
   virtual void computeQpProperties();
+  Real _Z1;
+  Real _A1;
+  Real _B1;
 
+  Real _Z2;
+  Real _A2;
+  Real _B2;
 };
 
 #endif // SWITCHINGFUNCTIONMATERIALLAGRANGE_H
