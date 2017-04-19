@@ -29,6 +29,8 @@ public:
 
 protected:
   virtual void computeQpProperties();
+  Real _P;
+  
   Real _Z1;
   Real _A1;
   Real _B1;
