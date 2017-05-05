@@ -12,3 +12,8 @@ b MooseApp::executeExecutioner
 b ActionWarehouse::executeActionsWithAction
 b Executioner::Executioner
 b Transient::Transient
+
+b SetupMeshAction::SetupMeshAction
+b SetupMeshCompleteAction::SetupMeshCompleteAction
+b CreateDisplacedProblemAction::CreateDisplacedProblemAction
+b 
