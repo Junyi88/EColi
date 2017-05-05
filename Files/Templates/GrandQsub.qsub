@@ -11,10 +11,10 @@ module load mooseframework
 
 cp -r $WORK/DropZone/KenelToHPC/Kenel_1D_C46T1_R0.i $TMPDIR
 cp -r $WORK/DropZone/KenelToHPC/Outputs/TiAl_NoiseB_R0_out.e $TMPDIR
-pbsexec -grace 60 mpiexec $WORK/mooseFR/EColi/EColi-opt -i ./Kenel_1D_C46T1_R0.i
+pbsexec -grace 60 mpiexec $WORK/mooseFR/EColi/EColi-opt -i $TMPDIR/Kenel_1D_C46T1_R0.i
 
 sftp -b $HOME/Scripts/MoveFiles.sh jl1908@me-yw1107.me.ic.ac.uk
 
 cp -f $TMPDIR/*.e  $WORK/DropZone/KenelToHPC/Outputs
 
-qsub $WORK/DropZone/KenelToHPC/Kenel_1D_C48T1_R0.qsub 
+qsub $WORK/DropZone/KenelToHPC/Kenel_1D_C48T1_R0.qsub

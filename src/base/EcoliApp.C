@@ -15,6 +15,8 @@
 #include "SwitchingFunctionMaterialLagrange.h" //Add
 #include "HeatConduction2.h"
 
+#include "PusztaiACBulkB.h" //Add
+#include "PusztaiQsBulkB.h" //Add
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -54,6 +56,8 @@ EcoliApp::registerObjects(Factory & factory)
 {
   registerKernel(PusztaiACBulk); //Add
   registerKernel(PusztaiQsBulk); //Add
+  registerKernel(PusztaiACBulkB); //Add
+  registerKernel(PusztaiQsBulkB); //Add
   registerKernel(ACMultiInterfaceAnisoFix); //Add
   registerKernel(HeatConduction2Kernel); //Add
   registerAuxKernel(JunyiAngle2Value); //Add
