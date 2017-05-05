@@ -182,7 +182,7 @@ PusztaiQsBulkB::dInSqrtGrad2_dEta(const Real &x)
   if (x>_Z)
   {
     return (_grad_u[_qp]*_grad_phi[_j][_qp])*(
-      _A*sech(_A*x)*sech(_A*x)/x-tanh(_A*x)/(x*x));
+      _A/(cosh(_A*x)*cosh(_A*x)*x)-tanh(_A*x)/(x*x));
   }
 
   return (-_C1+_C2*x*x-_C3*pow(x,5.0))*(
@@ -196,7 +196,7 @@ PusztaiQsBulkB::dInSqrtGrad2_dArg(const unsigned int &cvar, const Real &x)
   if (x>_Z)
   {
     return ((*_gradarg[cvar])[_qp]*_grad_phi[_j][_qp])*(
-      _A*sech(_A*x)*sech(_A*x)/x-tanh(_A*x)/(x*x));
+      _A/(cosh(_A*x)*cosh(_A*x)*x)-tanh(_A*x)/(x*x));
   }
 
   return (-_C1+_C2*x*x-_C3*pow(x,5.0))*
