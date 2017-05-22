@@ -218,7 +218,11 @@
     yield_function_tolerance = 1E-3
     internal_constraint_tolerance = 1E-9
   [../]
+
+
+  
 []
+
 
 #=======================================================
 #:AuxVariables
@@ -348,6 +352,37 @@
                                                                # in the Mesh block the undisplaced mesh will still be used. ...
                                                                # Group: Advanced
     variable                     = (required)                  # The name of the variable that this object applies to
+  [../]
+
+  [./<TotalFreeEnergy>]
+    # Total free energy (both the bulk and gradient parts), where the bulk free energy has been defined
+    # in a material
+    additional_free_energy = 0.0             # Coupled variable holding additional free energy contributions
+                                             # to be summed up
+    block                  =                 # The list of block ids (SubdomainID) that this object
+                                             # will be applied
+    boundary               =                 # The list of boundary IDs from the mesh where this boundary
+                                             # condition applies
+    control_tags           =                 # Adds user-defined labels for accessing object parameters
+                                             # via control logic.
+                                             # Group: Advanced
+    enable                 = 1               # Set the enabled status of the MooseObject.
+                                             # Group: Advanced
+    execute_on             = LINEAR          # Set to (nonlinear|linear|timestep_end|timestep_begin|custom)
+                                             # to execute only at that moment
+    f_name                 = F               # Base name of the free energy function
+    interfacial_vars       =                 # Variable names that contribute to interfacial energy
+    kappa_names            =                 # Vector of kappa names corresponding to each variable
+                                             # name in interfacial_vars in the same order.
+    seed                   = 0               # The seed for the master random number generator
+                                             # Group: Advanced
+    type                   = TotalFreeEnergy
+    use_displaced_mesh     = 0               # Whether or not this object should use the displaced mesh
+                                             # for computation.  Note that in the case this is true
+                                             # but no displacements are provided in the Mesh block the
+                                             # undisplaced mesh will still be used.
+                                             # Group: Advanced
+    variable               = (required)      # The name of the variable that this object applies to
   [../]
 
   [./ParsedAux]
