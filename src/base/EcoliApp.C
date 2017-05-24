@@ -11,6 +11,7 @@
 #include "JunyiMultiSmoothCircleIC.h" //Add
 
 #include "ACMultiInterfaceAnisoFix.h" //Add
+#include "ACMultiInterfaceAniso2Dq.h" //Add
 #include "SwitchingFunctionMaterialNoOver.h" //Add
 #include "SwitchingFunctionMaterialLagrange.h" //Add
 #include "HeatConduction2.h"
@@ -59,6 +60,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(PusztaiACBulkB); //Add
   registerKernel(PusztaiQsBulkB); //Add
   registerKernel(ACMultiInterfaceAnisoFix); //Add
+  registerKernel(ACMultiInterfaceAniso2Dq); //Add
   registerKernel(HeatConduction2Kernel); //Add
   registerAuxKernel(JunyiAngle2Value); //Add
   // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
