@@ -40,8 +40,8 @@ ACMultiInterfaceAniso2Dq::ACMultiInterfaceAniso2Dq(const InputParameters & param
     _kappa_names(getParam<std::vector<MaterialPropertyName> >("kappa_names")),
     _kappa(_num_etas*_num_dim),
     _L(getMaterialProperty<Real>("mob_name")),
-    _q1(&coupledValue("Q1")),
-    _q2(&coupledValue("Q2"))
+    _q1(&coupledValue("Q1",0)),
+    _q2(&coupledValue("Q2",0))
 {
   if ((_num_etas*_num_dim) != _kappa_names.size())
     mooseError("Supply the correct nummber of etas, num dims and kappa_names.");
@@ -187,8 +187,8 @@ ACMultiInterfaceAniso2Dq::kappaXgradeta(const int b,const RealGradient gradeta)
   RealGradient kappagradeta;
     kappagradeta(3)=0.0;
 
-  VariableValue c1=(*_q1[0])[_qp]*(*_q1[0])[_qp] - (*_q2[0])[_qp]*(*_q2[0])[_qp];
-  VariableValue s1=2 * (*_q1[0])[_qp] * (*_q2[0])[_qp];
+  VariableValue c1=(*_q1)[_qp]*(*_q1)[_qp] - (*_q2)[_qp]*(*_q2)[_qp];
+  VariableValue s1=2 * (*_q1)[_qp] * (*_q2)[_qp];
 
   kappagradeta(1)=c1;
   kappagradeta(2)=c1*gradeta(2);
