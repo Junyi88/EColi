@@ -187,8 +187,8 @@ ACMultiInterfaceAniso2Dq::kappaXgradeta(const int b,const RealGradient gradeta)
   RealGradient kappagradeta;
     kappagradeta(3)=0.0;
 
-  VariableValue c1=(*_q1)[_qp]*(*_q1)[_qp] - (*_q2)[_qp]*(*_q2)[_qp];
-  VariableValue s1=2 * (*_q1)[_qp] * (*_q2)[_qp];
+  Real c1=(*_q1)[_qp]*(*_q1)[_qp] - (*_q2)[_qp]*(*_q2)[_qp];
+  Real s1=2 * (*_q1)[_qp] * (*_q2)[_qp];
 
   // kappagradeta(1)=c1;
   // kappagradeta(2)=c1*gradeta(2);
