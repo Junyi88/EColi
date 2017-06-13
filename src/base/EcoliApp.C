@@ -14,6 +14,7 @@
 #include "ACMultiInterfaceAniso2Dq.h" //Add
 #include "SwitchingFunctionMaterialNoOver.h" //Add
 #include "SwitchingFunctionMaterialLagrange.h" //Add
+#include "SwitchingFunctionMaterialLagrangeB.h" //Add
 #include "HeatConduction2.h"
 
 #include "PusztaiACBulkB.h" //Add
@@ -67,6 +68,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerInitialCondition(JunyiMultiSmoothCircleIC); //Add
   registerMaterial(SwitchingFunctionMaterialNoOver); //Add
   registerMaterial(SwitchingFunctionMaterialLagrange); //Add
+  registerMaterial(SwitchingFunctionMaterialLagrangeB); //Add
 }
 
 // External entry point for dynamic syntax association
