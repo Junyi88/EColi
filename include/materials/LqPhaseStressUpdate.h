@@ -9,7 +9,8 @@
 
 #include "RadialReturnStressUpdate.h"
 #include "MooseMesh.h"
-
+#include "JvarMapInterface.h"
+#include "DerivativeMaterialInterface.h"
 /**
  * This class uses the Discrete material in a radial return isotropic creep
  * model.  This class is one of the basic
