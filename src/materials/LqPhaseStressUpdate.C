@@ -29,7 +29,7 @@ validParams<LqPhaseStressUpdate>()
   params.addParam<std::string>(
       "creep_prepend", "", "String that is prepended to the creep_strain Material Property");
 
-  params.addParam<MaterialPropertyName>("Phase_Interpolation", "h", "The phase value to deal with creep");
+  params.addRequiredParam<MaterialPropertyName>("Phase_Interpolation", "The phase value to deal with creep");
 
   return params;
 }
@@ -47,7 +47,7 @@ LqPhaseStressUpdate::LqPhaseStressUpdate(const InputParameters & parameters)
     _temperature(_has_temp ? coupledValue("temperature") : _zero),
     _creep_strain(declareProperty<RankTwoTensor>(_creep_prepend + "creep_strain")),
     _creep_strain_old(getMaterialPropertyOld<RankTwoTensor>(_creep_prepend + "creep_strain")),
-    _h(getMaterialProperty<Real>("Phase_Interpolation")),
+    _h(getMaterialProperty<Real>("Phase_Interpolation"))
 {
 }
 
