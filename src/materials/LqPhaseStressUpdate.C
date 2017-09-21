@@ -84,7 +84,7 @@ LqPhaseStressUpdate::computeResidual(const Real effective_trial_stress, const Re
 {
   const Real stress_delta = effective_trial_stress - _three_shear_modulus * scalar;
   const Real creep_rate =
-      _h*_coefficient * std::pow(stress_delta, _n_exponent) * _exponential * _exp_time;
+      _h[_qp]*_coefficient * std::pow(stress_delta, _n_exponent) * _exponential * _exp_time;
   return creep_rate * _dt - scalar;
 }
 
@@ -92,7 +92,7 @@ Real
 LqPhaseStressUpdate::computeDerivative(const Real effective_trial_stress, const Real scalar)
 {
   const Real stress_delta = effective_trial_stress - _three_shear_modulus * scalar;
-  const Real creep_rate_derivative = -1.0 * _h * _coefficient * _three_shear_modulus * _n_exponent *
+  const Real creep_rate_derivative = -1.0 * _h[_qp] * _coefficient * _three_shear_modulus * _n_exponent *
                                      std::pow(stress_delta, _n_exponent - 1.0) * _exponential *
                                      _exp_time;
   return creep_rate_derivative * _dt - 1.0;
