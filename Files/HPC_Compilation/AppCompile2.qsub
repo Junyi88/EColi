@@ -26,7 +26,7 @@ echo "QZ Finish Build libmesh"
 
 echo "QZ Start Build EColi"
 cd EColi
-make -j16
+make -j16 --always-make
 cd ..
 echo "QZ Finish Build EColi"
 
