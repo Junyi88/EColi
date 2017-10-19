@@ -32,7 +32,7 @@ validParams<FunctionNeumannJunyiBC>()
 
 FunctionNeumannJunyiBC::FunctionNeumannJunyiBC(const InputParameters & parameters)
   : IntegratedBC(parameters), _func(getFunction("function")), _value(getParam<RealVectorValue>("vector_value")),
-  _mask(getMaterialProperty<Real>("Mask_name")),
+  _mask(getMaterialProperty<Real>("Mask_name"))
 {
 }
 
