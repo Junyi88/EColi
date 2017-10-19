@@ -39,5 +39,5 @@ FunctionNeumannJunyiBC::FunctionNeumannJunyiBC(const InputParameters & parameter
 Real
 FunctionNeumannJunyiBC::computeQpResidual()
 {
-  return -_test[_i][_qp] * _func.value(_t, _q_point[_qp]) * (_value * _normals[_qp]) * _L[_qp];
+  return -_test[_i][_qp] * _func.value(_t, _q_point[_qp]) * (_value * _normals[_qp]) * _mask[_qp];
 }
