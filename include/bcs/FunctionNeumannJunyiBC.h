@@ -22,7 +22,7 @@ class FunctionNeumannJunyiBC;
 class Function;
 
 template <>
-InputParameters validParams<FunctionNeumannBC>();
+InputParameters validParams<FunctionNeumannJunyiBC>();
 
 /**
  * Boundary condition of a Neumann style whose value is computed by a user-defined function
