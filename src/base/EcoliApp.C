@@ -22,6 +22,8 @@
 
 #include "LqPhaseStressUpdate.h"
 
+#include "FunctionNeumannJunyiBC.h"
+
 template<>
 InputParameters validParams<EcoliApp>()
 {
@@ -72,6 +74,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerMaterial(SwitchingFunctionMaterialLagrange); //Add
   registerMaterial(SwitchingFunctionMaterialLagrangeB); //Add
   registerMaterial(LqPhaseStressUpdate); //Add
+  registerBoundaryCondition(FunctionNeumannJunyiBC);
 }
 
 // External entry point for dynamic syntax association
