@@ -24,6 +24,9 @@
 
 #include "FunctionNeumannJunyiBC.h"
 
+#include "LatentConductionTemp.h"
+#include "LatentConductionEta.h"
+
 template<>
 InputParameters validParams<EcoliApp>()
 {
@@ -67,6 +70,10 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(ACMultiInterfaceAnisoFix); //Add
   registerKernel(ACMultiInterfaceAniso2Dq); //Add
   registerKernel(HeatConduction2Kernel); //Add
+
+  registerKernel(LatentConductionTemp);
+  registerKernel(LatentConductionEta);
+  
   registerAuxKernel(JunyiAngle2Value); //Add
   // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
   registerInitialCondition(JunyiMultiSmoothCircleIC); //Add
