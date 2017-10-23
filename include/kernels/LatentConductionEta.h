@@ -31,7 +31,7 @@ protected:
   // const MaterialProperty<Real> & _CL;
 
   // For Jacobian Diag
-  //const MaterialProperty<Real> & _dConductivitydTemp;
+  const MaterialProperty<Real> & _dConductivitydTemp;
 
   // Other Auxiliary Variables
   unsigned int _Temp_var;

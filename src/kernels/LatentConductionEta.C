@@ -53,7 +53,7 @@ LatentConductionEta::computeQpJacobian()
 }
 
 //** computeQpOffDiagJacobian() *********************************************************
-// Real
+Real
 LatentConductionEta::computeQpOffDiagJacobian(unsigned int jvar)
 {
   if (jvar == _Temp_var){
