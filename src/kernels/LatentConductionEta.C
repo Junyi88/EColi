@@ -59,7 +59,7 @@ LatentConductionEta::computeQpOffDiagJacobian(unsigned int jvar)
   if (jvar == _Temp_var){
     if (((_Temp[_qp]>=_Tmelt)&&(_u[_qp]<1.0))||((_Temp[_qp]<=_Tmelt)&&(_u[_qp]>0.0))) {
       return (_dConductivitydTemp[_qp]*_phi[_j][_qp]*_grad_Temp[_qp]+
-        _Conductivity[_qp]*_grad_phi[_j][_qp]*Temp[_qp])*_grad_test[_i][_qp];
+        _Conductivity[_qp]*_grad_phi[_j][_qp]*_Temp[_qp])*_grad_test[_i][_qp];
     }
   }
 
