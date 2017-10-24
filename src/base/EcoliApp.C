@@ -27,6 +27,9 @@
 #include "LatentConductionTemp.h"
 #include "LatentConductionEta.h"
 
+#include "LatentHeat.h"
+#include "MeltTimeDerivative.h"
+
 #include "CoupledTimeDerivativeMelt.h"
 #include "SpecificHeatConductionTimeDerivativeMelt.h"
 
@@ -79,6 +82,9 @@ EcoliApp::registerObjects(Factory & factory)
 
   registerKernel(CoupledTimeDerivativeMelt);
   registerKernel(SpecificHeatConductionTimeDerivativeMelt);
+  registerKernel(LatentHeat);
+  registerKernel(MeltTimeDerivative);
+
 
   registerAuxKernel(JunyiAngle2Value); //Add
   // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
