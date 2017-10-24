@@ -40,8 +40,8 @@ protected:
 
   const Real _Tmelt;
   const Real _K;
-  const Real _DT;
-  const Real _dummy;
+  Real _DT;
+  Real _dummy;
 
 };
 
