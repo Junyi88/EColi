@@ -1,7 +1,7 @@
-#include "LatentConductionEta.h"
+#include "LatentHeat.h"
 
 template<>
-InputParameters validParams<LatentConductionEta>()
+InputParameters validParams<LatentHeat>()
 {
   InputParameters params = validParams<Kernel>();
   params.addClassDescription("Phase Component of Conduction For Heat transfer with latent heat");
@@ -16,7 +16,7 @@ InputParameters validParams<LatentConductionEta>()
 }
 
 //** Constructor *********************************************************
-LatentConductionEta::LatentConductionEta(const InputParameters & parameters) :
+LatentHeat::LatentHeat(const InputParameters & parameters) :
     DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >(parameters),
     _Conductivity(getMaterialProperty<Real>("Conductivity")),
     _dConductivitydTemp(getMaterialPropertyDerivative<Real>("Conductivity","Temp")),
@@ -30,7 +30,7 @@ LatentConductionEta::LatentConductionEta(const InputParameters & parameters) :
 
   //** computeQpResidual() *********************************************************
 Real
-LatentConductionEta::computeQpResidual()
+LatentHeat::computeQpResidual()
 {
 
   _DT=_Tmelt-_Temp[_qp];
@@ -44,7 +44,7 @@ LatentConductionEta::computeQpResidual()
 
   } else if (_DT>0.0){
     if (_u[_qp]>=0.0) {
-      return _K*_u[qp]*_u[qp]*_DT*_test[_i][_qp];
+      return _K*_u[qp]*_u[_qp]*_DT*_test[_i][_qp];
     } else {return 0.0;}
   }
 
@@ -54,7 +54,7 @@ LatentConductionEta::computeQpResidual()
 
 //** computeQpJacobian() *********************************************************
 Real
-LatentConductionEta::computeQpJacobian()
+LatentHeat::computeQpJacobian()
 {
   // if (((_Temp[_qp]>=_Tmelt)&&(_u[_qp]<1.0))||((_Temp[_qp]<=_Tmelt)&&(_u[_qp]>0.0))) {
   //   return (_dConductivitydTemp[_qp]*_phi[_j][_qp]*_grad_u[_qp]+
@@ -80,7 +80,7 @@ LatentConductionEta::computeQpJacobian()
 
 //** computeQpOffDiagJacobian() *********************************************************
 Real
-LatentConductionEta::computeQpOffDiagJacobian(unsigned int jvar)
+LatentHeat::computeQpOffDiagJacobian(unsigned int jvar)
 {
   if (jvar == _Temp_var){
     if (_DT<0.0){
