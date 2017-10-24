@@ -38,13 +38,13 @@ LatentHeat::computeQpResidual()
 
   if (_DT<0.0){
     if (_u[_qp]<=1.0) {
-      _dummy=(_u[qp]-1.0);
+      _dummy=(_u[_qp]-1.0);
       return _K*_dummy*_dummy*_DT*_test[_i][_qp];
     } else {return 0.0;}
 
   } else if (_DT>0.0){
     if (_u[_qp]>=0.0) {
-      return _K*_u[qp]*_u[_qp]*_DT*_test[_i][_qp];
+      return _K*_u[_qp]*_u[_qp]*_DT*_test[_i][_qp];
     } else {return 0.0;}
   }
 
@@ -85,13 +85,13 @@ LatentHeat::computeQpOffDiagJacobian(unsigned int jvar)
   if (jvar == _Temp_var){
     if (_DT<0.0){
       if (_u[_qp]<=1.0) {
-        _dummy=(_u[qp]-1.0);
+        _dummy=(_u[_qp]-1.0);
         return _K*_dummy*_dummy*(-_phi[_j][_qp])*_test[_i][_qp];
       } else {return 0.0;}
 
     } else if (_DT>0.0){
       if (_u[_qp]>=0.0) {
-        return _K*_u[qp]*_u[qp]*(-_phi[_j][_qp])*_test[_i][_qp];
+        return _K*_u[_qp]*_u[_qp]*(-_phi[_j][_qp])*_test[_i][_qp];
       } else {return 0.0;}
     }
   }
