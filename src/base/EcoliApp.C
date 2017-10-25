@@ -32,6 +32,7 @@
 
 #include "CoupledTimeDerivativeMelt.h"
 #include "SpecificHeatConductionTimeDerivativeMelt.h"
+#include "HeatConductionTimeDerivative2.h"
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -84,7 +85,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(SpecificHeatConductionTimeDerivativeMelt);
   registerKernel(LatentHeat);
   registerKernel(MeltTimeDerivative);
-
+  registerKernel(HeatConductionTimeDerivative2);
 
   registerAuxKernel(JunyiAngle2Value); //Add
   // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
