@@ -11,21 +11,21 @@
 #include "Material.h"
 
 // Forward Declarations
-class MskHeatConductionKernel;
+class MskHeatConduction;
 
 template <>
-InputParameters validParams<MskHeatConductionKernel>();
+InputParameters validParams<MskHeatConduction>();
 
 /**
- * Note: This class is named MskHeatConductionKernel instead of HeatConduction
+ * Note: This class is named MskHeatConduction instead of HeatConduction
  * to avoid a clash with the HeatConduction namespace.  It is registered
  * as HeatConduction, which means it can be used by that name in the input
  * file.
  */
-class MskHeatConductionKernel : public Diffusion
+class MskHeatConduction : public Diffusion
 {
 public:
-  MskHeatConductionKernel(const InputParameters & parameters);
+  MskHeatConduction(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

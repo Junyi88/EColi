@@ -10,7 +10,7 @@
 
 template <>
 InputParameters
-validParams<MskHeatConductionKernel>()
+validParams<MskHeatConduction>()
 {
   InputParameters params = validParams<Diffusion>();
   params.addClassDescription(
@@ -30,7 +30,7 @@ validParams<MskHeatConductionKernel>()
   return params;
 }
 
-MskHeatConductionKernel::MskHeatConductionKernel(const InputParameters & parameters)
+MskHeatConduction::MskHeatConduction(const InputParameters & parameters)
   : Diffusion(parameters),
     _diffusion_coefficient(getMaterialProperty<Real>("diffusion_coefficient")),
     _diffusion_coefficient_dT(hasMaterialProperty<Real>("diffusion_coefficient_dT")
@@ -40,7 +40,7 @@ MskHeatConductionKernel::MskHeatConductionKernel(const InputParameters & paramet
 }
 
 Real
-MskHeatConductionKernel::computeQpResidual()
+MskHeatConduction::computeQpResidual()
 {
   if (_Mask[_qp]<0.5)
     return 0.0;
@@ -49,11 +49,11 @@ MskHeatConductionKernel::computeQpResidual()
 }
 
 Real
-MskHeatConductionKernel::computeQpJacobian()
+MskHeatConduction::computeQpJacobian()
 {
   if (_Mask[_qp]<0.5)
     return 0.0;
-    
+
   Real jac = _diffusion_coefficient[_qp] * Diffusion::computeQpJacobian();
   if (_diffusion_coefficient_dT)
     jac += (*_diffusion_coefficient_dT)[_qp] * _phi[_j][_qp] * Diffusion::computeQpResidual();
