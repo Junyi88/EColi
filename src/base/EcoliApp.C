@@ -34,6 +34,16 @@
 #include "SpecificHeatConductionTimeDerivativeMelt.h"
 #include "HeatConductionTimeDerivative2.h"
 
+//
+#include "MskAllenCahn.h"
+#include "MskBodyForce.h"
+#include "MskHeatConduction.h"
+#include "MskLatentHeat.h"
+#include "MskMeltTimeDerivative.h"
+#include "MskSpecificHeatConductionTimeDerivative.h"
+#include "MskStressDivergence.h"
+#include "MskTimeDerivative.h"
+
 template<>
 InputParameters validParams<EcoliApp>()
 {
@@ -86,6 +96,16 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(LatentHeat);
   registerKernel(MeltTimeDerivative);
   registerKernel(HeatConductionTimeDerivative2);
+
+  //
+  registerKernel(MskAllenCahn);
+  registerKernel(MskBodyForce);
+  registerKernel(MskHeatConduction);
+  registerKernel(MskLatentHeat);
+  registerKernel(MskMeltTimeDerivative);
+  registerKernel(MskSpecificHeatConductionTimeDerivative);
+  registerKernel(MskStressDivergence);
+  registerKernel(MskTimeDerivative);
 
   registerAuxKernel(JunyiAngle2Value); //Add
   // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
