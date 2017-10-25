@@ -56,9 +56,9 @@ MskTimeDerivative::computeQpJacobian()
 void
 MskTimeDerivative::computeJacobian()
 {
-  if (_Mask[_qp]<0.5)
-    return 0.0;
-    
+  // if (_Mask[_qp]<0.5)
+  //   return 0.0;
+
   if (_lumping)
   {
     DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), _var.number());
