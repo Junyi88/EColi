@@ -43,11 +43,17 @@ HeatConductionTimeDerivative2::HeatConductionTimeDerivative2(const InputParamete
 Real
 HeatConductionTimeDerivative2::computeQpResidual()
 {
+  if (_Mask[_qp]<0.5)
+    return 0.0;
+
   return _specific_heat[_qp] * _density[_qp] * TimeDerivative::computeQpResidual();
 }
 
 Real
 HeatConductionTimeDerivative2::computeQpJacobian()
 {
+  if (_Mask[_qp]<0.5)
+    return 0.0;
+    
   return _specific_heat[_qp] * _density[_qp] * TimeDerivative::computeQpJacobian();
 }
