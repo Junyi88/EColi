@@ -5,7 +5,7 @@
 /*             See LICENSE for full restrictions                */
 /****************************************************************/
 
-#include "HeatConduction.h"
+#include "MskHeatConduction.h"
 #include "MooseMesh.h"
 
 template <>
