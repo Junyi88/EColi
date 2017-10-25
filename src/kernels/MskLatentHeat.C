@@ -26,7 +26,7 @@ MskLatentHeat::MskLatentHeat(const InputParameters & parameters) :
     _grad_Temp(coupledGradient("Temp")),
     _Tmelt(getParam<Real>("T_melt")),
     _K(getParam<Real>("K")),
-    _DT(0.0), _dummy(0.0)
+    _DT(0.0), _dummy(0.0), _Mask(getMaterialProperty<Real>("Mask"))
     {}
 
   //** computeQpResidual() *********************************************************
@@ -89,7 +89,7 @@ MskLatentHeat::computeQpOffDiagJacobian(unsigned int jvar)
 {
   if (_Mask[_qp]<0.5)
     return 0.0;
-    
+
   if (jvar == _Temp_var){
     if (_DT<0.0){
       if (_u[_qp]<=1.0) {
