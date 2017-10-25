@@ -4,11 +4,11 @@
 /*          All contents are licensed under LGPL V2.1           */
 /*             See LICENSE for full restrictions                */
 /****************************************************************/
-#include "MskMskAllenCahn.h"
+#include "MskAllenCahn.h"
 
 template <>
 InputParameters
-validParams<MskMskAllenCahn>()
+validParams<MskAllenCahn>()
 {
   InputParameters params = ACBulk<Real>::validParams();
   params.addClassDescription("Allen-Cahn Kernel that uses a DerivativeMaterial Free Energy");
@@ -18,7 +18,7 @@ validParams<MskMskAllenCahn>()
   return params;
 }
 
-MskMskAllenCahn::MskMskAllenCahn(const InputParameters & parameters)
+MskAllenCahn::MskAllenCahn(const InputParameters & parameters)
   : ACBulk<Real>(parameters),
     _nvar(_coupled_moose_vars.size()),
     _dFdEta(getMaterialPropertyDerivative<Real>("f_name", _var.name())),
@@ -32,7 +32,7 @@ MskMskAllenCahn::MskMskAllenCahn(const InputParameters & parameters)
 }
 
 void
-MskMskAllenCahn::initialSetup()
+MskAllenCahn::initialSetup()
 {
   ACBulk<Real>::initialSetup();
   validateNonlinearCoupling<Real>("f_name");
@@ -40,11 +40,11 @@ MskMskAllenCahn::initialSetup()
 }
 
 Real
-MskMskAllenCahn::computeDFDOP(PFFunctionType type)
+MskAllenCahn::computeDFDOP(PFFunctionType type)
 {
   if (_Mask[_qp]<0.5)
     return 0.0;
-    
+
   switch (type)
   {
     case Residual:
@@ -58,7 +58,7 @@ MskMskAllenCahn::computeDFDOP(PFFunctionType type)
 }
 
 Real
-MskMskAllenCahn::computeQpOffDiagJacobian(unsigned int jvar)
+MskAllenCahn::computeQpOffDiagJacobian(unsigned int jvar)
 {
   if (_Mask[_qp]<0.5)
     return 0.0;
