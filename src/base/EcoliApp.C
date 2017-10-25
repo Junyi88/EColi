@@ -42,6 +42,7 @@
 #include "MskMeltTimeDerivative.h"
 #include "MskSpecificHeatConductionTimeDerivative.h"
 #include "MskStressDivergence.h"
+#include "MskStressDivergenceTensors.h"
 #include "MskTimeDerivative.h"
 
 template<>
@@ -105,6 +106,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(MskMeltTimeDerivative);
   registerKernel(MskSpecificHeatConductionTimeDerivative);
   registerKernel(MskStressDivergence);
+  registerKernel(MskStressDivergenceTensors);
   registerKernel(MskTimeDerivative);
 
   registerAuxKernel(JunyiAngle2Value); //Add
