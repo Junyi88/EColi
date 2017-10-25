@@ -174,8 +174,8 @@ MskStressDivergenceTensors::computeOffDiagJacobian(unsigned int jvar)
 Real
 MskStressDivergenceTensors::computeQpJacobian()
 {
-  if (_Mask[_qp]<0.5)
-    return 0.0;
+  // if (_Mask[_qp]<0.5)
+  //   return 0.0;
 
   if (_use_finite_deform_jacobian)
     return ElasticityTensorTools::elasticJacobian(_finite_deform_Jacobian_mult[_qp],
@@ -235,9 +235,9 @@ MskStressDivergenceTensors::computeQpJacobian()
 Real
 MskStressDivergenceTensors::computeQpOffDiagJacobian(unsigned int jvar)
 {
-  if (_Mask[_qp]<0.5)
-    return 0.0;
-    
+  // if (_Mask[_qp]<0.5)
+  //   return 0.0;
+
   // off-diagonal Jacobian with respect to a coupled displacement component
   for (unsigned int coupled_component = 0; coupled_component < _ndisp; ++coupled_component)
     if (jvar == _disp_var[coupled_component])
