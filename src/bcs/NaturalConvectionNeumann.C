@@ -24,7 +24,7 @@ NaturalConvectionNeumann::NaturalConvectionNeumann(const InputParameters & param
   : IntegratedBC(parameters),
     _T_infinity(coupledValue("T_infinity")),
     _Ph(getParam<Real>("Ph")),
-    _m(getMaterialProperty<Real>("m"))
+    _m(getParam<Real>("m"))
 {
 }
 
