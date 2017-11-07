@@ -4,8 +4,8 @@
 /*          All contents are licensed under LGPL V2.1           */
 /*             See LICENSE for full restrictions                */
 /****************************************************************/
-#ifndef MASKEDCOUPLEDCONVECTIVEFLUX_H
-#define MASKEDCOUPLEDCONVECTIVEFLUX_H
+#ifndef NATURALCONVECTIONNEUMANN_H
+#define NATURALCONVECTIONNEUMANN_H
 
 #include "IntegratedBC.h"
 
