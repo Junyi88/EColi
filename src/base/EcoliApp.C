@@ -46,6 +46,7 @@
 #include "MskTimeDerivative.h"
 
 #include "MaskedCoupledConvectiveFlux.h"
+#include "NaturalConvectionNeumann.h"
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -120,6 +121,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerMaterial(LqPhaseStressUpdate); //Add
   registerBoundaryCondition(FunctionNeumannJunyiBC);
   registerBoundaryCondition(MaskedCoupledConvectiveFlux);
+  registerBoundaryCondition(NaturalConvectionNeumann);
 }
 
 // External entry point for dynamic syntax association
