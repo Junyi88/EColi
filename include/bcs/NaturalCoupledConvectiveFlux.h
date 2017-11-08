@@ -8,10 +8,10 @@
 #define NATURALCOUPLEDCONVECTIVEFLUX_H
 
 #include "IntegratedBC.h"
-#include "JvarMapInterface.h"
 #include "DerivativeMaterialInterface.h"
 
-// class NaturalCoupledConvectiveFlux : public IntegratedBC
+
+//class NaturalCoupledConvectiveFlux : public IntegratedBC
 class NaturalCoupledConvectiveFlux : public DerivativeMaterialInterface<JvarMapIntegratedBCInterface<IntegratedBC>>
 {
 public:

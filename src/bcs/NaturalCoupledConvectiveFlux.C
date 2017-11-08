@@ -20,8 +20,9 @@ validParams<NaturalCoupledConvectiveFlux>()
   return params;
 }
 
+//IntegratedBC(parameters),
 NaturalCoupledConvectiveFlux::NaturalCoupledConvectiveFlux(const InputParameters & parameters)
-  : IntegratedBC(parameters),
+  : DerivativeMaterialInterface<JvarMapIntegratedBCInterface<IntegratedBC>>(parameters),
     _T_infinity(coupledValue("T_infinity")),
     _H(getMaterialProperty<Real>("h")),
     _dHdT(getMaterialPropertyDerivative<Real>("h", _var.name()))
