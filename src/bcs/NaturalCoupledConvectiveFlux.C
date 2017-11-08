@@ -38,5 +38,5 @@ NaturalCoupledConvectiveFlux::computeQpResidual()
 Real
 NaturalCoupledConvectiveFlux::computeQpJacobian()
 {
-  return _test[_i][_qp] * (_dHdT[_qp]* (_u[_qp] - _T_infinity[_qp]) + _H[_qp]) * _phi[_j][_qp];
+  return _test[_i][_qp] * (_H[_qp]) * _phi[_j][_qp];
 }
