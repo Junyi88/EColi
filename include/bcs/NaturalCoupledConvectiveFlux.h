@@ -8,6 +8,7 @@
 #define NATURALCOUPLEDCONVECTIVEFLUX_H
 
 #include "IntegratedBC.h"
+#include "JvarMapInterface.h"
 #include "DerivativeMaterialInterface.h"
 
 
