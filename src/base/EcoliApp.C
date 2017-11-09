@@ -48,6 +48,8 @@
 #include "MaskedCoupledConvectiveFlux.h"
 #include "NaturalConvectionNeumann.h"
 #include "NaturalCoupledConvectiveFlux.h"
+#include "NaturalCoupledConvectiveFluxFunc.h"
+
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -124,6 +126,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerBoundaryCondition(MaskedCoupledConvectiveFlux);
   registerBoundaryCondition(NaturalConvectionNeumann);
   registerBoundaryCondition(NaturalCoupledConvectiveFlux);
+  registerBoundaryCondition(NaturalCoupledConvectiveFluxFunc);
 }
 
 // External entry point for dynamic syntax association
