@@ -25,7 +25,8 @@ validParams<HeatConduction2Kernel>()
       "Property name of the derivative of the diffusivity with respect "
       "to the variable (Default: thermal_conductivity_dT)");
   params.set<bool>("use_displaced_mesh") = true;
-  params.addCoupledVar("Args", "Vector of Etas and Temperature this object depends on");
+  // params.addCoupledVar("Args", "Vector of Etas and Temperature this object depends on");
+  params.addRequiredParam<MaterialPropertyName>("Mask",  "Mask Variable");
   return params;
 }
 
@@ -34,19 +35,25 @@ HeatConduction2Kernel::HeatConduction2Kernel(const InputParameters & parameters)
     _diffusion_coefficient(getMaterialProperty<Real>("diffusion_coefficient")),
     _diffusion_coefficient_dT(hasMaterialProperty<Real>("diffusion_coefficient_dT")
                                   ? &getMaterialProperty<Real>("diffusion_coefficient_dT")
-                                  : NULL)
+                                  : NULL), _Mask(getMaterialProperty<Real>("Mask"))
 {
 }
 
 Real
 HeatConduction2Kernel::computeQpResidual()
 {
+  if (_Mask[_qp]<0.5)
+    return 0.0;
+
   return _diffusion_coefficient[_qp] * Diffusion::computeQpResidual();
 }
 
 Real
 HeatConduction2Kernel::computeQpJacobian()
 {
+  if (_Mask[_qp]<0.5)
+    return 0.0;
+    
   Real jac = _diffusion_coefficient[_qp] * Diffusion::computeQpJacobian();
   if (_diffusion_coefficient_dT)
     jac += (*_diffusion_coefficient_dT)[_qp] * _phi[_j][_qp] * Diffusion::computeQpResidual();

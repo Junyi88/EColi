@@ -35,6 +35,8 @@ protected:
 private:
   const MaterialProperty<Real> & _diffusion_coefficient;
   const MaterialProperty<Real> * const _diffusion_coefficient_dT;
+
+  const MaterialProperty<Real> & _Mask;
 };
 
 #endif // HEATCONDUCTION2KERNEL_H

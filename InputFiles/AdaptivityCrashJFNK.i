@@ -47,7 +47,7 @@
 [BCs]
   [./FunctionNeumannBC_Laser]
     boundary                     = front
-    function                     = '(2*20.0/(3.141592654*(0.26^2)))*exp(-2.0*((x)^2+(y)^2)/(0.26^2))'
+    function                     = '(2*20.0/(3.141592654*(0.26^2)))*exp(-2.0*((x-100.0*t)^2)/(0.26^2))'
     save_in                      = LaserPower
     type                         = FunctionNeumannBC
     variable                     = Te

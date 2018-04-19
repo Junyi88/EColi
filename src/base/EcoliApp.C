@@ -11,12 +11,45 @@
 #include "JunyiMultiSmoothCircleIC.h" //Add
 
 #include "ACMultiInterfaceAnisoFix.h" //Add
+#include "ACMultiInterfaceAniso2Dq.h" //Add
 #include "SwitchingFunctionMaterialNoOver.h" //Add
 #include "SwitchingFunctionMaterialLagrange.h" //Add
+#include "SwitchingFunctionMaterialLagrangeB.h" //Add
 #include "HeatConduction2.h"
 
 #include "PusztaiACBulkB.h" //Add
 #include "PusztaiQsBulkB.h" //Add
+
+#include "LqPhaseStressUpdate.h"
+
+#include "FunctionNeumannJunyiBC.h"
+
+#include "LatentConductionTemp.h"
+#include "LatentConductionEta.h"
+
+#include "LatentHeat.h"
+#include "MeltTimeDerivative.h"
+
+#include "CoupledTimeDerivativeMelt.h"
+#include "SpecificHeatConductionTimeDerivativeMelt.h"
+#include "HeatConductionTimeDerivative2.h"
+
+//
+#include "MskAllenCahn.h"
+#include "MskBodyForce.h"
+#include "MskHeatConduction.h"
+#include "MskLatentHeat.h"
+#include "MskMeltTimeDerivative.h"
+#include "MskSpecificHeatConductionTimeDerivative.h"
+#include "MskStressDivergence.h"
+#include "MskStressDivergenceTensors.h"
+#include "MskTimeDerivative.h"
+
+#include "MaskedCoupledConvectiveFlux.h"
+#include "NaturalConvectionNeumann.h"
+#include "NaturalCoupledConvectiveFlux.h"
+#include "NaturalCoupledConvectiveFluxFunc.h"
+
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -59,12 +92,41 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(PusztaiACBulkB); //Add
   registerKernel(PusztaiQsBulkB); //Add
   registerKernel(ACMultiInterfaceAnisoFix); //Add
+  registerKernel(ACMultiInterfaceAniso2Dq); //Add
   registerKernel(HeatConduction2Kernel); //Add
+
+  registerKernel(LatentConductionTemp);
+  registerKernel(LatentConductionEta);
+
+  registerKernel(CoupledTimeDerivativeMelt);
+  registerKernel(SpecificHeatConductionTimeDerivativeMelt);
+  registerKernel(LatentHeat);
+  registerKernel(MeltTimeDerivative);
+  registerKernel(HeatConductionTimeDerivative2);
+
+  //
+  registerKernel(MskAllenCahn);
+  registerKernel(MskBodyForce);
+  registerKernel(MskHeatConduction);
+  registerKernel(MskLatentHeat);
+  registerKernel(MskMeltTimeDerivative);
+  registerKernel(MskSpecificHeatConductionTimeDerivative);
+  registerKernel(MskStressDivergence);
+  registerKernel(MskStressDivergenceTensors);
+  registerKernel(MskTimeDerivative);
+
   registerAuxKernel(JunyiAngle2Value); //Add
   // registerInitialCondition(JunyiSmoothCircleBaseIC); //Add
   registerInitialCondition(JunyiMultiSmoothCircleIC); //Add
   registerMaterial(SwitchingFunctionMaterialNoOver); //Add
   registerMaterial(SwitchingFunctionMaterialLagrange); //Add
+  registerMaterial(SwitchingFunctionMaterialLagrangeB); //Add
+  registerMaterial(LqPhaseStressUpdate); //Add
+  registerBoundaryCondition(FunctionNeumannJunyiBC);
+  registerBoundaryCondition(MaskedCoupledConvectiveFlux);
+  registerBoundaryCondition(NaturalConvectionNeumann);
+  registerBoundaryCondition(NaturalCoupledConvectiveFlux);
+  registerBoundaryCondition(NaturalCoupledConvectiveFluxFunc);
 }
 
 // External entry point for dynamic syntax association

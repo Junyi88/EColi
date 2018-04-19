@@ -40,8 +40,8 @@ ACMultiInterfaceAniso2Dq::ACMultiInterfaceAniso2Dq(const InputParameters & param
     _kappa_names(getParam<std::vector<MaterialPropertyName> >("kappa_names")),
     _kappa(_num_etas*_num_dim),
     _L(getMaterialProperty<Real>("mob_name")),
-    _q1(&coupledValue("Q1")),
-    _q2(&coupledValue("Q2"))
+    _q1(&coupledValue("Q1",0)),
+    _q2(&coupledValue("Q2",0))
 {
   if ((_num_etas*_num_dim) != _kappa_names.size())
     mooseError("Supply the correct nummber of etas, num dims and kappa_names.");
@@ -187,14 +187,17 @@ ACMultiInterfaceAniso2Dq::kappaXgradeta(const int b,const RealGradient gradeta)
   RealGradient kappagradeta;
     kappagradeta(3)=0.0;
 
-  Real c1=*_q1[_qp]^2 - *_q2[_qp]^2;
-  Real s1=2 * *_q1[_qp] * *_q2[_qp];
+  Real c1=(*_q1)[_qp]*(*_q1)[_qp] - (*_q2)[_qp]*(*_q2)[_qp];
+  Real s1=2 * (*_q1)[_qp] * (*_q2)[_qp];
 
-  kappagradeta(0)=(c1*(*_kappa[b])[_qp])-
-                   s1*(*_kappa[b+_num_etas])[_qp])) *  gradeta(0);
+  // kappagradeta(1)=c1;
+  // kappagradeta(2)=c1*gradeta(2);
 
-  kappagradeta(1)=(s1*(*_kappa[b])[_qp])+
-                   c1*(*_kappa[b+_num_etas])[_qp])) *  gradeta(1);
+  kappagradeta(1)=((c1*(*_kappa[b])[_qp])-
+                    s1*(*_kappa[b+_num_etas])[_qp]) *  gradeta(1);
+
+  kappagradeta(2)=((s1*(*_kappa[b])[_qp])+
+                    c1*(*_kappa[b+_num_etas])[_qp]) *  gradeta(2);
 
   return kappagradeta;
 }
