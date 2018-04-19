@@ -53,7 +53,7 @@
 <<<<<<< HEAD
 =======
 // ------ JEUk_MassConvec2D
-#include "JEUk_MassConvec2D.h"
+#include "JEUk_Mass_Convec2D.h"
 >>>>>>> 1c281b326a1f96f83d5ac8a9f8cb3633e95d3327
 
 template<>
@@ -132,12 +132,9 @@ EcoliApp::registerObjects(Factory & factory)
   registerBoundaryCondition(NaturalConvectionNeumann);
   registerBoundaryCondition(NaturalCoupledConvectiveFlux);
   registerBoundaryCondition(NaturalCoupledConvectiveFluxFunc);
-<<<<<<< HEAD
-=======
 
   //----------------
-  registerAuxKernel(JEUk_Mass_Convec2D);
->>>>>>> 1c281b326a1f96f83d5ac8a9f8cb3633e95d3327
+  registerKernel(JEUk_Mass_Convec2D);
 }
 
 // External entry point for dynamic syntax association
