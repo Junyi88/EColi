@@ -25,7 +25,7 @@ JEUk_Mass_Convec2D::JEUk_Mass_Convec2D(const InputParameters & parameters) :
 Real
 JEUk_Mass_Convec2D::computeQpResidual()
 {
-  RealVectorValue vs(_v1[_qp],_v2[_qp],_zero);
+  RealVectorValue vs(_v1[_qp], _v2[_qp], 0.0);
   return -_u[_qp] * (vs * _grad_test[_i][_qp]);
 }
 
@@ -33,7 +33,7 @@ JEUk_Mass_Convec2D::computeQpResidual()
 Real
 JEUk_Mass_Convec2D::computeQpJacobian()
 {
-    RealVectorValue vs(_v1[_qp],_v2[_qp],0.0);
+    RealVectorValue vs(_v1[_qp], _v2[_qp], 0.0);
 
     return -_phi[_j][_qp] * (vs * _grad_test[_i][_qp]);
 }
@@ -41,7 +41,9 @@ JEUk_Mass_Convec2D::computeQpJacobian()
 //** computeQpOffDiagJacobian() *********************************************************
 Real
 JEUk_Mass_Convec2D::computeQpOffDiagJacobian(unsigned int jvar)
-{ RealVectorValue phis(0.0,0.0,0.0);
+{
+  RealVectorValue phis(0.0, 0.0, 0.0);
+
   if (WhichJacobianVariable(jvar)==1){
     phis(1)=_phi[_j][_qp];
     return -_u[_qp] * (phis * _grad_test[_i][_qp]);
