@@ -23,7 +23,7 @@ protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
   virtual Real computeQpOffDiagJacobian(unsigned int jvar);
-  virtual unsigned int JEUk_Mass_Convec2D::WhichJacobianVariable(unsigned var);
+  virtual unsigned int WhichJacobianVariable(unsigned var);
 
   const unsigned int _nvar;
   const VariableValue & _v1;
