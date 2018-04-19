@@ -44,11 +44,11 @@ JEUk_Mass_Convec2D::computeQpOffDiagJacobian(unsigned int jvar)
 { RealVectorValue phis(_zero,_zero,_zero);
   if (WhichJacobianVariable(jvar)==1){
     phis(1)=_phi[_j][_qp];
-    return -_u[_qp] * (vs * _grad_test[_i][_qp]);
+    return -_u[_qp] * (phis * _grad_test[_i][_qp]);
 
   } else if (WhichJacobianVariable(jvar)==2){
     phis(2)=_phi[_j][_qp];
-    return -_u[_qp] * (vs * _grad_test[_i][_qp]);
+    return -_u[_qp] * (phis * _grad_test[_i][_qp]);
 
   } else
     return 0.0;
