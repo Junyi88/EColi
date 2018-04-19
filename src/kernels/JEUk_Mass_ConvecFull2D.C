@@ -28,7 +28,7 @@ JEUk_Mass_ConvecFull2D::computeQpResidual()
   RealVectorValue vs(_v1[_qp], _v2[_qp], 0.0);
   _grad_v1=coupledGradient("velocities",0)[_qp];
   _grad_v2=coupledGradient("velocities",1)[_qp];
-  return -_test[_i][_qp]*(_grad_u[_qp](0)*_v1[_qp]+_grad_u[_qp](1)*_v2[_qp]+
+  return _test[_i][_qp]*(_grad_u[_qp](0)*_v1[_qp]+_grad_u[_qp](1)*_v2[_qp]+
             _u[_qp]*(_grad_v1(0)+_grad_v2(1)));
 }
 
@@ -40,7 +40,7 @@ JEUk_Mass_ConvecFull2D::computeQpJacobian()
     _grad_v1=coupledGradient("velocities",0)[_qp];
     _grad_v2=coupledGradient("velocities",1)[_qp];
 
-    return -_test[_i][_qp]*(_grad_phi[_j][_qp](0)*_v1[_qp]+_grad_phi[_j][_qp](1)*_v2[_qp]+
+    return _test[_i][_qp]*(_grad_phi[_j][_qp](0)*_v1[_qp]+_grad_phi[_j][_qp](1)*_v2[_qp]+
               _phi[_j][_qp]*(_grad_v1(0)+_grad_v2(1)));
 }
 
@@ -54,11 +54,11 @@ JEUk_Mass_ConvecFull2D::computeQpOffDiagJacobian(unsigned int jvar)
 
   if (WhichJacobianVariable(jvar)==1){
     phis(0)=_phi[_j][_qp];
-    return -_test[_i][_qp]*(_grad_u[_qp](0)*phis(0)+_u[_qp]*_grad_phi[_j][_qp](0));
+    return _test[_i][_qp]*(_grad_u[_qp](0)*phis(0)+_u[_qp]*_grad_phi[_j][_qp](0));
 
   } else if (WhichJacobianVariable(jvar)==2){
     phis(1)=_phi[_j][_qp];
-    return -_test[_i][_qp]*(_grad_u[_qp](1)*phis(1)+_u[_qp]*_grad_phi[_j][_qp](1));
+    return _test[_i][_qp]*(_grad_u[_qp](1)*phis(1)+_u[_qp]*_grad_phi[_j][_qp](1));
 
   } else
     return 0.0;
