@@ -49,12 +49,12 @@
   [../]
 
   [./FunctionIC_v1]
-    function                     = 1.0*((-4.0e-4)*x*x+0.04*x)
+    function                     = 1.0*((-4.0e-4)*x*x+0.04*x)*((-4.0e-4)*y*y+0.04*y)
     type                         = FunctionIC
     variable                     = v1
   [../]
   [./FunctionIC_v2]
-    function                     = 2.0*((-4.0e-4)*x*x+0.04*x)
+    function                     = 2.0*((-4.0e-4)*x*x+0.04*x)*((-4.0e-4)*y*y+0.04*y)
     type                         = FunctionIC
     variable                     = v2
   [../]
