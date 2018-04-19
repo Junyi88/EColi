@@ -49,12 +49,12 @@
   [../]
 
   [./FunctionIC_v1]
-    function                     = 10.0*(1.0-x*x)*(1.0-y*y)
+    function                     = 0.1*(1.0-x*x)*(1.0-y*y)
     type                         = FunctionIC
     variable                     = v1
   [../]
   [./FunctionIC_v2]
-    function                     = 50.0*(1.0-x*x)*(1.0-y*y)
+    function                     = 0.5*(1.0-x*x)*(1.0-y*y)
     type                         = FunctionIC
     variable                     = v2
   [../]
