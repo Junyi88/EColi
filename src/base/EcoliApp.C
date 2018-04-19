@@ -52,7 +52,7 @@
 
 // ------ JEUk_MassConvec2D
 #include "JEUk_Mass_Convec2D.h"
-
+#include "JEUk_Mass_ConvecFull2D.h"
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -133,6 +133,7 @@ EcoliApp::registerObjects(Factory & factory)
 
   //----------------
   registerKernel(JEUk_Mass_Convec2D);
+  registerKernel(JEUk_Mass_ConvecFull2D);
 }
 
 // External entry point for dynamic syntax association
