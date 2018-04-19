@@ -50,11 +50,9 @@
 #include "NaturalCoupledConvectiveFlux.h"
 #include "NaturalCoupledConvectiveFluxFunc.h"
 
-<<<<<<< HEAD
-=======
 // ------ JEUk_MassConvec2D
 #include "JEUk_Mass_Convec2D.h"
->>>>>>> 1c281b326a1f96f83d5ac8a9f8cb3633e95d3327
+
 
 template<>
 InputParameters validParams<EcoliApp>()
