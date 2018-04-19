@@ -114,9 +114,9 @@
   petsc_options_value = 'asm      ilu          nonzero'
   l_max_its = 15
   nl_max_its = 10
-  nl_abs_tol = 1e-8
-  end_time = 300.0
-   dtmax   = 1.0
+  nl_abs_tol = 1e-12
+  end_time = 10.0
+   dtmax   = 0.01
    start_time                 = 0.0
  [./TimeStepper]
     # Turn on time stepping
