@@ -8,15 +8,15 @@
 #include <iostream>
 #include <fstream>
 //----------------------------------
-class JEUk_MassConvec2D;
+class JEUk_Mass_Convec2D;
 
 template<>
-InputParameters validParams<JEUk_MassConvec2D>();
+InputParameters validParams<JEUk_Mass_Convec2D>();
 
-class JEUk_MassConvec2D : public DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >
+class JEUk_Mass_Convec2D : public DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >
 {
 public:
-  JEUk_MassConvec2D(const InputParameters & parameters);
+  JEUk_Mass_Convec2D(const InputParameters & parameters);
   // virtual void initialSetup();
 
 protected:

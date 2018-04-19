@@ -1,7 +1,7 @@
-#include "JEUk_MassConvec2D.h"
+#include "JEUk_Mass_Convec2D.h"
 
 template<>
-InputParameters validParams<JEUk_MassConvec2D>()
+InputParameters validParams<JEUk_Mass_Convec2D>()
 {
   InputParameters params = validParams<Kernel>();
   params.addClassDescription("Kernal For Convection of Mass in Mass Continuity for 2D");
@@ -11,7 +11,7 @@ InputParameters validParams<JEUk_MassConvec2D>()
 
 //** Constructor *********************************************************
 
-JEUk_MassConvec2D::JEUk_MassConvec2D(const InputParameters & parameters) :
+JEUk_Mass_Convec2D::JEUk_Mass_Convec2D(const InputParameters & parameters) :
     DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >(parameters),
     _nvar(_coupled_moose_vars.size()),
     _v1(coupledValue("velocities",0)),
@@ -23,7 +23,7 @@ JEUk_MassConvec2D::JEUk_MassConvec2D(const InputParameters & parameters) :
 
 //** computeQpResidual() *********************************************************
 Real
-JEUk_MassConvec2D::computeQpResidual()
+JEUk_Mass_Convec2D::computeQpResidual()
 {
   RealVectorValue vs(_v1[_qp],_v2[_qp],_zero);
   return -_u[_qp] * (vs * _grad_test[_i][_qp]);
@@ -31,7 +31,7 @@ JEUk_MassConvec2D::computeQpResidual()
 
 //** computeQpJacobian() *********************************************************
 Real
-JEUk_MassConvec2D::computeQpJacobian()
+JEUk_Mass_Convec2D::computeQpJacobian()
 {
     RealVectorValue vs(_v1[_qp],_v2[_qp],_zero);
 
@@ -56,7 +56,7 @@ PusztaiACBulk::computeQpOffDiagJacobian(unsigned int jvar)
 
 // ** WhichJacobianVariable
 unsigned int
-JEUk_MassConvec2D::WhichJacobianVariable(unsigned var)
+JEUk_Mass_Convec2D::WhichJacobianVariable(unsigned var)
 {
   if (var == _v1_var_number)
     return 1;
