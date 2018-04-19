@@ -12,10 +12,10 @@
   nx = 100
   ny = 100
   nz = 0
-  xmin = -50.0
-  xmax = 50.0
-  ymin = -50.0
-  ymax = 50.0
+  xmin = 0.0
+  xmax = 100.0
+  ymin = 0.0
+  ymax = 100.0
   zmin = 0
   zmax = 0
 []
@@ -40,27 +40,38 @@
     outside                      = 1.0
     type                         = BoundingBoxIC
     variable                     = rho
-    x1                           = -30.0
-    x2                           = -25.0
-    y1                           = -30
-    y2                           = -25.0
+    x1                           = 10.0
+    x2                           = 20.0
+    y1                           = 10
+    y2                           = 20.0
     z1                           = 0
     z2                           = 0
   [../]
 
-  [./ConstantIC_v1]
-  block                        =    0
-  type                         = ConstantIC
-  value                        = 1.0
-  variable                     = v1
+  [./FunctionIC_v1]
+    function                     = 1.0*((-4.0e-4)*x*x+0.04*x)
+    type                         = FunctionIC
+    variable                     = v1
+  [../]
+  [./FunctionIC_v2]
+    function                     = 2.0*((-4.0e-4)*x*x+0.04*x)
+    type                         = FunctionIC
+    variable                     = v2
   [../]
 
-  [./ConstantIC_v2]
-  block                        =    0
-  type                         = ConstantIC
-  value                        = 2.0
-  variable                     = v2
-  [../]
+  # [./ConstantIC_v1]
+  # block                        =    0
+  # type                         = ConstantIC
+  # value                        = 1.0
+  # variable                     = v1
+  # [../]
+  #
+  # [./ConstantIC_v2]
+  # block                        =    0
+  # type                         = ConstantIC
+  # value                        = 2.0
+  # variable                     = v2
+  # [../]
 []
 
 ##=======================================================
