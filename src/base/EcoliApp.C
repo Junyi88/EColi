@@ -50,6 +50,8 @@
 #include "NaturalCoupledConvectiveFlux.h"
 #include "NaturalCoupledConvectiveFluxFunc.h"
 
+// ------ JEUk_MassConvec2D
+#include "JEUk_MassConvec2D.h"
 
 template<>
 InputParameters validParams<EcoliApp>()
@@ -127,6 +129,9 @@ EcoliApp::registerObjects(Factory & factory)
   registerBoundaryCondition(NaturalConvectionNeumann);
   registerBoundaryCondition(NaturalCoupledConvectiveFlux);
   registerBoundaryCondition(NaturalCoupledConvectiveFluxFunc);
+
+  //----------------
+  registerAuxKernel(JEUk_Mass_Convec2D);
 }
 
 // External entry point for dynamic syntax association
