@@ -16,8 +16,8 @@ JEUk_Mass_Convec2D::JEUk_Mass_Convec2D(const InputParameters & parameters) :
     _nvar(_coupled_moose_vars.size()),
     _v1(coupledValue("velocities",0)),
     _v2(coupledValue("velocities",1)),
-    _v1_var_number(coupled("velocities"),0),
-    _v2_var_number(coupled("velocities"),1)
+    _v1_var_number(coupled("velocities",0)),
+    _v2_var_number(coupled("velocities",1))
     {
     }
 
