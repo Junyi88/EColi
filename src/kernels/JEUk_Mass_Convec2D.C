@@ -40,7 +40,7 @@ JEUk_Mass_Convec2D::computeQpJacobian()
 
 //** computeQpOffDiagJacobian() *********************************************************
 Real
-PusztaiACBulk::computeQpOffDiagJacobian(unsigned int jvar)
+JEUk_Mass_Convec2D::computeQpOffDiagJacobian(unsigned int jvar)
 { RealVectorValue phis(_zero,_zero,_zero);
   if (WhichJacobianVariable(jvar)==1){
     phis(1)=_phi[_j][_qp];
