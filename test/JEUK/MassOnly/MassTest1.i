@@ -69,11 +69,11 @@
     type = TimeDerivative
     variable = rho
   [../]
-#  [./rho_Convec]
-#    type = JEUk_Mass_Convec2D
-#    variable = rho
-#    velocities = 'v1 v2'
-#  [../]
+  [./rho_Convec]
+    type = JEUk_Mass_Convec2D
+    variable = rho
+    velocities = 'v1 v2'
+  [../]
 
   [./v1_dot]
     type                         = TimeDerivative
