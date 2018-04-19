@@ -12,10 +12,10 @@
   nx = 100
   ny = 100
   nz = 0
-  xmin = 0.0
-  xmax = 100.0
-  ymin = 0.0
-  ymax = 100.0
+  xmin = -1.0
+  xmax = 1.0
+  ymin = -1.0
+  ymax = 1.0
   zmin = 0
   zmax = 0
 []
@@ -40,21 +40,21 @@
     outside                      = 1.0
     type                         = BoundingBoxIC
     variable                     = rho
-    x1                           = 10.0
-    x2                           = 20.0
-    y1                           = 10
-    y2                           = 20.0
+    x1                           = -0.1
+    x2                           = 0.2
+    y1                           = -0.1
+    y2                           = 0.2
     z1                           = 0
     z2                           = 0
   [../]
 
   [./FunctionIC_v1]
-    function                     = 1.0*((-4.0e-4)*x*x+0.04*x)*((-4.0e-4)*y*y+0.04*y)
+    function                     = 10.0*(1.0-x*x)*(1.0-y*y)
     type                         = FunctionIC
     variable                     = v1
   [../]
   [./FunctionIC_v2]
-    function                     = 2.0*((-4.0e-4)*x*x+0.04*x)*((-4.0e-4)*y*y+0.04*y)
+    function                     = 50.0*(1.0-x*x)*(1.0-y*y)
     type                         = FunctionIC
     variable                     = v2
   [../]
@@ -115,8 +115,8 @@
   l_max_its = 15
   nl_max_its = 10
   nl_abs_tol = 1e-12
-  end_time = 10.0
-   dtmax   = 0.01
+  end_time = 5.0
+   dtmax   = 0.1
    start_time                 = 0.0
  [./TimeStepper]
     # Turn on time stepping
