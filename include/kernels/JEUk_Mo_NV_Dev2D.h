@@ -23,7 +23,6 @@ protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
   virtual Real computeQpOffDiagJacobian(unsigned int jvar);
-  virtual unsigned int WhichJacobianVariable(unsigned var);
 
   const VariableValue & _v1;
   const VariableGradient & _grad_v1;
