@@ -91,6 +91,7 @@ JEUk_Mo_Convec2D::computeQpOffDiagJacobian(unsigned int jvar)
 }
 
 // ** WhichJacobianVariable
+unsigned int 
 JEUk_Mo_Convec2D::WhichJacobianVariable(unsigned var)
 {
   if (var == _v1_var_number)
