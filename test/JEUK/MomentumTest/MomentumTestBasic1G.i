@@ -13,9 +13,9 @@
   ny = 100
   nz = 0
   xmin = 0.0
-  xmax = 1.0
+  xmax = 0.1
   ymin = 0.0
-  ymax = 1.0
+  ymax = 0.1
   zmin = 0
   zmax = 0
 []
@@ -36,14 +36,14 @@
 [ICs]
   [./BoundingBoxIC_rho]
     block                        = 0
-    inside                       = 100.0
+    inside                       = 2.0
     outside                      = 1.0
     type                         = BoundingBoxIC
     variable                     = rho
-    x1                           = 0.7
-    x2                           = 0.9
-    y1                           = 0.4
-    y2                           = 0.6
+    x1                           = 0.04
+    x2                           = 0.06
+    y1                           = 0.07
+    y2                           = 0.09
     z1                           = 0
     z2                           = 0
   [../]
@@ -135,14 +135,14 @@
     variable                     = v1
     OtherVel = v2
     Component = 1
-    Lambda = -0.002
+    Lambda = -2.0
   [../]
   [./v1_Dev]
     type                         = JEUk_Mo_NV_Dev2D
     variable                     = v1
     OtherVel = v2
     Component = 1
-    Mu = 0.003
+    Mu = 3.0
   [../]
 
   # -- V2
