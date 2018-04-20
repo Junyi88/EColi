@@ -135,7 +135,7 @@
     variable                     = v1
     OtherVel = v2
     Component = 1
-    LambdaX = -0.002
+    Lambda = -0.002
   [../]
   [./v1_Dev]
     type                         = JEUk_Mo_NV_Dev2D
@@ -163,7 +163,7 @@
     variable                     = v2
     OtherVel = v1
     Component = 2
-    LambdaX = -0.002
+    Lambda = -0.002
   [../]
   [./v2_Dev]
     type                         = JEUk_Mo_NV_Dev2D

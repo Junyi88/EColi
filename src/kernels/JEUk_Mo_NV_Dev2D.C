@@ -18,7 +18,7 @@ JEUk_Mo_NV_Dev2D::JEUk_Mo_NV_Dev2D(const InputParameters & parameters) :
     _v1(coupledValue("OtherVel")),
     _grad_v1(coupledGradient("OtherVel")),
     _component(getParam<unsigned>("Component")),
-    _Mu(getParam<Real>("Lambda"))
+    _Mu(getParam<Real>("Mu"))
     {
       if (_component==1)
         _other_component=2;
