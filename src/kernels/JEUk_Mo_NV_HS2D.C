@@ -7,7 +7,7 @@ InputParameters validParams<JEUk_Mo_NV_HS2D>()
   params.addClassDescription("Kernal For Momentum with NV Hydrostatic");
   params.addCoupledVar("OtherVel", "The Other Component of velocity");
   params.addRequiredParam<unsigned>("Component", "The component of the velocity");
-  params.addRequiredParam<Real>("Lambda", "Lambda");
+  params.addRequiredParam<Real>("LambdaX", "LambdaX");
   return params;
 }
 
@@ -18,7 +18,7 @@ JEUk_Mo_NV_HS2D::JEUk_Mo_NV_HS2D(const InputParameters & parameters) :
     _v1(coupledValue("OtherVel")),
     _grad_v1(coupledGradient("OtherVel")),
     _component(getParam<unsigned>("Component")),
-    _Lambda(getParam<Real>("Lambda"))
+    _Lambda(getParam<Real>("LambdaX"))
     {
       if (_component==1)
         _other_component=2;
