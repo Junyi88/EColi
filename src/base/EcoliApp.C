@@ -54,6 +54,14 @@
 #include "JEUk_Mass_Convec2D.h"
 #include "JEUk_Mass_ConvecFull2D.h"
 
+#include "JEUk_Mo_BodyF.h"
+#include "JEUk_Mo_Convec2D.h"
+#include "JEUk_Mo_NV_Dev2D.h"
+#include "JEUk_Mo_NV_HS2D.h"
+#include "JEUk_Mo_Pressure.h"
+#include "JEUk_Mo_TimeDerivative.h"
+
+//================================
 template<>
 InputParameters validParams<EcoliApp>()
 {
@@ -134,6 +142,13 @@ EcoliApp::registerObjects(Factory & factory)
   //----------------
   registerKernel(JEUk_Mass_Convec2D);
   registerKernel(JEUk_Mass_ConvecFull2D);
+
+  registerKernel(JEUk_Mo_BodyF);
+  registerKernel(JEUk_Mo_Convec2D);
+  registerKernel(JEUk_Mo_NV_Dev2D);
+  registerKernel(JEUk_Mo_NV_HS2D);
+  registerKernel(JEUk_Mo_Pressure);
+  registerKernel(JEUk_Mo_TimeDerivative);
 }
 
 // External entry point for dynamic syntax association
