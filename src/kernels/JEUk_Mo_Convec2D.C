@@ -43,7 +43,7 @@ JEUk_Mo_Convec2D::computeQpResidual()
     vs(1) = _v1[_qp];
   }
 
-  return _rho[_qp]*(vs * _grad_u[_qp])*test[_i][_qp];
+  return _rho[_qp]*(vs * _grad_u[_qp])*_test[_i][_qp];
 }
 
 //** computeQpJacobian() *********************************************************
@@ -61,7 +61,7 @@ JEUk_Mo_Convec2D::computeQpJacobian()
   }
 
     return _rho[_qp]*((vs * _grad_phi[_j][_qp])+
-               (_phi[_j][_qp] * _grad_u[_qp](_component)))*test[_i][_qp];
+               (_phi[_j][_qp] * _grad_u[_qp](_component)))*_test[_i][_qp];
 }
 
 //** computeQpOffDiagJacobian() *********************************************************
@@ -79,12 +79,12 @@ JEUk_Mo_Convec2D::computeQpOffDiagJacobian(unsigned int jvar)
   }
 
   if (WhichJacobianVariable(jvar)==1){
-    return _rho[_qp]*test[_i][_qp]*_phi[_j][_qp]*_grad_u[_qp](_other_component)
+    return _rho[_qp]*_test[_i][_qp]*_phi[_j][_qp]*_grad_u[_qp](_other_component);
 
 
   } else if (WhichJacobianVariable(jvar)==2){
 
-    return _phi[_j][_qp]*(vs * _grad_u[_qp])*test[_i][_qp];
+    return _phi[_j][_qp]*(vs * _grad_u[_qp])*_test[_i][_qp];
 
   } else
     return 0.0;
