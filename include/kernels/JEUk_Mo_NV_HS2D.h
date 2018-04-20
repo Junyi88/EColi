@@ -26,7 +26,7 @@ protected:
   virtual unsigned int WhichJacobianVariable(unsigned var);
 
   const VariableValue & _v1;
-  const RealGradient & _grad_v1;
+  const VariableGradient & _grad_v1;
 
   unsigned _component;
   unsigned _other_component;

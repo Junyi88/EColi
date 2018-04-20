@@ -29,7 +29,7 @@ protected:
   const VariableValue & _v1;
   const VariableValue & _rho;
 
-  const RealGradient & _grad_v1;
+  const VariableGradient & _grad_v1;
 
   unsigned int _v1_var_number;
   unsigned int _rho_var_number;
