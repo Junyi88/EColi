@@ -21,7 +21,7 @@ JEUk_Mo_Pressure::JEUk_Mo_Pressure(const InputParameters & parameters) :
 Real
 JEUk_Mo_Pressure::computeQpResidual()
 {
-  return -_Pressure*_test[_qp];
+  return -_Pressure*_test[_i][_qp];
 }
 
 //** computeQpJacobian() *********************************************************

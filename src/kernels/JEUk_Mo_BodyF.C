@@ -23,7 +23,7 @@ JEUk_Mo_BodyF::JEUk_Mo_BodyF(const InputParameters & parameters) :
 Real
 JEUk_Mo_BodyF::computeQpResidual()
 {
-  return -_rho[_qp]*_BodyF;
+  return -_rho[_qp]*_BodyF*_test[_i][_qp];
 }
 
 //** computeQpJacobian() *********************************************************
@@ -37,5 +37,5 @@ JEUk_Mo_BodyF::computeQpJacobian()
 Real
 JEUk_Mo_BodyF::computeQpOffDiagJacobian(unsigned int jvar)
 {
-    return -_phi[_j][_qp]*_BodyF;
+    return -_phi[_j][_qp]*_BodyF*_test[_i][_qp];
 }
