@@ -9,7 +9,7 @@
   type = GeneratedMesh
   dim = 2
   elem_type = QUAD4
-  nx = 2
+  nx = 1
   ny = 1000
   nz = 0
   xmin = 0.0
@@ -36,7 +36,7 @@
 [ICs]
   [./BoundingBoxIC_rho]
     block                        = 0
-    inside                       = 2.0
+    inside                       = 1.0
     outside                      = 1.0
     type                         = BoundingBoxIC
     variable                     = rho
@@ -57,12 +57,12 @@
 #    boundary = top
 #    value = 0.0
 #  [../]
-  [./top_v2]
-    type = PresetBC
-    variable = v2
-    boundary = top
-    value = 0.0
-  [../]
+#  [./top_v2]
+#    type = PresetBC
+#    variable = v2
+#    boundary = top
+#    value = 0.0
+#  [../]
 
 #  [./bot_v1]
 #    type = PresetBC
@@ -165,14 +165,14 @@
     variable                     = v2
     OtherVel = v1
     Component = 2
-    Lambda = -0.2
+    Lambda = -0.002
   [../]
   [./v2_Dev]
     type                         = JEUk_Mo_NV_Dev2D
     variable                     = v2
     OtherVel = v1
     Component = 2
-    Mu = 0.3
+    Mu = 0.003
   [../]
 
   [./v2_Body]
