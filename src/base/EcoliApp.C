@@ -61,6 +61,13 @@
 #include "JEUk_Mo_Pressure.h"
 #include "JEUk_Mo_TimeDerivative.h"
 
+#include "JEUk_DG_DGRate2D.h"
+#include "JEUk_Gen_Self.h"
+#include "JEUk_Mo_StressDiv2D.h"
+#include "JEUk_Stress_NV_Dev2D.h"
+#include "JEUk_Stress_NV_HS2D.h"
+
+
 //================================
 template<>
 InputParameters validParams<EcoliApp>()
@@ -149,6 +156,13 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(JEUk_Mo_NV_HS2D);
   registerKernel(JEUk_Mo_Pressure);
   registerKernel(JEUk_Mo_TimeDerivative);
+
+  registerKernel(JEUk_DG_DGRate2D);
+  registerKernel(JEUk_Gen_Self);
+  registerKernel(JEUk_Mo_StressDiv2D);
+  registerKernel(JEUk_Stress_NV_Dev2D);
+  registerKernel(JEUk_Stress_NV_HS2D);
+
 }
 
 // External entry point for dynamic syntax association
