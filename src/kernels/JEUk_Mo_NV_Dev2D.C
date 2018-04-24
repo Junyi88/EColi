@@ -30,19 +30,22 @@ JEUk_Mo_NV_Dev2D::JEUk_Mo_NV_Dev2D(const InputParameters & parameters) :
 Real
 JEUk_Mo_NV_Dev2D::computeQpResidual()
 {
-  return _Mu*_grad_test[_i][_qp]*(_grad_u[_qp](_other_component)+_grad_v1[_qp](_component));
+  return _Mu*(2.0*_grad_u[_qp](_component)*_grad_test[_i][_qp](_component)+
+                (_grad_u[_qp](_other_component)+
+                 _grad_v1[_qp](_component))*_grad_test[_i][_qp](_other_component));
 }
 
 //** computeQpJacobian() *********************************************************
 Real
 JEUk_Mo_NV_Dev2D::computeQpJacobian()
 {
-  return _Mu*_grad_test[_i][_qp]*(_grad_phi[_j][_qp](_other_component));
+  return _Mu*(2.0*_grad_phi[_j][_qp](_component)*_grad_test[_i][_qp](_component)+
+               _grad_phi[_j][_qp](_other_component)*_grad_test[_i][_qp](_other_component));
 }
 
 //** computeQpOffDiagJacobian() *********************************************************
 Real
 JEUk_Mo_NV_Dev2D::computeQpOffDiagJacobian(unsigned int jvar)
 {
-  return _Mu*_grad_test[_i][_qp]*(_grad_phi[_j][_qp](_component));
+  return _Mu*( _grad_phi[_j][_qp](_component)*_grad_test[_i][_qp](_other_component));
 }
