@@ -77,12 +77,12 @@
     value = 0.0
   [../]
 
-#  [./left_v1]
-#    type = PresetBC
-#    variable = v1
-#    boundary = left
-#    value = 0.0
-#  [../]
+  [./left_v1]
+    type = PresetBC
+    variable = v1
+    boundary = left
+    value = 0.0
+  [../]
 #  [./left_v2]
 #    type = PresetBC
 #    variable = v2
@@ -90,12 +90,12 @@
 #    value = 0.0
 #  [../]
 
-#  [./right_v1]
-#    type = PresetBC
-#    variable = v1
-#    boundary = right
-#    value = 0.0
-#  [../]
+  [./right_v1]
+    type = PresetBC
+    variable = v1
+    boundary = right
+    value = 0.0
+  [../]
 #  [./right_v2]
 #    type = PresetBC
 #    variable = v2
@@ -103,11 +103,7 @@
 #    value = 0.0
 #  [../]
 
- [./Periodic]
-  [./v2_bcs]
-    auto_direction = 'x'
-  [../]
- [../]
+
 []
 
 ##=======================================================
@@ -169,14 +165,14 @@
     variable                     = v2
     OtherVel = v1
     Component = 2
-    Lambda = -20.0
+    Lambda = -0.2
   [../]
   [./v2_Dev]
     type                         = JEUk_Mo_NV_Dev2D
     variable                     = v2
     OtherVel = v1
     Component = 2
-    Mu = 30.0
+    Mu = 0.3
   [../]
 
   [./v2_Body]
