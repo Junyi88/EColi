@@ -27,7 +27,7 @@ protected:
 
   const unsigned int _nvar;
   const VariableValue & _NormalStress;
-  const VariableGradient & _ShearStress;
+  const VariableValue & _ShearStress;
 
   unsigned _component;
   unsigned _other_component;

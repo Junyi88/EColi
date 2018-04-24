@@ -31,8 +31,8 @@ JEUk_Mo_StressDiv2D::JEUk_Mo_StressDiv2D(const InputParameters & parameters) :
 Real
 JEUk_Mo_StressDiv2D::computeQpResidual()
 {
-  return _grad_test[_i][_qp](_component)*_NormalStress[_qp]+
-     _grad_test[_i][_qp](_other_component)*_ShearStress[_qp];
+  return (_grad_test[_i][_qp](_component)*_NormalStress[_qp])+
+     (_grad_test[_i][_qp](_other_component)*_ShearStress[_qp]);
 }
 
 //** computeQpJacobian() *********************************************************
