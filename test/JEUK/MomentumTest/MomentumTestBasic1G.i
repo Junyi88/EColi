@@ -9,8 +9,8 @@
   type = GeneratedMesh
   dim = 2
   elem_type = QUAD4
-  nx = 100
-  ny = 100
+  nx = 2
+  ny = 1000
   nz = 0
   xmin = 0.0
   xmax = 0.1
@@ -40,8 +40,8 @@
     outside                      = 1.0
     type                         = BoundingBoxIC
     variable                     = rho
-    x1                           = 0.04
-    x2                           = 0.06
+    x1                           = 0.0
+    x2                           = 0.1
     y1                           = 0.07
     y2                           = 0.09
     z1                           = 0
@@ -51,12 +51,12 @@
 []
 
 [BCs]
-  [./top_v1]
-    type = PresetBC
-    variable = v1
-    boundary = top
-    value = 0.0
-  [../]
+#  [./top_v1]
+#    type = PresetBC
+#    variable = v1
+#    boundary = top
+#    value = 0.0
+#  [../]
   [./top_v2]
     type = PresetBC
     variable = v2
@@ -64,12 +64,12 @@
     value = 0.0
   [../]
 
-  [./bot_v1]
-    type = PresetBC
-    variable = v1
-    boundary = bottom
-    value = 0.0
-  [../]
+#  [./bot_v1]
+#    type = PresetBC
+#    variable = v1
+#    boundary = bottom
+#    value = 0.0
+#  [../]
   [./bot_v2]
     type = PresetBC
     variable = v2
@@ -77,31 +77,37 @@
     value = 0.0
   [../]
 
-  [./left_v1]
-    type = PresetBC
-    variable = v1
-    boundary = left
-    value = 0.0
-  [../]
-  [./left_v2]
-    type = PresetBC
-    variable = v2
-    boundary = left
-    value = 0.0
-  [../]
+#  [./left_v1]
+#    type = PresetBC
+#    variable = v1
+#    boundary = left
+#    value = 0.0
+#  [../]
+#  [./left_v2]
+#    type = PresetBC
+#    variable = v2
+#    boundary = left
+#    value = 0.0
+#  [../]
 
-  [./right_v1]
-    type = PresetBC
-    variable = v1
-    boundary = right
-    value = 0.0
+#  [./right_v1]
+#    type = PresetBC
+#    variable = v1
+#    boundary = right
+#    value = 0.0
+#  [../]
+#  [./right_v2]
+#    type = PresetBC
+#    variable = v2
+#    boundary = right
+#    value = 0.0
+#  [../]
+
+ [./Periodic]
+  [./v2_bcs]
+    auto_direction = 'x'
   [../]
-  [./right_v2]
-    type = PresetBC
-    variable = v2
-    boundary = right
-    value = 0.0
-  [../]
+ [../]
 []
 
 ##=======================================================
