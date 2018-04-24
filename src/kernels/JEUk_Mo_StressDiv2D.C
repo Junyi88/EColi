@@ -18,8 +18,8 @@ JEUk_Mo_StressDiv2D::JEUk_Mo_StressDiv2D(const InputParameters & parameters) :
     _NormalStress(coupledValue("Stresses",0)),
     _ShearStress(coupledValue("Stresses",1)),
     _component(getParam<unsigned>("Component")),
-    _NormalStress_var_number(coupled("velocities",0)),
-    _ShearStress_var_number(coupled("velocities",1))
+    _NormalStress_var_number(coupled("Stresses",0)),
+    _ShearStress_var_number(coupled("Stresses",1))
     {
       if (_component==1)
         _other_component=2;
