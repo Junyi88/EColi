@@ -51,25 +51,25 @@
 []
 
 [BCs]
-#  [./top_v1]
-#    type = PresetBC
-#    variable = v1
-#    boundary = top
-#    value = 0.0
-#  [../]
-#  [./top_v2]
-#    type = PresetBC
-#    variable = v2
-#    boundary = top
-#    value = 0.0
-#  [../]
+  [./top_v1]
+    type = PresetBC
+    variable = v1
+    boundary = top
+    value = 0.0
+  [../]
+  [./top_v2]
+    type = PresetBC
+    variable = v2
+    boundary = top
+    value = 0.0
+  [../]
 
-#  [./bot_v1]
-#    type = PresetBC
-#    variable = v1
-#    boundary = bottom
-#    value = 0.0
-#  [../]
+  [./bot_v1]
+    type = PresetBC
+    variable = v1
+    boundary = bottom
+    value = 0.0
+  [../]
   [./bot_v2]
     type = PresetBC
     variable = v2
@@ -163,14 +163,14 @@
     variable                     = v2
     OtherVel = v1
     Component = 2
-    Lambda = -0.002
+    Lambda = -20.0
   [../]
   [./v2_Dev]
     type                         = JEUk_Mo_NV_Dev2D
     variable                     = v2
     OtherVel = v1
     Component = 2
-    Mu = 0.003
+    Mu = 30.0
   [../]
 
   [./v2_Body]
@@ -201,8 +201,8 @@
   l_max_its = 15
   nl_max_its = 10
   nl_abs_tol = 1e-12
-  end_time = 5.0
-   dtmax   = 0.1
+  end_time = 1.0
+   dtmax   = 0.001
    start_time                 = 0.0
  [./TimeStepper]
     # Turn on time stepping
