@@ -148,7 +148,7 @@
   [./v1_StressDiv]
     type                         = JEUk_Mo_StressDiv2D
     variable                     = v1
-    Stresses = 'Stress11, Stress12'
+    Stresses = 'Stress11 Stress12'
     Component = 1
   [../]
 
@@ -168,7 +168,7 @@
   [./v2_StressDiv]
     type                         = JEUk_Mo_StressDiv2D
     variable                     = v2
-    Stresses = 'Stress22, Stress21'
+    Stresses = 'Stress22 Stress21'
     Component = 2
   [../]
 
@@ -187,7 +187,7 @@
   [./S11_HS]
     type                         = JEUk_Stress_NV_HS2D
     variable                     = Stress11
-    Velocities = 'v1, v2'
+    Velocities = 'v1 v2'
     Lambda = -0.2
     Mu = 0.3
   [../]
@@ -200,7 +200,7 @@
   [./S22_HS]
     type                         = JEUk_Stress_NV_HS2D
     variable                     = Stress22
-    Velocities = 'v1, v2'
+    Velocities = 'v1 v2'
     Lambda = -0.2
     Mu = 0.3
   [../]
@@ -213,7 +213,7 @@
   [./S12_Dev]
     type                         = JEUk_Stress_NV_Dev2D
     variable                     = Stress12
-    Velocities = 'v1, v2'
+    Velocities = 'v1 v2'
     Mu = 0.3
     Component1 = 1
     Component2 = 2
@@ -228,7 +228,7 @@
   [./S21_Dev]
     type                         = JEUk_Stress_NV_Dev2D
     variable                     = Stress21
-    Velocities = 'v2, v1'
+    Velocities = 'v2 v1'
     Mu = 0.3
     Component1 = 2
     Component2 = 1
