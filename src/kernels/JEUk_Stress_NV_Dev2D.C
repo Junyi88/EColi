@@ -20,8 +20,8 @@ JEUk_Stress_NV_Dev2D::JEUk_Stress_NV_Dev2D(const InputParameters & parameters) :
     _grad_v1(coupledGradient("Velocities",0)),
     _grad_v2(coupledGradient("Velocities",1)),
     _Mu(getParam<Real>("Mu")),
-    _v1_var_number(coupled("velocities",0)),
-    _v2_var_number(coupled("velocities",1)),
+    _v1_var_number(coupled("Velocities",0)),
+    _v2_var_number(coupled("Velocities",1)),
     _component1(getParam<unsigned>("Component1")),
     _component2(getParam<unsigned>("Component2"))
     {
