@@ -45,5 +45,5 @@ JEUk_Mo_NV_HS2D::computeQpJacobian()
 Real
 JEUk_Mo_NV_HS2D::computeQpOffDiagJacobian(unsigned int jvar)
 {
-  return _Lambda*_grad_test[_i][_qp](_component)*_grad_phi[_j][_qp](_ohter_component);
+  return _Lambda*_grad_test[_i][_qp](_component)*_grad_phi[_j][_qp](_other_component);
 }
