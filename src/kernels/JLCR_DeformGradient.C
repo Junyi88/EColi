@@ -5,7 +5,7 @@ InputParameters validParams<JLCR_DeformGradient>()
 {
   InputParameters params = validParams<Kernel>();
   params.addClassDescription("Kernal For Deformation Gradient");
-  params.addCoupledVar("F_others", "F_smaller,F_larger");
+  params.addCoupledVar("F_other", "F_smaller,F_larger");
   params.addCoupledVar("Displacement", "Displacement_i");
   params.addRequiredParam<unsigned>("Component_I", "The component I");
   params.addRequiredParam<unsigned>("Component_J", "The component J");
