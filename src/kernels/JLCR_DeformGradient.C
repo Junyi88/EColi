@@ -74,11 +74,11 @@ JLCR_DeformGradient::computeQpJacobian()
 Real
 JLCR_DeformGradient::computeQpOffDiagJacobian(unsigned int jvar)
 {
-  _itype=WhichJacobianVariable(unsigned jvar);
+  _itype=WhichJacobianVariable(jvar);
   if (_itype==8){
-    _inter1=-_phi[_j][_qp](_componentI)*_u[_qp];
-    _inter1-=_phi[_j][_qp](_component_oth1)*_Foth1[_qp];
-    _inter1-=_phi[_j][_qp](_component_oth2)*_Foth2[_qp];
+    _inter1=-_grad_phi[_j][_qp](_componentI)*_u[_qp];
+    _inter1-=_grad_phi[_j][_qp](_component_oth1)*_Foth1[_qp];
+    _inter1-=_grad_phi[_j][_qp](_component_oth2)*_Foth2[_qp];
     _inter1*=_test[_i][_qp];
   } else{
      _inter1=-_grad_disp[_qp](_itype)*_test[_i][_qp]*_phi[_j][_qp];
