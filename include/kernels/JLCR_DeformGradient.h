@@ -15,7 +15,7 @@ InputParameters validParams<JLCR_DeformGradient>();
 class JLCR_DeformGradient : public DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >
 {
 public:
-  JLCR_StressDivergence(const InputParameters & parameters);
+  JLCR_DeformGradient(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual() override;
