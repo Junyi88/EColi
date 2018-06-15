@@ -52,7 +52,7 @@ JLCR_DeformGradient::computeQpResidual()
   else
     _inter1=0.0;
 
-  _inter1+=_u[_qp]*(1.0-_grad_u[_qp](_componentI));
+  _inter1+=_u[_qp]*(1.0-_grad_disp[_qp](_componentI));
   _inter1-=_grad_disp[_qp](_component_oth1)*_Foth1[_qp];
   _inter1-=_grad_disp[_qp](_component_oth2)*_Foth2[_qp];
   _inter1*=_test[_i][_qp];
