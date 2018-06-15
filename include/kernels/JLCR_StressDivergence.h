@@ -2,6 +2,8 @@
 #define JLCR_StressDivergence_H
 
 #include "Kernel.h"
+#include "JvarMapInterface.h"
+#include "DerivativeMaterialInterface.h"
 
 // Forward Declaration
 class JLCR_StressDivergence;
