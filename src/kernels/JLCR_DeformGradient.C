@@ -25,7 +25,7 @@ JLCR_DeformGradient::JLCR_DeformGradient(const InputParameters & parameters) :
     _componentJ(getParam<unsigned>("Component_J")-1),
     _Foth1_var_number(coupled("F_other",0)),
     _Foth2_var_number(coupled("F_other",1)),
-    _disp_var_number(coupled("Displacement",1)),
+    _disp_var_number(coupled("Displacement",0)),
     _component_oth1(0), _component_oth2(1),
     _inter1(0.0), _IJSame(_componentI==_componentJ),
     _itype(1000)
