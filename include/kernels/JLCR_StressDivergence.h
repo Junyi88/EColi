@@ -12,7 +12,7 @@ template <>
 InputParameters validParams<JLCR_StressDivergence>();
 
 //----------------------------------------------------------------
-class JLCR_StressDivergence : public Kernel
+class JLCR_StressDivergence : public DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >
 {
 public:
   JLCR_StressDivergence(const InputParameters & parameters);

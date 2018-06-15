@@ -12,7 +12,7 @@ template <>
 InputParameters validParams<JLCR_DeformGradient>();
 
 //----------------------------------------------------------------
-class JLCR_DeformGradient : public Kernel
+class JLCR_DeformGradient : public DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >
 {
 public:
   JLCR_StressDivergence(const InputParameters & parameters);
