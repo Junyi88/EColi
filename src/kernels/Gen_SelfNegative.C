@@ -1,7 +1,7 @@
 #include "Gen_SelfNegative.h"
 
 template<>
-InputParameters validParams<JEUk_Gen_Self>()
+InputParameters validParams<Gen_SelfNegative>()
 {
   InputParameters params = validParams<Kernel>();
   params.addClassDescription("Kernal For Self");

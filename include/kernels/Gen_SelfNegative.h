@@ -11,7 +11,7 @@
 class Gen_SelfNegative;
 
 template<>
-InputParameters validParams<JEUk_Gen_Self>();
+InputParameters validParams<Gen_SelfNegative>();
 
 class Gen_SelfNegative : public DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >
 {
