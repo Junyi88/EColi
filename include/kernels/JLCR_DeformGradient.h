@@ -7,7 +7,7 @@
 class JLCR_DeformGradient;
 
 template <>
-InputParameters validParams<JLCR_StressDivergence>();
+InputParameters validParams<JLCR_DeformGradient>();
 
 //----------------------------------------------------------------
 class JLCR_DeformGradient : public Kernel
