@@ -50,7 +50,25 @@
 #include "NaturalCoupledConvectiveFlux.h"
 #include "NaturalCoupledConvectiveFluxFunc.h"
 
+// ------ JEUk_MassConvec2D
+#include "JEUk_Mass_Convec2D.h"
+#include "JEUk_Mass_ConvecFull2D.h"
 
+#include "JEUk_Mo_BodyF.h"
+#include "JEUk_Mo_Convec2D.h"
+#include "JEUk_Mo_NV_Dev2D.h"
+#include "JEUk_Mo_NV_HS2D.h"
+#include "JEUk_Mo_Pressure.h"
+#include "JEUk_Mo_TimeDerivative.h"
+
+#include "JEUk_DG_DGRate2D.h"
+#include "JEUk_Gen_Self.h"
+#include "JEUk_Mo_StressDiv2D.h"
+#include "JEUk_Stress_NV_Dev2D.h"
+#include "JEUk_Stress_NV_HS2D.h"
+
+
+//================================
 template<>
 InputParameters validParams<EcoliApp>()
 {
@@ -127,6 +145,24 @@ EcoliApp::registerObjects(Factory & factory)
   registerBoundaryCondition(NaturalConvectionNeumann);
   registerBoundaryCondition(NaturalCoupledConvectiveFlux);
   registerBoundaryCondition(NaturalCoupledConvectiveFluxFunc);
+
+  //----------------
+  registerKernel(JEUk_Mass_Convec2D);
+  registerKernel(JEUk_Mass_ConvecFull2D);
+
+  registerKernel(JEUk_Mo_BodyF);
+  registerKernel(JEUk_Mo_Convec2D);
+  registerKernel(JEUk_Mo_NV_Dev2D);
+  registerKernel(JEUk_Mo_NV_HS2D);
+  registerKernel(JEUk_Mo_Pressure);
+  registerKernel(JEUk_Mo_TimeDerivative);
+
+  registerKernel(JEUk_DG_DGRate2D);
+  registerKernel(JEUk_Gen_Self);
+  registerKernel(JEUk_Mo_StressDiv2D);
+  registerKernel(JEUk_Stress_NV_Dev2D);
+  registerKernel(JEUk_Stress_NV_HS2D);
+
 }
 
 // External entry point for dynamic syntax association
