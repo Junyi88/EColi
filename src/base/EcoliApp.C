@@ -67,6 +67,9 @@
 #include "JEUk_Stress_NV_Dev2D.h"
 #include "JEUk_Stress_NV_HS2D.h"
 
+#include "Gen_SelfNegative.h"
+#include "JLCR_DeformGradient.h"
+#include "JLCR_StressDivergence.h"
 
 //================================
 template<>
@@ -163,6 +166,9 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(JEUk_Stress_NV_Dev2D);
   registerKernel(JEUk_Stress_NV_HS2D);
 
+  registerKernel(Gen_SelfNegative);
+  registerKernel(JLCR_DeformGradient);
+  registerKernel(JLCR_StressDivergence);  
 }
 
 // External entry point for dynamic syntax association
