@@ -68,9 +68,15 @@
 #include "JEUk_Stress_NV_HS2D.h"
 
 #include "Gen_SelfNegative.h"
+#include "Gen_SelfNegativeFromRate.h"
 #include "JLCR_DeformGradient.h"
 #include "JLCR_StressDivergence.h"
 
+#include "JLCR_StressConstitutiveElasticRate.h"
+#include "JLCR_CalcDeformRotTensors.h"
+#include "JLCR_CalcStressRate.h"
+#include "JLCR_CalcVelTensor.h"
+#include "JUtils_GetVarType.h"
 //================================
 template<>
 InputParameters validParams<EcoliApp>()
@@ -167,8 +173,15 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(JEUk_Stress_NV_HS2D);
 
   registerKernel(Gen_SelfNegative);
+  registerKernel(Gen_SelfNegativeFromRate);
   registerKernel(JLCR_DeformGradient);
-  registerKernel(JLCR_StressDivergence);  
+  registerKernel(JLCR_StressDivergence);
+
+  registerKernel(JLCR_StressConstitutiveElasticRate);
+  registerMaterial(JLCR_CalcDeformRotTensors);
+  registerMaterial(JLCR_CalcStressRate);
+  registerMaterial(JLCR_CalcVelTensor);
+
 }
 
 // External entry point for dynamic syntax association
