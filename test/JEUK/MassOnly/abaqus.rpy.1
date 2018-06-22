@@ -1,0 +1,179 @@
+# -*- coding: mbcs -*-
+#
+# Abaqus/CAE Release 6.14-1 replay file
+# Internal Version: 2014_06_04-20.37.49 134264
+# Run by jl1908 on Fri Apr 20 09:19:26 2018
+#
+
+# from driverUtils import executeOnCaeGraphicsStartup
+# executeOnCaeGraphicsStartup()
+#: Executing "onCaeGraphicsStartup()" in the site directory ...
+from abaqus import *
+from abaqusConstants import *
+session.Viewport(name='Viewport: 1', origin=(0.0, 0.0), width=634.478759765625, 
+    height=266.70556640625)
+session.viewports['Viewport: 1'].makeCurrent()
+session.viewports['Viewport: 1'].maximize()
+from caeModules import *
+from driverUtils import executeOnCaeStartup
+executeOnCaeStartup()
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=ON)
+o1 = session.openOdb(name='/home/jl1908/Downloads/HPC/Dump/HTR_05_15.odb')
+session.viewports['Viewport: 1'].setValues(displayedObject=o1)
+#: Model: /home/jl1908/Downloads/HPC/Dump/HTR_05_15.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     1
+#: Number of Meshes:             1
+#: Number of Element Sets:       7
+#: Number of Node Sets:          7
+#: Number of Steps:              2
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    CONTOURS_ON_DEF, ))
+session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
+    variableLabel='SDV1', outputPosition=INTEGRATION_POINT, )
+session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
+    variableLabel='TEMP', outputPosition=INTEGRATION_POINT, )
+session.viewports['Viewport: 1'].view.setValues(session.views['Front'])
+session.viewports['Viewport: 1'].view.setValues(session.views['Top'])
+session.viewports['Viewport: 1'].view.setValues(session.views['Bottom'])
+session.viewports['Viewport: 1'].odbDisplay.commonOptions.setValues(
+    visibleEdges=FEATURE)
+session.viewports['Viewport: 1'].odbDisplay.setValues(viewCut=ON)
+session.viewports['Viewport: 1'].odbDisplay.setValues(viewCutNames=('Y-Plane', 
+    ), viewCut=ON)
+session.viewports['Viewport: 1'].odbDisplay.viewCuts['Y-Plane'].setValues(
+    motion=ROTATE)
+session.viewports['Viewport: 1'].odbDisplay.viewCuts['Y-Plane'].setValues(
+    angle=180)
+session.viewports[session.currentViewportName].odbDisplay.setFrame(
+    step='Step-1', frame=19)
+session.viewports[session.currentViewportName].odbDisplay.setFrame(
+    step='Step-1', frame=0)
+session.viewports[session.currentViewportName].odbDisplay.setFrame(
+    step='Step-1', frame=21)
+o1 = session.openOdb(name='/home/jl1908/Downloads/HPC/Dump/HTR_04_15.odb')
+session.viewports['Viewport: 1'].setValues(displayedObject=o1)
+#: Model: /home/jl1908/Downloads/HPC/Dump/HTR_04_15.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     1
+#: Number of Meshes:             1
+#: Number of Element Sets:       7
+#: Number of Node Sets:          7
+#: Number of Steps:              2
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    CONTOURS_ON_DEF, ))
+session.viewports['Viewport: 1'].view.setValues(session.views['Bottom'])
+session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
+    variableLabel='TEMP', outputPosition=INTEGRATION_POINT, )
+session.viewports['Viewport: 1'].odbDisplay.setValues(viewCut=ON)
+session.Path(name='Path-1', type=POINT_LIST, expression=((0.0, 0.0, 0.25), (
+    10.0, 0.0, 0.25)))
+xyp = session.XYPlot('XYPlot-1')
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+pth = session.paths['Path-1']
+xy1 = xyPlot.XYDataFromPath(path=pth, includeIntersections=True, 
+    projectOntoMesh=False, pathStyle=PATH_POINTS, numIntervals=10, 
+    projectionTolerance=0, shape=UNDEFORMED, labelType=TRUE_DISTANCE_X)
+c1 = session.Curve(xyData=xy1)
+chart.setValues(curvesToPlot=(c1, ), )
+session.viewports['Viewport: 1'].setValues(displayedObject=xyp)
+odb = session.odbs['/home/jl1908/Downloads/HPC/Dump/HTR_04_15.odb']
+session.viewports['Viewport: 1'].setValues(displayedObject=odb)
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    CONTOURS_ON_DEF, ))
+o1 = session.openOdb(name='/home/jl1908/Downloads/HPC/Dump/CMSX4_6.odb')
+session.viewports['Viewport: 1'].setValues(displayedObject=o1)
+#: Model: /home/jl1908/Downloads/HPC/Dump/CMSX4_6.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     2
+#: Number of Meshes:             2
+#: Number of Element Sets:       7
+#: Number of Node Sets:          8
+#: Number of Steps:              1
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    CONTOURS_ON_DEF, ))
+session.viewports[session.currentViewportName].odbDisplay.setFrame(
+    step='Step-1', frame=147)
+session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
+    maxAutoCompute=OFF, maxValue=1200, minAutoCompute=OFF, minValue=95.7919)
+session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
+    maxValue=12000)
+session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
+    maxValue=8000)
+session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
+    maxValue=7000)
+session.viewports['Viewport: 1'].view.setValues(session.views['Bottom'])
+session.viewports['Viewport: 1'].view.setProjection(projection=PARALLEL)
+session.viewports['Viewport: 1'].odbDisplay.setValues(viewCutNames=('Y-Plane', 
+    ), viewCut=ON)
+session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
+    maxAutoCompute=ON, minAutoCompute=ON)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=16.9159, 
+    farPlane=24.8264, width=11.1118, height=6.78639, cameraPosition=(3.04905, 
+    -20.8712, -0.0059571), cameraTarget=(3.04905, 0, -0.0059571))
+session.viewports['Viewport: 1'].odbDisplay.commonOptions.setValues(
+    visibleEdges=FREE)
+session.viewports['Viewport: 1'].odbDisplay.commonOptions.setValues(
+    visibleEdges=NONE)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=17.2462, 
+    farPlane=24.4961, width=7.26996, height=4.44004, cameraPosition=(3.41337, 
+    -20.8712, -0.130595), cameraTarget=(3.41337, 0, -0.130595))
+session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
+    variableLabel='SDV121', outputPosition=INTEGRATION_POINT, )
+session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
+    maxValue=2.14195, minValue=-0.590606)
+session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
+    variableLabel='SDV120', outputPosition=INTEGRATION_POINT, )
+session.viewports[session.currentViewportName].odbDisplay.setFrame(
+    step='Step-1', frame=110)
+session.viewports[session.currentViewportName].odbDisplay.setFrame(
+    step='Step-1', frame=0)
+session.viewports['Viewport: 1'].odbDisplay.setValues(viewCutNames=('Y-Plane', 
+    ), viewCut=OFF)
+session.viewports[session.currentViewportName].odbDisplay.setFrame(
+    step='Step-1', frame=29)
+session.viewports['Viewport: 1'].odbDisplay.setValues(viewCut=ON)
+session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
+    variableLabel='SDV118', outputPosition=INTEGRATION_POINT, )
+session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
+    variableLabel='SDV121', outputPosition=INTEGRATION_POINT, )
+session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
+    maxAutoCompute=OFF, maxValue=0.662809, minAutoCompute=OFF, 
+    minValue=-0.0615953)
+session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
+    maxAutoCompute=ON, minAutoCompute=ON)
+session.viewports['Viewport: 1'].view.setValues(width=7.41833, height=4.53065, 
+    cameraPosition=(3.4721, -20.8712, -0.158224), cameraTarget=(3.4721, 0, 
+    -0.158224))
+session.viewports['Viewport: 1'].view.setValues(nearPlane=17.0889, 
+    farPlane=24.666, cameraPosition=(4.16724, -20.8566, -0.51174), 
+    cameraUpVector=(-0.356396, -0.0277083, 0.933924))
+session.viewports['Viewport: 1'].odbDisplay.commonOptions.setValues(
+    visibleEdges=FREE)
+session.viewports['Viewport: 1'].odbDisplay.commonOptions.setValues(
+    visibleEdges=FEATURE)
+session.viewports['Viewport: 1'].odbDisplay.commonOptions.setValues(
+    visibleEdges=EXTERIOR)
+session.viewports['Viewport: 1'].view.setValues(session.views['Front'])
+session.viewports['Viewport: 1'].view.setValues(session.views['Back'])
+session.viewports['Viewport: 1'].view.setValues(session.views['Top'])
+session.viewports['Viewport: 1'].view.setValues(session.views['Bottom'])
+odb = session.odbs['/home/jl1908/Downloads/HPC/Dump/CMSX4_6.odb']
+session.xyDataListFromField(odb=odb, outputPosition=INTEGRATION_POINT, 
+    variable=(('SDV121', INTEGRATION_POINT), ), elementPick=(('COMBINEDPART-1', 
+    30, ('[#0:150 #18 #0 #60000000 #1800 #c00000c0 #0:6', 
+    ' #300000 #0:2 #3000c000 #1800000 #18000 #0:667 #100000', 
+    ' #100 #40 #40000 #0 #1 #0:8 #4000040', ' #1000000 #0 #10 #40000 ]', )), ), 
+    )
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+xy1 = session.xyDataObjects['SDV121 PI: COMBINEDPART-1 E: 10536 IP: 6']
+c1 = session.Curve(xyData=xy1)
+chart.setValues(curvesToPlot=(c1, ), )
+session.viewports['Viewport: 1'].setValues(displayedObject=xyp)
