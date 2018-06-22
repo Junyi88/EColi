@@ -33,7 +33,7 @@ protected:
 
   std::vector<const VariableValue *> _v;
   std::vector<const VariableGradient *> _grad_v;
-  std::vector<const unsigned int *> _v_num;
+  std::vector<const unsigned int> _v_num;
 
 
   // const VariableValue & _v1;
