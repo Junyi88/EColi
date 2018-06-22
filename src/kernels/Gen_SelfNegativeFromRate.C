@@ -32,7 +32,7 @@ Gen_SelfNegativeFromRate::computeQpJacobian()
 }
 //** computeQpJacobian() *********************************************************
 Real
-Gen_SelfNegativeFromRate::computeQpOffDiag()
+Gen_SelfNegativeFromRate::computeQpOffDiagJacobian(unsigned int jvar)
 {
     return -_phi[_j][_qp]*_test[_i][_qp];
 }
