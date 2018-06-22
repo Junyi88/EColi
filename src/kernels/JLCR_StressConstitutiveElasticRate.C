@@ -29,7 +29,7 @@ JLCR_StressConstitutiveElasticRate::JLCR_StressConstitutiveElasticRate(const Inp
       {
         _v[i] = &coupledValue("Velocity", i);
         _grad_v[i] = &coupledGradient("Velocity", i);
-        _v_num[i]=&coupledValue("F_other",i);
+        _v_num[i]=&coupled("Velocity",i);
       }
 
       // set unused dimensions to zero
@@ -47,7 +47,7 @@ Real
 JLCR_StressConstitutiveElasticRate::computeQpResidual()
 {
 
-  return _StressRate[_qp](_componentI,_componentJ)*_grad_test[_i][_qp];
+  return -_StressRate[_qp](_componentI,_componentJ)*_test[_i][_qp];
 }
 
 //** computeQpJacobian() *********************************************************
@@ -62,9 +62,9 @@ Real
 JLCR_StressConstitutiveElasticRate::computeQpOffDiagJacobian(unsigned int jvar)
 {
   _StressJac=0.0;
-  _num_v=WhichJacobianVariable(var);
+  _num_v=WhichJacobianVariable(jvar);
 
-  for (int n=0;n < 3; n++){
+  for (unsigned int n=0;n < 3; n++){
     if (_num_v==n){
       _StressJac+=_elasticity_tensor(_componentI,_componentJ,n,n)*2.0*
         _grad_phi[_j][_qp](n);
@@ -90,12 +90,12 @@ JLCR_StressConstitutiveElasticRate::computeQpOffDiagJacobian(unsigned int jvar)
 
 // ** WhichJacobianVariable
 unsigned int
-JLCR_StressConstitutiveElasticRate::WhichJacobianVariable(unsigned var)
+JLCR_StressConstitutiveElasticRate::WhichJacobianVariable(unsigned int var)
 {
 
   for (unsigned int i = _nvar; i < 3; ++i)
   {
-    if (var == *(_v_num[i])
+    if (var == *(_v_num[i]))
       return i;
   }
     return 1000;
