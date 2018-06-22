@@ -13,7 +13,7 @@ InputParameters validParams<Gen_SelfNegativeFromRate>()
 
 Gen_SelfNegativeFromRate::Gen_SelfNegativeFromRate(const InputParameters & parameters) :
     DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >(parameters),
-    _v(coupledValue("v")),
+    _v(coupledValue("v"))
     {
     }
 
