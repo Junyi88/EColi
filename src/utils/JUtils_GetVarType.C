@@ -65,7 +65,7 @@ unsigned int JUtils_GetVarType::GetNFromV(const unsigned int &v){
 
 
 // ## -----
-JUtils_GetVarType & JUtils_GetVarType::operator= (const JMat & A){
+JUtils_GetVarType & JUtils_GetVarType::operator= (const JUtils_GetVarType & A){
 	if (A._N!=_N){
 		_N=A._N;
 
