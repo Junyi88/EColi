@@ -8,7 +8,7 @@ template<>
 InputParameters validParams<JLCR_CalcVelTensor>()
 {
   InputParameters params = validParams<Material>();
-  params.addRequiredCoupledVar("displacements", "The displacements appropriate for the simulation geometry and coordinate system");
+  params.addRequiredCoupledVar("velocities", "The displacements appropriate for the simulation geometry and coordinate system");
   return params;
 }
 
@@ -24,8 +24,8 @@ JLCR_CalcVelTensor::JLCR_CalcVelTensor(const InputParameters & parameters) :
   // fetch coupled variables and gradients (as stateful properties if necessary)
   for (unsigned int i = 0; i < _ndisp; ++i)
   {
-    _vel[i] = &coupledValue("displacements", i);
-    _grad_vel[i] = &coupledGradient("displacements", i);
+    _vel[i] = &coupledValue("velocities", i);
+    _grad_vel[i] = &coupledGradient("velocities", i);
 
   }
 
@@ -46,17 +46,17 @@ JLCR_CalcVelTensor::initQpStatefulProperties()
   _SpinMat[_qp].zero();
   _DefMat[_qp].zero();
 
-  _VelGrad[_qp].addIa(1.0);
-  _SpinMat[_qp].addIa(1.0);
-  _DefMat[_qp].addIa(1.0);
+  // _VelGrad[_qp].addIa(1.0);
+  // _SpinMat[_qp].addIa(1.0);
+  // _DefMat[_qp].addIa(1.0);
 }
 
 void
 JLCR_CalcVelTensor::computeProperties()
 {
-    RankTwoTensor A((*_grad_disp[0])[_qp], (*_grad_disp[1])[_qp], (*_grad_disp[2])[_qp]);
+    RankTwoTensor A((*_grad_vel[0])[_qp], (*_grad_vel[1])[_qp], (*_grad_vel[2])[_qp]);
     _VelGrad[_qp] = A;
-    _VelGrad[_qp].addIa(1.0);//Gauss point deformation gradient
+    // _VelGrad[_qp].addIa(1.0);//Gauss point deformation gradient
 
 
     _SpinMat[_qp] = 0.5*(_VelGrad[_qp]+_VelGrad[_qp].transpose());
