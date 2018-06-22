@@ -29,7 +29,7 @@ JLCR_StressConstitutiveElasticRate::JLCR_StressConstitutiveElasticRate(const Inp
       {
         _v[i] = &coupledValue("Velocity", i);
         _grad_v[i] = &coupledGradient("Velocity", i);
-         _v_num[i]=&coupled("Velocity",i);
+         _v_num[i]=coupled("Velocity",i);
 		//_v_num[i]=coupled("Velocity",i);
       }
 
@@ -38,7 +38,7 @@ JLCR_StressConstitutiveElasticRate::JLCR_StressConstitutiveElasticRate(const Inp
       {
         _v[i] = &_zero;
         _grad_v[i] = &_grad_zero;
-        //_v_num[i]=0;
+        _v_num[i]=0;
       }
 
     }
@@ -96,7 +96,7 @@ JLCR_StressConstitutiveElasticRate::WhichJacobianVariable(unsigned int var)
 
   for (unsigned int i = _nvar; i < 3; ++i)
   {
-    if (var == *(_v_num[i]))
+    if (var == (_v_num[i]))
       return i;
   }
     return 1000;
