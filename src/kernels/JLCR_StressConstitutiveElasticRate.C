@@ -66,11 +66,11 @@ JLCR_StressConstitutiveElasticRate::computeQpOffDiagJacobian(unsigned int jvar)
 
   for (unsigned int n=0;n < 3; n++){
     if (_num_v==n){
-      _StressJac+=_elasticity_tensor(_componentI,_componentJ,n,n)*2.0*
+      _StressJac+=_elasticity_tensor[_qp](_componentI,_componentJ,n,n)*2.0*
         _grad_phi[_j][_qp](n);
     }  else{
-      _StressJac+=(_elasticity_tensor(_componentI,_componentJ,n,_num_v)+
-        _elasticity_tensor(_componentI,_componentJ,_num_v,n))*_grad_phi[_j][_qp](n);
+      _StressJac+=(_elasticity_tensor[_qp](_componentI,_componentJ,n,_num_v)+
+        _elasticity_tensor[_qp](_componentI,_componentJ,_num_v,n))*_grad_phi[_j][_qp](n);
     }
 	/*
     if (_num_v==n){
