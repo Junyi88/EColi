@@ -5,6 +5,8 @@
 #include "JvarMapInterface.h"
 #include "DerivativeMaterialInterface.h"
 #include "JUtils_GetVarType.h"
+#include "RankFourTensor.h"
+#include "RankTwoTensor.h"
 
 // Forward Declaration
 class JLCR_StressConstitutiveElasticRate;

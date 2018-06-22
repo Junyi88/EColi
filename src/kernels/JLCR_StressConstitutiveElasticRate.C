@@ -29,7 +29,7 @@ JLCR_StressConstitutiveElasticRate::JLCR_StressConstitutiveElasticRate(const Inp
       {
         _v[i] = &coupledValue("Velocity", i);
         _grad_v[i] = &coupledGradient("Velocity", i);
-        _v_num[i]=&coupledValue("F_other",i),
+        _v_num[i]=&coupledValue("F_other",i);
       }
 
       // set unused dimensions to zero
@@ -62,17 +62,25 @@ Real
 JLCR_StressConstitutiveElasticRate::computeQpOffDiagJacobian(unsigned int jvar)
 {
   _StressJac=0.0;
-  _num_v=WhichJacobianVariable(unsigned var);
+  _num_v=WhichJacobianVariable(var);
 
   for (int n=0;n < 3; n++){
     if (_num_v==n){
-      _StreeJac+=_elasticity_tensor(_componentI,_compnentJ,n,n)*2.0*
+      _StressJac+=_elasticity_tensor(_componentI,_componentJ,n,n)*2.0*
+        _grad_phi[_j][_qp](n);
+    }  else{
+      _StressJac+=(_elasticity_tensor(_componentI,_componentJ,n,_num_v)+
+        _elasticity_tensor(_componentI,_componentJ,_num_v,n))*_grad_phi[_j][_qp](n);
+    }
+	/*
+    if (_num_v==n){
+      _StressJac+=_elasticity_tensor(_componentI,_componentJ,n,n)*2.0*
         _phi[_j][_qp](n);
     }  else{
-      _StreeJac+=(_elasticity_tensor(_componentI,_compnentJ,n,_num_v)+
-        _elasticity_tensor(_componentI,_compnentJ,_num_v,n))*_phi[_j][_qp](n);
-    }
-
+      _StressJac+=(_elasticity_tensor(_componentI,_componentJ,n,_num_v)+
+        _elasticity_tensor(_componentI,_componentJ,_num_v,n))*_phi[_j][_qp](n);
+    } 
+	*/
   }
 
   _StressJac*=-_test[_i][_qp]*0.5;
@@ -87,7 +95,7 @@ JLCR_StressConstitutiveElasticRate::WhichJacobianVariable(unsigned var)
 
   for (unsigned int i = _nvar; i < 3; ++i)
   {
-    if (var == _v_num[i])
+    if (var == *(_v_num[i])
       return i;
   }
     return 1000;
