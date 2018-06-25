@@ -13,7 +13,7 @@ public:
   JLCR_CalcDeformRotTensors(const InputParameters & parameters);
   virtual ~JLCR_CalcDeformRotTensors() {}
 
-  virtual void computeProperties();
+  virtual void computeQpProperties();
 protected:
   virtual void initQpStatefulProperties();
 

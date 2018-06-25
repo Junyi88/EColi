@@ -13,7 +13,7 @@ public:
   JLCR_CalcStressRate(const InputParameters & parameters);
   virtual ~JLCR_CalcStressRate() {}
 
-  virtual void computeProperties();
+  virtual void computeQpProperties();
 protected:
   virtual void initQpStatefulProperties();
 

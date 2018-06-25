@@ -51,7 +51,7 @@ JLCR_CalcDeformRotTensors::initQpStatefulProperties()
 }
 
 void
-JLCR_CalcDeformRotTensors::computeProperties()
+JLCR_CalcDeformRotTensors::computeQpProperties()
 {
     RankTwoTensor A((*_grad_disp[0])[_qp], (*_grad_disp[1])[_qp], (*_grad_disp[2])[_qp]);
     _DefGrad[_qp] = A;

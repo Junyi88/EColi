@@ -13,7 +13,7 @@ public:
   JLCR_CalcVelTensor(const InputParameters & parameters);
   virtual ~JLCR_CalcVelTensor() {}
 
-  virtual void computeProperties();
+  virtual void computeQpProperties();
 protected:
   virtual void initQpStatefulProperties();
 

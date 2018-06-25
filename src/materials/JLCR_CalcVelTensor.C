@@ -52,7 +52,7 @@ JLCR_CalcVelTensor::initQpStatefulProperties()
 }
 
 void
-JLCR_CalcVelTensor::computeProperties()
+JLCR_CalcVelTensor::computeQpProperties()
 {
     RankTwoTensor A((*_grad_vel[0])[_qp], (*_grad_vel[1])[_qp], (*_grad_vel[2])[_qp]);
     _VelGrad[_qp] = A;

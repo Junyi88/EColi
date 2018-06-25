@@ -28,7 +28,7 @@ JLCR_CalcStressRate::initQpStatefulProperties()
 }
 
 void
-JLCR_CalcStressRate::computeProperties()
+JLCR_CalcStressRate::computeQpProperties()
 {
     _StressRate[_qp]=_elasticity_tensor[_qp]*_VelGrad[_qp];
 
