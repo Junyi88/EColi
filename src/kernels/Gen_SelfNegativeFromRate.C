@@ -25,11 +25,11 @@ Gen_SelfNegativeFromRate::computeQpResidual()
 }
 
 //** computeQpJacobian() *********************************************************
-Real
-Gen_SelfNegativeFromRate::computeQpJacobian()
-{
-    return 0.0;
-}
+// Real
+// Gen_SelfNegativeFromRate::computeQpJacobian()
+// {
+//     return 0.0;
+// }
 //** computeQpJacobian() *********************************************************
 Real
 Gen_SelfNegativeFromRate::computeQpOffDiagJacobian(unsigned int jvar)
