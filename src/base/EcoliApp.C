@@ -77,6 +77,11 @@
 #include "JLCR_CalcStressRate.h"
 #include "JLCR_CalcVelTensor.h"
 #include "JUtils_GetVarType.h"
+
+#include "JLCR_StressRotationRate.h"
+#include "Gen_Dummy.h"
+#include "JLCR_CalcRotatedElasticityTensor.h"
+#include "JLCR_CalcDefVelGradient.h"
 //================================
 template<>
 InputParameters validParams<EcoliApp>()
@@ -182,6 +187,11 @@ EcoliApp::registerObjects(Factory & factory)
   registerMaterial(JLCR_CalcStressRate);
   registerMaterial(JLCR_CalcVelTensor);
 
+
+  registerKernel(JLCR_StressRotationRate);
+  registerKernel(Gen_Dummy);
+  registerMaterial(JLCR_CalcRotatedElasticityTensor);
+  registerMaterial(JLCR_CalcDefVelGradient);
 }
 
 // External entry point for dynamic syntax association

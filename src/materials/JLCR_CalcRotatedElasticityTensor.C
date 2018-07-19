@@ -19,7 +19,7 @@ JLCR_CalcRotatedElasticityTensor::JLCR_CalcRotatedElasticityTensor(const InputPa
     _R_Cijkl_RT(declareProperty<RankFourTensor>("Rotated_elasticity_tensor"))
 {
   // fetch coupled variables and gradients (as stateful properties if necessary)
-  _R_Cijkl_RT.zero();
+  _R_Cijkl_RT[_qp].zero();
 
 
 }
@@ -27,13 +27,13 @@ JLCR_CalcRotatedElasticityTensor::JLCR_CalcRotatedElasticityTensor(const InputPa
 void
 JLCR_CalcRotatedElasticityTensor::initQpStatefulProperties()
 {
-  _R_Cijkl_RT=_elasticity_tensor;
+  _R_Cijkl_RT[_qp]=_elasticity_tensor[_qp];
 }
 
 void
 JLCR_CalcRotatedElasticityTensor::computeQpProperties()
 {
-    _R_Cijkl_RT.zero();
+    _R_Cijkl_RT[_qp].zero();
     for (int i=0;i<3;i++)
       for (int j=0;i<3;i++)
         for (int k=0;i<3;i++)

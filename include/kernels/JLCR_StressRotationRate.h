@@ -25,6 +25,8 @@ protected:
   virtual Real computeQpJacobian() override;
   virtual Real computeQpOffDiagJacobian(unsigned int jvar) override;
   virtual unsigned int WhichJacobianVariable(unsigned var);
+  Real GetStress(unsigned int i, unsigned int j);
+
 
   unsigned int _componentI;
   unsigned int _componentJ;
@@ -35,11 +37,12 @@ protected:
   std::vector<unsigned int> _Stress_num;
   std::vector<unsigned int> _Stress_num_i;
   std::vector<unsigned int> _Stress_num_j;
+  std::vector<unsigned int> _Stress_map;
 
   const MaterialProperty<RankTwoTensor> & _SpinVel;
 
   Real _Dummy;
-  unsigned int _num_v;
+  unsigned int _num_v, _n;
 };
 
 #endif // COUPLEDTIMEDERIVATIVE_H

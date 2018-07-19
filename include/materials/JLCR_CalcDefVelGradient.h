@@ -21,7 +21,7 @@ protected:
   unsigned int _ndisp;
 
   MaterialProperty<RankTwoTensor> & _DefGrad;
-  MaterialProperty<RankTwoTensor> & _DefGrad_old;
+  const MaterialProperty<RankTwoTensor> & _DefGrad_old;
   MaterialProperty<RankTwoTensor> & _RotMat;
   MaterialProperty<RankTwoTensor> & _StretchMat;
 

@@ -151,3 +151,5 @@ out.xyz
 *.directory
 *jitcache*
 *tmp*
+*.so.0
+*.so.0.0.*

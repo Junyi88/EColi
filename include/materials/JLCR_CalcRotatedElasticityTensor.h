@@ -18,9 +18,9 @@ protected:
   virtual void initQpStatefulProperties();
 
   /// Coupled displacement variables
-  MaterialProperty<RankTwoTensor> & _RotMat;
-  MaterialProperty<RankTwoTensor> & _elasticity_tensor;
-  MaterialProperty<RankTwoTensor> & _R_Cijkl_RT;
+  const MaterialProperty<RankTwoTensor> & _RotMat;
+  const MaterialProperty<RankFourTensor> & _elasticity_tensor;
+  MaterialProperty<RankFourTensor> & _R_Cijkl_RT;
 
 
 };

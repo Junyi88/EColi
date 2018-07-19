@@ -16,7 +16,7 @@ InputParameters validParams<Gen_Dummy>();
 class Gen_Dummy : public DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >
 {
 public:
-  Gen_SelfNegative(const InputParameters & parameters);
+  Gen_Dummy(const InputParameters & parameters);
   // virtual void initialSetup();
 
 protected:
