@@ -13,7 +13,7 @@ InputParameters validParams<JLCR_CalcStressRate>()
 
 JLCR_CalcStressRate::JLCR_CalcStressRate(const InputParameters & parameters) :
     DerivativeMaterialInterface<Material>(parameters),
-    _elasticity_tensor(getMaterialPropertyByName<RankFourTensor>("elasticity_tensor")),
+    _elasticity_tensor(getMaterialPropertyByName<RankFourTensor>("Rotated_elasticity_tensor")),
     _VelGrad(getMaterialPropertyByName<RankTwoTensor>("Velocity_Gradient")),
     _StressRate(declareProperty<RankTwoTensor>("Stress_Rate"))
 {

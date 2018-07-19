@@ -1,11 +1,12 @@
-#include "JLCR_StressConstitutiveElasticRate.h"
+#include "JLCR_StressRotationRate.h"
 
 template<>
-InputParameters validParams<JLCR_StressConstitutiveElasticRate>()
+InputParameters validParams<JLCR_StressRotationRate>()
 {
   InputParameters params = validParams<Kernel>();
   params.addClassDescription("Kernal For Stress Divergence");
-  params.addRequiredCoupledVar("Velocity", "The displacements appropriate for the simulation geometry and coordinate system");
+  params.addRequiredCoupledVar("Velocity", "Velocitites");
+  params.addRequiredCoupledVar("Stresses", "Other Stresses");
   params.addRequiredParam<unsigned>("Component_I", "The component I");
   params.addRequiredParam<unsigned>("Component_J", "The component J");
   return params;
@@ -13,39 +14,39 @@ InputParameters validParams<JLCR_StressConstitutiveElasticRate>()
 
 //** Constructor *********************************************************
 
-JLCR_StressConstitutiveElasticRate::JLCR_StressConstitutiveElasticRate(const InputParameters & parameters) :
+JLCR_StressRotationRate::JLCR_StressRotationRate(const InputParameters & parameters) :
     DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >(parameters),
-    _nvar(coupledComponents("Velocity")),
     _componentI(getParam<unsigned>("Component_I")-1),
     _componentJ(getParam<unsigned>("Component_J")-1),
-    _v(3),
-    _grad_v(3),
-    _v_num(3),
-    _elasticity_tensor(getMaterialPropertyByName<RankFourTensor>("elasticity_tensor")),
-    _StressRate(getMaterialPropertyByName<RankTwoTensor>("Stress_Rate")),
-    _StressJac(0.0),_num_v(0)
+    _Stress(8),
+    _v_num(3), _Stress_num(8), _Stress_num_i(8), _Stress_num_j(8),
+    _SpinVel(getMaterialPropertyByName<RankTwoTensor>("SpinV_Gradient")),
+    _Dummy(0.0),_num_v(0)
     {
-      for (unsigned int i = 0; i < _nvar; i++)
+      for (unsigned int i = 0; i < 3; ++i)
       {
-        _v[i] = &coupledValue("Velocity", i);
-        _grad_v[i] = &coupledGradient("Velocity", i);
          _v_num[i]=coupled("Velocity",i);
-		//_v_num[i]=coupled("Velocity",i);
       }
 
-      // set unused dimensions to zero
-      for (unsigned int i = _nvar; i < 3; i++)
+
+      _num_v=0;
+      for (unsigned int i = 0; i < 3; ++i)
+        for (unsigned int j = 0; j < 3; ++j)
       {
-        _v[i] = &_zero;
-        _grad_v[i] = &_grad_zero;
-        _v_num[i]=0;
+        if ((i!=_componentI)&&(j!=_componentJ)){
+         _Stress[_num_v]= &coupledValue("Stresses", i);
+         _Stress_num[_num_v]=coupled("Stresses",i);
+         _Stress_num_i[_num_v]=i;
+         _Stress_num_j[_num_v]=j;
+         _num_v++;
+       }
       }
 
     }
 
 //** computeQpResidual() *********************************************************
 Real
-JLCR_StressConstitutiveElasticRate::computeQpResidual()
+JLCR_StressRotationRate::computeQpResidual()
 {
 
   return -_StressRate[_qp](_componentI,_componentJ)*_test[_i][_qp];
@@ -53,14 +54,14 @@ JLCR_StressConstitutiveElasticRate::computeQpResidual()
 
 //** computeQpJacobian() *********************************************************
 Real
-JLCR_StressConstitutiveElasticRate::computeQpJacobian()
+JLCR_StressRotationRate::computeQpJacobian()
 {
   return 0.0;
 }
 
 //** computeQpOffDiagJacobian() *********************************************************
 Real
-JLCR_StressConstitutiveElasticRate::computeQpOffDiagJacobian(unsigned int jvar)
+JLCR_StressRotationRate::computeQpOffDiagJacobian(unsigned int jvar)
 {
   _StressJac=0.0;
   _num_v=WhichJacobianVariable(jvar);
@@ -91,13 +92,18 @@ JLCR_StressConstitutiveElasticRate::computeQpOffDiagJacobian(unsigned int jvar)
 
 // ** WhichJacobianVariable
 unsigned int
-JLCR_StressConstitutiveElasticRate::WhichJacobianVariable(unsigned int var)
+JLCR_StressRotationRate::WhichJacobianVariable(unsigned int var)
 {
 
-  for (unsigned int i = 0; i < 3; i++)
+  for (unsigned int i = 0; i < 3; ++i)
   {
     if (var == (_v_num[i]))
       return i;
+  }
+  for (unsigned int i = 0; i < 8; ++i)
+  {
+    if (var == (_Stress_num[i]))
+      return i+3;
   }
     return 1000;
 }
