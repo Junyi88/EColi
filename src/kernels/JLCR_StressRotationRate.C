@@ -48,8 +48,10 @@ JLCR_StressRotationRate::JLCR_StressRotationRate(const InputParameters & paramet
 Real
 JLCR_StressRotationRate::computeQpResidual()
 {
-
-  return -_StressRate[_qp](_componentI,_componentJ)*_test[_i][_qp];
+  _Dummy=0.0;
+  for (unsigned int i = 0; i < 3; ++i)
+    _
+  return -_Dummy;
 }
 
 //** computeQpJacobian() *********************************************************
