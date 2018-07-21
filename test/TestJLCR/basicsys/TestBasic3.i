@@ -274,7 +274,7 @@
   [./s_xx]
     type = RankTwoAux
     variable = s_xx
-    rank_two_tensor = Stress_Rate 
+    rank_two_tensor = Stress_Rate
     index_i = 0
     index_j = 0
   [../]
@@ -318,7 +318,7 @@
   [./s_zx]
     type = RankTwoAux
     variable = s_zx
-    rank_two_tensor = Stress_Rate 
+    rank_two_tensor = Stress_Rate
     index_i = 2
     index_j = 0
   [../]
@@ -332,7 +332,7 @@
   [./s_zz]
     type = RankTwoAux
     variable = s_zz
-    rank_two_tensor = Stress_Rate 
+    rank_two_tensor = Stress_Rate
     index_i = 2
     index_j = 2
   [../]
@@ -348,7 +348,7 @@
  [./DeformatinGradients_ux]
   type = JLCR_CalcDefVelGradient
   outputs = exodus
-  displacements = 'u_x u_y u_z' 
+  displacements = 'u_x u_y u_z'
   velocities = 'v_x v_y v_z'
  [../]
 
@@ -359,7 +359,7 @@
   [../]
 
   [./rot_elasticity_tensor]
-    type = JLCR_CalcRotatedElasticityTensor 
+    type = JLCR_CalcRotatedElasticityTensor
     outputs = exodus
 #    velocities = 'v_x v_y v_z'
   [../]
@@ -389,7 +389,7 @@
 #------------------------------------------
 
 
- 
+
 
 #----------------------------------------
 #  [./v_x_self]
@@ -397,29 +397,29 @@
 #    variable = u_x
 #    v = v_x
 #  [../]
-#  [./v_y_self]
-#    type = Gen_SelfNegativeFromRate
-#    variable = u_y
-#    v = v_y
-#  [../] 
-#  [./v_z_self]
-#    type = Gen_SelfNegativeFromRate
-#    variable = u_z
-#    v = v_z
-#  [../]
-
-#  [./u_x_dot]
-#    type                         = TimeDerivative
-#    variable                     = u_x
-#  [../]
-#  [./u_y_dot]
-#    type                         = TimeDerivative
-#    variable                     = u_y
-#  [../] 
-#  [./u_z_dot]
-#    type                         = TimeDerivative
-#    variable                     = u_z
-#  [../]
+  #[./v_y_self]
+  #  type = Gen_SelfNegativeFromRate
+  #  variable = u_y
+  #  v = v_y
+  #[../]
+  #[./v_z_self]
+  #  type = Gen_SelfNegativeFromRate
+  #  variable = u_z
+  #  v = v_z
+  #[../]
+  #
+  #[./u_x_dot]
+  #  type                         = TimeDerivative
+  #  variable                     = u_x
+  #[../]
+  #[./u_y_dot]
+  #  type                         = TimeDerivative
+  #  variable                     = u_y
+  #[../]
+  #[./u_z_dot]
+  #  type                         = TimeDerivative
+  #  variable                     = u_z
+  #[../]
 
 # ********
 #   [./Dummy_u_x]
@@ -632,41 +632,3 @@
   output_initial = true
   #print_linear_residuals         = 0
 []
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -34,23 +34,23 @@ void
 JLCR_CalcRotatedElasticityTensor::computeQpProperties()
 {
 
-    
+
     _R_Cijkl_RT[_qp].zero();
-   
-    
+
+
     for (unsigned int i=0; i<3; i++){
     for (unsigned int j=0; j<3; j++){
     for (unsigned int k=0; k<3; k++){
     for (unsigned int l=0; l<3; l++){
      for (unsigned int p=0; p<3; p++){
-     for (unsigned int m=0; m<3; m++){  
+     for (unsigned int m=0; m<3; m++){
        _R_Cijkl_RT[_qp](i,j,k,l)+=_elasticity_tensor[_qp](i,j,k,l)*
-             _RotMat[_qp](l,p)*_Rot[_qp](i,m);
-       
-     }}}}}}
-     
+             _RotMat[_qp](l,p)*_RotMat[_qp](i,m);
 
-    //_R_Cijkl_RT[_qp]=_elasticity_tensor[_qp]*_RotMat[_qp];  
+     }}}}}}
+
+
+    //_R_Cijkl_RT[_qp]=_elasticity_tensor[_qp]*_RotMat[_qp];
     /*
     for (int i=0;i<3;i++)
       for (int j=0;j<3;j++)
