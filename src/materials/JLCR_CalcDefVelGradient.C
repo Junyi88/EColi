@@ -22,7 +22,7 @@ JLCR_CalcDefVelGradient::JLCR_CalcDefVelGradient(const InputParameters & paramet
     _StretchMat(declareProperty<RankTwoTensor>("Stretch_Matrix")),
     _vel(3),
     _grad_vel(3),
-    _VelGrad(declareProperty<RankTwoTensor>("Velocity_Gradient")),
+    _VelGrad(declareProperty<RankTwoTensor>("Velocity_Gradient")), //DeformV_Gradient,Velocity_Gradient
     _SpinVel(declareProperty<RankTwoTensor>("SpinV_Gradient")),
     _DefVel(declareProperty<RankTwoTensor>("DeformV_Gradient"))
 {
@@ -70,8 +70,8 @@ JLCR_CalcDefVelGradient::computeQpProperties()
     RankTwoTensor A((*_grad_vel[0])[_qp], (*_grad_vel[1])[_qp], (*_grad_vel[2])[_qp]);
     _VelGrad[_qp] = A;
 
-    _SpinVel[_qp] = 0.5*(_VelGrad[_qp]+_VelGrad[_qp].transpose());
-    _DefVel[_qp]  = 0.5*(_VelGrad[_qp]-_VelGrad[_qp].transpose());
+    _SpinVel[_qp] = 0.5*(_VelGrad[_qp]-_VelGrad[_qp].transpose());
+    _DefVel[_qp]  = 0.5*(_VelGrad[_qp]+_VelGrad[_qp].transpose());
 
     // Calculate Change In F
     _DefGrad[_qp]=((_VelGrad[_qp]*_DefGrad_old[_qp])*_dt)+_DefGrad_old[_qp];

@@ -65,6 +65,9 @@ JLCR_StressConstitutiveElasticRate::computeQpOffDiagJacobian(unsigned int jvar)
   _StressJac=0.0;
   _num_v=WhichJacobianVariable(jvar);
 
+  if (_num_v>=100)
+    return 0.0;
+
   for (unsigned int n=0;n < 3; n++){
     if (_num_v==n){
       _StressJac+=_elasticity_tensor[_qp](_componentI,_componentJ,n,n)*2.0*

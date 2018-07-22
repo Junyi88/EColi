@@ -49,6 +49,7 @@ JLCR_CalcRotatedElasticityTensor::computeQpProperties()
 
      }}}}}}
 
+    //_R_Cijkl_RT[_qp]=_elasticity_tensor[_qp];
 
     //_R_Cijkl_RT[_qp]=_elasticity_tensor[_qp]*_RotMat[_qp];
     /*

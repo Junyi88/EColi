@@ -13,9 +13,9 @@
    type = GeneratedMesh
    dim = 3
    elem_type = HEX8
-   nx = 1
-   ny = 1
-   nz = 1
+   nx = 2
+   ny = 2
+   nz = 2
    xmin = 0
    xmax = 1.0
    ymin = 0
@@ -106,6 +106,21 @@
     boundary = left
     value = 0.0
   [../]
+  #[./back]
+  #  type = PresetBC
+  #  variable = u_z
+  #  boundary = back
+  #  value = 0.0
+  #[../]
+  #[./right]
+  #  type = PresetBC
+  #  variable = u_x
+  #  boundary = right
+  #  value = 0.0
+  #[../]
+
+
+
   [./bottom]
     type = PresetBC
     variable = u_y
@@ -120,6 +135,22 @@
     type                         = FunctionPresetBC
     variable                     = u_y
   [../]
+
+
+
+  #[./Stress_xx]
+  #  type = PresetBC
+  #  variable = Stress_xx
+  #  boundary = 'top bottom left right front back'
+  #  value = 0.0
+  #[../]
+  #
+  #[./Stress_zz]
+  #  type = PresetBC
+  #  variable = Stress_zz
+  #  boundary = 'top bottom left right front back'
+  #  value = 0.0
+  #[../]
 []
 
 
@@ -197,6 +228,80 @@
     order = CONSTANT
   [../]
  [./s_zz]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+
+  [./d_xx]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./d_xy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./d_xz]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./d_yx]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./d_yy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./d_yz]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./d_zx]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+   [./d_zy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+ [./d_zz]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+
+  [./L_xx]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./L_xy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./L_xz]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./L_yx]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./L_yy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./L_yz]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./L_zx]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+   [./L_zy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+ [./L_zz]
     family = MONOMIAL
     order = CONSTANT
   [../]
@@ -337,7 +442,137 @@
     index_j = 2
   [../]
 
+  [./d_xx]
+    type = RankTwoAux
+    variable = d_xx
+    rank_two_tensor = DeformV_Gradient
+    index_i = 0
+    index_j = 0
+  [../]
+  [./d_xy]
+    type = RankTwoAux
+    variable = d_xy
+    rank_two_tensor = DeformV_Gradient
+    index_i = 0
+    index_j = 1
+  [../]
+  [./d_xz]
+    type = RankTwoAux
+    variable = d_xz
+    rank_two_tensor = DeformV_Gradient
+    index_i = 0
+    index_j = 2
+  [../]
 
+  [./d_yx]
+    type = RankTwoAux
+    variable = d_yx
+    rank_two_tensor = DeformV_Gradient
+    index_i = 1
+    index_j = 0
+  [../]
+  [./d_yy]
+    type = RankTwoAux
+    variable = d_yy
+    rank_two_tensor = DeformV_Gradient
+    index_i = 1
+    index_j = 1
+  [../]
+  [./d_yz]
+    type = RankTwoAux
+    variable = d_yz
+    rank_two_tensor = DeformV_Gradient
+    index_i = 1
+    index_j = 2
+  [../]
+
+  [./d_zx]
+    type = RankTwoAux
+    variable = d_zx
+    rank_two_tensor = DeformV_Gradient
+    index_i = 2
+    index_j = 0
+  [../]
+  [./d_zy]
+    type = RankTwoAux
+    variable = d_zy
+    rank_two_tensor = DeformV_Gradient
+    index_i = 2
+    index_j = 1
+  [../]
+  [./d_zz]
+    type = RankTwoAux
+    variable = d_zz
+    rank_two_tensor = DeformV_Gradient
+    index_i = 2
+    index_j = 2
+  [../]
+
+  [./L_xx]
+    type = RankTwoAux
+    variable = L_xx
+    rank_two_tensor = Velocity_Gradient
+    index_i = 0
+    index_j = 0
+  [../]
+  [./L_xy]
+    type = RankTwoAux
+    variable = L_xy
+    rank_two_tensor = Velocity_Gradient
+    index_i = 0
+    index_j = 1
+  [../]
+  [./L_xz]
+    type = RankTwoAux
+    variable = L_xz
+    rank_two_tensor = Velocity_Gradient
+    index_i = 0
+    index_j = 2
+  [../]
+
+  [./L_yx]
+    type = RankTwoAux
+    variable = L_yx
+    rank_two_tensor = Velocity_Gradient
+    index_i = 1
+    index_j = 0
+  [../]
+  [./L_yy]
+    type = RankTwoAux
+    variable = L_yy
+    rank_two_tensor = Velocity_Gradient
+    index_i = 1
+    index_j = 1
+  [../]
+  [./L_yz]
+    type = RankTwoAux
+    variable = L_yz
+    rank_two_tensor = Velocity_Gradient
+    index_i = 1
+    index_j = 2
+  [../]
+
+  [./L_zx]
+    type = RankTwoAux
+    variable = L_zx
+    rank_two_tensor = Velocity_Gradient
+    index_i = 2
+    index_j = 0
+  [../]
+  [./L_zy]
+    type = RankTwoAux
+    variable = L_zy
+    rank_two_tensor = Velocity_Gradient
+    index_i = 2
+    index_j = 1
+  [../]
+  [./L_zz]
+    type = RankTwoAux
+    variable = L_zz
+    rank_two_tensor = Velocity_Gradient
+    index_i = 2
+    index_j = 2
+  [../]
 []
 
 
@@ -353,9 +588,12 @@
  [../]
 
   [./elasticity_tensor]
-    type = ComputeElasticityTensor
-    fill_method                  = symmetric9
-    C_ijkl                       = '175.0e1 88.7e1 62.3e1 175.0e1 62.3e1 220.0e1 62.2e1 62.2e1 43.15e1'
+    #type = ComputeElasticityTensor
+    #fill_method                  = symmetric9
+    #C_ijkl                       = '175.0e1 88.7e1 62.3e1 175.0e1 62.3e1 220.0e1 62.2e1 62.2e1 43.15e1'
+    type = ComputeIsotropicElasticityTensor
+    youngs_modulus = 70.0
+    poissons_ratio = 0.3
   [../]
 
   [./rot_elasticity_tensor]
@@ -389,14 +627,28 @@
 #------------------------------------------
 
 
-
+#[./v_x_self]
+#  type = Gen_SelfRate
+#  variable = u_x
+#  v = v_x
+#[../]
+#[./v_y_self]
+#  type = Gen_SelfRate
+#  variable = u_y
+#  v = v_y
+#[../]
+#[./v_z_self]
+#  type = Gen_SelfRate
+#  variable = u_z
+#  v = v_z
+#[../]
 
 #----------------------------------------
-#  [./v_x_self]
-#    type = Gen_SelfNegativeFromRate
-#    variable = u_x
-#    v = v_x
-#  [../]
+  #[./v_x_self]
+  #  type = Gen_SelfNegativeFromRate
+  #  variable = u_x
+  #  v = v_x
+  #[../]
   #[./v_y_self]
   #  type = Gen_SelfNegativeFromRate
   #  variable = u_y
@@ -407,7 +659,7 @@
   #  variable = u_z
   #  v = v_z
   #[../]
-  #
+  ##
   #[./u_x_dot]
   #  type                         = TimeDerivative
   #  variable                     = u_x
@@ -422,18 +674,18 @@
   #[../]
 
 # ********
-#   [./Dummy_u_x]
-#    type = Gen_Dummy
-#    variable = u_x
-#  [../]
-#  [./Dummy_u_y]
-#    type = Gen_Dummy
-#    variable = u_y
-#  [../]
-#  [./Dummy_u_z]
-#    type = Gen_Dummy
-#    variable = u_z
-#  [../]
+  # [./Dummy_u_x]
+  #  type = Gen_Dummy
+  #  variable = u_x
+  #[../]
+  #[./Dummy_u_y]
+  #  type = Gen_Dummy
+  #  variable = u_y
+  #[../]
+  #[./Dummy_u_z]
+  #  type = Gen_Dummy
+  #  variable = u_z
+  #[../]
 
  [./u_x_dot]
     variable = v_x
@@ -603,19 +855,20 @@
 ##: Executioner
 [Executioner]
   type = Transient
-  solve_type = 'PJFNK' #'NEWTON'  # OR PJFNK
+  solve_type = 'NEWTON' #'NEWTON'  # OR PJFNK
   petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
   petsc_options_value = 'asm      ilu          nonzero'
   l_max_its = 40
   nl_max_its = 30
-  nl_abs_tol = 1e-8
-  end_time = 2.2
+  nl_abs_tol = 1e-12
+  end_time = 0.1
    dtmax   = 1.0e-3
-   start_time                 = 0.00778596352
+  dtmin = 1.0e-12
+   start_time                 = 0.0
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
-    dt = 1.0e-5
+    dt = 1.0e-3
     cutback_factor = 0.8
     growth_factor = 1.5
     optimal_iterations = 12
@@ -625,10 +878,10 @@
 ##===============================================================
 ##: Outputs
 [Outputs]
-  interval                       = 10
+  interval                       = 1
   exodus = true
   console = false
   print_perf_log = true
   output_initial = true
-  #print_linear_residuals         = 0
+  print_linear_residuals         = 0
 []

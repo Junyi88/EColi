@@ -82,6 +82,8 @@
 #include "Gen_Dummy.h"
 #include "JLCR_CalcRotatedElasticityTensor.h"
 #include "JLCR_CalcDefVelGradient.h"
+#include "Gen_SelfRate.h"
+
 //================================
 template<>
 InputParameters validParams<EcoliApp>()
@@ -192,6 +194,7 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(Gen_Dummy);
   registerMaterial(JLCR_CalcRotatedElasticityTensor);
   registerMaterial(JLCR_CalcDefVelGradient);
+  registerKernel(Gen_SelfRate);
 }
 
 // External entry point for dynamic syntax association

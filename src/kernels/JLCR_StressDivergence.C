@@ -42,6 +42,9 @@ JLCR_StressDivergence::computeQpJacobian()
 Real
 JLCR_StressDivergence::computeQpOffDiagJacobian(unsigned int jvar)
 {
+  if ((WhichJacobianVariable(jvar))>3)
+    return 0.0;
+
   return _grad_test[_i][_qp](WhichJacobianVariable(jvar))*_phi[_j][_qp];
 }
 
