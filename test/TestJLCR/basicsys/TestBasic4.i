@@ -14,7 +14,7 @@
    dim = 3
    elem_type = HEX8
    nx = 1
-   ny = 1
+   ny = 2
    nz = 1
    xmin = 0
    xmax = 1.0
@@ -96,34 +96,20 @@
 [BCs]
   [./front]
     type = PresetBC
-    variable = u_z
+    variable = v_z
     boundary = front
     value = 0.0
   [../]
   [./left]
     type = PresetBC
-    variable = u_x
+    variable = v_x
     boundary = left
     value = 0.0
   [../]
-  #[./back]
-  #  type = PresetBC
-  #  variable = u_z
-  #  boundary = back
-  #  value = 0.0
-  #[../]
-  #[./right]
-  #  type = PresetBC
-  #  variable = u_x
-  #  boundary = right
-  #  value = 0.0
-  #[../]
-
-
 
   [./bottom]
     type = PresetBC
-    variable = u_y
+    variable = v_y
     boundary = bottom
     value = 0.0
   [../]
@@ -131,9 +117,9 @@
   [./top]
     boundary                     = top
     enable                       = 1
-    function                     = '0.1*t'
+    function                     = '0.1'
     type                         = FunctionPresetBC
-    variable                     = u_y
+    variable                     = v_y
   [../]
 
 
