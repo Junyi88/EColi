@@ -13,9 +13,9 @@
    type = GeneratedMesh
    dim = 3
    elem_type = HEX8
-   nx = 1
-   ny = 2
-   nz = 1
+   nx = 4
+   ny = 4
+   nz = 4
    xmin = 0
    xmax = 1.0
    ymin = 0
@@ -613,21 +613,21 @@
 #------------------------------------------
 
 
-#[./v_x_self]
-#  type = Gen_SelfRate
-#  variable = u_x
-#  v = v_x
-#[../]
-#[./v_y_self]
-#  type = Gen_SelfRate
-#  variable = u_y
-#  v = v_y
-#[../]
-#[./v_z_self]
-#  type = Gen_SelfRate
-#  variable = u_z
-#  v = v_z
-#[../]
+[./v_x_self]
+  type = Gen_SelfRate
+  variable = u_x
+  v = v_x
+[../]
+[./v_y_self]
+  type = Gen_SelfRate
+  variable = u_y
+  v = v_y
+[../]
+[./v_z_self]
+  type = Gen_SelfRate
+  variable = u_z
+  v = v_z
+[../]
 
 #----------------------------------------
   #[./v_x_self]
@@ -673,35 +673,35 @@
   #  variable = u_z
   #[../]
 
- [./u_x_dot]
-    variable = v_x
-    v = u_x
-    type = CoupledTimeDerivative
-  [../]
-  [./v_x]
-     variable = v_x
-     type = Gen_SelfNegative
-  [../]
-
-[./u_y_dot]
-   variable = v_y
-   v = u_y
-   type = CoupledTimeDerivative
- [../]
-  [./v_y]
-     variable = v_y
-     type = Gen_SelfNegative
-  [../]
-
- [./u_z_dot]
-    variable = v_z
-    v = u_z
-    type = CoupledTimeDerivative
-  [../]
-  [./v_z]
-     variable = v_z
-     type = Gen_SelfNegative
-  [../]
+# [./u_x_dot]
+#    variable = v_x
+#    v = u_x
+#    type = CoupledTimeDerivative
+#  [../]
+#  [./v_x]
+#     variable = v_x
+#     type = Gen_SelfNegative
+#  [../]
+#
+#[./u_y_dot]
+#   variable = v_y
+#   v = u_y
+#   type = CoupledTimeDerivative
+# [../]
+#  [./v_y]
+#     variable = v_y
+#     type = Gen_SelfNegative
+#  [../]
+#
+# [./u_z_dot]
+#    variable = v_z
+#    v = u_z
+#    type = CoupledTimeDerivative
+#  [../]
+#  [./v_z]
+#     variable = v_z
+#     type = Gen_SelfNegative
+#  [../]
 
 # ****************
    [./SR_xx]
@@ -813,18 +813,34 @@
 #-----------------------------------------------------
   [./StressDev_x]
     type = JLCR_StressDivergence
-    variable = u_x
+    variable = v_x
     Stresses = 'Stress_xx Stress_xy Stress_xz'
   [../]
   [./StressDev_y]
     type = JLCR_StressDivergence
-    variable = u_y
+    variable = v_y
     Stresses = 'Stress_yx Stress_yy Stress_yz'
   [../]
   [./StressDev_z]
     type = JLCR_StressDivergence
-    variable = u_z
+    variable = v_z
     Stresses = 'Stress_zx Stress_zy Stress_zz'
+  [../]
+
+  [./Vsd_zx]
+    type = CoefTimeDerivative
+    Coefficient = 0.0001
+    variable = v_x
+  [../]
+  [./Vsd_zy]
+    type = CoefTimeDerivative
+    Coefficient = 0.0001
+    variable = v_y
+  [../]
+  [./Vsd_zz]
+    type = CoefTimeDerivative
+    Coefficient = 0.0001
+    variable = v_z
   [../]
 []
 
@@ -864,7 +880,7 @@
 ##===============================================================
 ##: Outputs
 [Outputs]
-  interval                       = 200
+  interval                       = 1
   exodus = true
   console = false
   print_perf_log = true
