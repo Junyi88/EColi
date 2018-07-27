@@ -19,7 +19,7 @@ InputParameters validParams<ZTest_StressDivBasic>()
 
 ZTest_StressDivBasic::ZTest_StressDivBasic(const InputParameters & parameters) :
     DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >(parameters),
-    _ComponentI(_coupled_moose_vars.size()),
+    _ComponentI(getParam<unsigned int>("component"),
     _OtherDisp(2),
     _IVals(2),
     _Gamma_Beta(getParam<Real>("Gamma")/getParam<Real>("Beta")),
