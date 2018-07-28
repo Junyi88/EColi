@@ -88,6 +88,9 @@
 #include "ZTest_Velocity.h"
 #include "ZTest_NewmarkBetaAcceleration.h"
 #include "ZTest_Stress.h"
+#include "ZTest_AccelerationSplit.h"
+#include "ZTest_VelocitySplit.h"
+
 //================================
 template<>
 InputParameters validParams<EcoliApp>()
@@ -204,6 +207,8 @@ EcoliApp::registerObjects(Factory & factory)
   registerKernel(ZTest_Velocity);
   registerMaterial(ZTest_NewmarkBetaAcceleration);
   registerMaterial(ZTest_Stress);
+  registerKernel(ZTest_AccelerationSplit);
+  registerKernel(ZTest_VelocitySplit);
 }
 
 // External entry point for dynamic syntax association

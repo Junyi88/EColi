@@ -53,6 +53,18 @@
    family = LAGRANGE
  [../]
 
+ [./a_x]
+   order = FIRST
+   family = LAGRANGE
+ [../]
+ [./a_y]
+   order = FIRST
+   family = LAGRANGE
+ [../]
+ [./a_z]
+   order = FIRST
+   family = LAGRANGE
+ [../]
 
 []
 
@@ -95,6 +107,22 @@
     variable                     = u_y
   [../]
 
+
+  [./topy]
+    boundary                     = top
+    enable                       = 1
+    function                     = '0.0'
+    type                         = FunctionPresetBC
+    variable                     = a_y
+  [../]
+
+  [./bottomy]
+    boundary                     = bottom
+    enable                       = 1
+    function                     = '0.0'
+    type                         = FunctionPresetBC
+    variable                     = a_y
+  [../]
   #[./Stress_xx]
   #  type = PresetBC
   #  variable = Stress_xx
@@ -110,7 +138,39 @@
   #[../]
 []
 
+[ICs]
+  [./ConstantIC_ax]
+  type                         = ConstantIC
+  value                        = 0.0
+  variable                     = a_x
+  [../]
+  [./ConstantIC_ay]
+  type                         = ConstantIC
+  value                        = 0.0
+  variable                     = a_y
+  [../]
+  [./ConstantIC_az]
+  type                         = ConstantIC
+  value                        = 0.0
+  variable                     = a_z
+  [../]
 
+  [./ConstantIC_vx]
+  type                         = ConstantIC
+  value                        = 0.0
+  variable                     = v_x
+  [../]
+  [./ConstantIC_vy]
+  type                         = ConstantIC
+  value                        = 0.1
+  variable                     = v_y
+  [../]
+  [./ConstantIC_vz]
+  type                         = ConstantIC
+  value                        = 0.0
+  variable                     = v_z
+  [../]
+[]
 
 #=======================================================
 #:AuxVariables
@@ -713,29 +773,45 @@
     #  Beta = 0.25
     #[../]
 
-    [./ZTest_Velocity_x]
-      type = ZTest_Velocity
-      variable = v_x
+    [./ZTest_a_x]
+      type = ZTest_AccelerationSplit
+      variable = a_x
+      Velocity = v_x
       Displacement = 'u_x'
-      component = 0
-      Gamma = 0.5
       Beta = 0.25
+    [../]
+    [./ZTest_a_y]
+      type = ZTest_AccelerationSplit
+      variable = a_y
+      Velocity = v_y
+      Displacement = 'u_y'
+      Beta = 0.25
+    [../]
+    [./ZTest_a_z]
+      type = ZTest_AccelerationSplit
+      variable = a_z
+      Velocity = v_z
+      Displacement = 'u_z'
+      Beta = 0.25
+    [../]
+
+    [./ZTest_Velocity_x]
+      type = ZTest_VelocitySplit
+      variable = v_x
+      Acceleration = 'a_x'
+      Gamma = 0.5
     [../]
     [./ZTest_Velocity_y]
-      type = ZTest_Velocity
+      type = ZTest_VelocitySplit
       variable = v_y
-      Displacement = 'u_y'
-      component = 1
+      Acceleration = 'a_y'
       Gamma = 0.5
-      Beta = 0.25
     [../]
     [./ZTest_Velocity_z]
-      type = ZTest_Velocity
+      type = ZTest_VelocitySplit
       variable = v_z
-      Displacement = 'u_z'
-      component = 2
+      Acceleration = 'a_z'
       Gamma = 0.5
-      Beta = 0.25
     [../]
 
       [./Dummy_v_x]
