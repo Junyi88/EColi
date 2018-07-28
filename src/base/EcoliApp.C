@@ -84,6 +84,10 @@
 #include "JLCR_CalcDefVelGradient.h"
 #include "Gen_SelfRate.h"
 
+#include "ZTest_StressDivBasic.h"
+#include "ZTest_Velocity.h"
+#include "ZTest_NewmarkBetaAcceleration.h"
+
 //================================
 template<>
 InputParameters validParams<EcoliApp>()
@@ -195,6 +199,10 @@ EcoliApp::registerObjects(Factory & factory)
   registerMaterial(JLCR_CalcRotatedElasticityTensor);
   registerMaterial(JLCR_CalcDefVelGradient);
   registerKernel(Gen_SelfRate);
+
+  registerKernel(ZTest_StressDivBasic);
+  registerKernel(ZTest_Velocity);
+  registerMaterial(ZTest_NewmarkBetaAcceleration);
 }
 
 // External entry point for dynamic syntax association

@@ -20,10 +20,21 @@ protected:
   /// Coupled displacement variables
 
 
-  const MaterialProperty<RankFourTensor> & _elasticity_tensor;
-  const MaterialProperty<RankTwoTensor> & _VelGrad;
+  std::vector<const VariableValue *> _Displacements;
+  std::vector<const VariableValue *> _Displacements_old;
+  std::vector<const VariableValue *> _Velocities;
 
-  MaterialProperty<RankTwoTensor> & _StressRate;
+  MaterialProperty<Real> & _Acc_x;
+  MaterialProperty<Real> & _Acc_y;
+  MaterialProperty<Real> & _Acc_z;
+
+  const MaterialProperty<Real> & _Acc_x_old;
+  const MaterialProperty<Real> & _Acc_y_old;
+  const MaterialProperty<Real> & _Acc_z_old;
+
+  const Real _Beta;
+  const Real _Con1;
+  Real _Con2;
 };
 
 #endif

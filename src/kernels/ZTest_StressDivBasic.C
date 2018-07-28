@@ -19,13 +19,15 @@ InputParameters validParams<ZTest_StressDivBasic>()
 
 ZTest_StressDivBasic::ZTest_StressDivBasic(const InputParameters & parameters) :
     DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >(parameters),
-    _ComponentI(getParam<unsigned int>("component"),
+    _ComponentI(getParam<unsigned int>("component")),
     _OtherDisp(2),
     _IVals(2),
-    _Gamma_Beta(getParam<Real>("Gamma")/getParam<Real>("Beta")),
+    _Gamma(getParam<Real>("Gamma")),
+    _Beta(getParam<Real>("Beta")),
+    _Gamma_Beta(_Gamma/_Beta),
     _StressRate(getMaterialProperty<RankTwoTensor>("Stress_Rate")),
     _StressOld(getMaterialPropertyOld<RankTwoTensor>("Stress")),
-    _Cijlk(getMaterialProperty<RankFourTensor>("elasticity_tensor")),
+    _Cijkl(getMaterialProperty<RankFourTensor>("elasticity_tensor")),
     _Accumulator(0.0),
     _num_var(0)
     {
@@ -49,8 +51,8 @@ ZTest_StressDivBasic::computeQpResidual()
   _Accumulator=0.0;
 
   for (unsigned int j=0;j<3;++j){
-    _Accumulator+=_grad_test[_i][_qp](j)*(_StressOld[_qp](i,j)
-      +_StressRate(i,j));
+    _Accumulator+=_grad_test[_i][_qp](j)*(_StressOld[_qp](_ComponentI,j)
+      +_StressRate[_qp](_ComponentI,j)*_dt);
   }
 
 
@@ -66,8 +68,8 @@ ZTest_StressDivBasic::computeQpJacobian()
   for (unsigned int j=0; j<3; ++j){
     for (unsigned int k=0; k<3; ++k){
       _Accumulator+=_grad_test[_i][_qp](j)*(
-        _Cijkl(_componentI,j,_componentI,k)*_grad_phi[_j][_qp](k)+
-        _Cijkl(_componentI,j,k,_componentI)*_grad_phi[_j][_qp](k)
+        _Cijkl[_qp](_ComponentI,j,_ComponentI,k)*_grad_phi[_j][_qp](k)+
+        _Cijkl[_qp](_ComponentI,j,k,_ComponentI)*_grad_phi[_j][_qp](k)
       );
     }
     return _Accumulator*0.5*_dt*_dt*_Gamma_Beta;
@@ -86,8 +88,8 @@ ZTest_StressDivBasic::computeQpOffDiagJacobian(unsigned int jvar)
     for (unsigned int j=0; j<3; ++j){
       for (unsigned int k=0; k<3; ++k){
         _Accumulator+=_grad_test[_i][_qp](j)*(
-          _Cijkl(_componentI,j,_num_var,k)*_grad_phi[_j][_qp](k)+
-          _Cijkl(_componentI,j,k,_num_var)*_grad_phi[_j][_qp](k)
+          _Cijkl[_qp](_ComponentI,j,_num_var,k)*_grad_phi[_j][_qp](k)+
+          _Cijkl[_qp](_ComponentI,j,k,_num_var)*_grad_phi[_j][_qp](k)
         );
       }
     }
@@ -102,14 +104,6 @@ ZTest_StressDivBasic::computeQpOffDiagJacobian(unsigned int jvar)
 unsigned int
 ZTest_StressDivBasic::WhichJacobianVariable(unsigned var)
 {
-  if (var == _Stress1_var_number)
-    return 0;
-  else if (var == _Stress2_var_number)
-    return 1;
-  else if (var == _Stress3_var_number)
-    return 2;
-  else
-
     for (unsigned int i=0; i<2; ++i){
       if (var == _OtherDisp[i]){
         return _IVals[i];
