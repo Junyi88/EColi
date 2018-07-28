@@ -679,54 +679,70 @@
 #====================================
 #:Kernels
 [Kernels]
-    [./ZTest_StressDivBasic_x]
-      type = ZTest_StressDivBasic
-      variable = u_x
-      Other_Disp= 'u_y u_z'
-      component = 0
-      Gamma = 0.5
-      Beta = 0.25
-    [../]
-
-    [./ZTest_StressDivBasic_y]
-      type = ZTest_StressDivBasic
-      variable = u_y
-      Other_Disp= 'u_x u_z'
-      component = 1
-      Gamma = 0.5
-      Beta = 0.25
-    [../]
-
-    [./ZTest_StressDivBasic_z]
-      type = ZTest_StressDivBasic
-      variable = u_z
-      Other_Disp= 'u_x u_y'
-      component = 2
-      Gamma = 0.5
-      Beta = 0.25
-    [../]
+    #[./ZTest_StressDivBasic_x]
+    #  type = ZTest_StressDivBasic
+    #  variable = u_x
+    #  Other_Disp= 'u_y u_z'
+    #  component = 0
+    #  Gamma = 0.5
+    #  Beta = 0.25
+    #[../]
+    #
+    #[./ZTest_StressDivBasic_y]
+    #  type = ZTest_StressDivBasic
+    #  variable = u_y
+    #  Other_Disp= 'u_x u_z'
+    #  component = 1
+    #  Gamma = 0.5
+    #  Beta = 0.25
+    #[../]
+    #
+    #[./ZTest_StressDivBasic_z]
+    #  type = ZTest_StressDivBasic
+    #  variable = u_z
+    #  Other_Disp= 'u_x u_y'
+    #  component = 2
+    #  Gamma = 0.5
+    #  Beta = 0.25
+    #[../]
 
     [./ZTest_Velocity_x]
-      type = ZTest_StressDivBasic
+      type = ZTest_Velocity
       variable = v_x
+      Displacement = 'u_x'
       component = 0
       Gamma = 0.5
       Beta = 0.25
     [../]
     [./ZTest_Velocity_y]
-      type = ZTest_StressDivBasic
+      type = ZTest_Velocity
       variable = v_y
-      component = 0
+      Displacement = 'u_y'
+      component = 1
       Gamma = 0.5
       Beta = 0.25
     [../]
     [./ZTest_Velocity_z]
-      type = ZTest_StressDivBasic
+      type = ZTest_Velocity
       variable = v_z
-      component = 0
+      Displacement = 'u_z'
+      component = 2
       Gamma = 0.5
       Beta = 0.25
     [../]
+
+      [./Dummy_v_x]
+        type = Gen_Dummy
+        variable = u_x
+      [../]
+      [./Dummy_v_y]
+        type = Gen_Dummy
+        variable = u_y
+      [../]
+      [./Dummy_v_z]
+        type = Gen_Dummy
+        variable = u_z
+      [../]
 []
 
 ##===============================================================
