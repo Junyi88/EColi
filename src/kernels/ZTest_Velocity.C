@@ -24,7 +24,7 @@ ZTest_Velocity::ZTest_Velocity(const InputParameters & parameters) :
     _Beta(getParam<Real>("Beta")),
     _Gamma_Beta(_Gamma/_Beta),
     _Con1(1.0-_Gamma_Beta),
-    _Con2((1.0-_Gamma)+0.5*_Gamma_Beta*(1.0-2.0*_Beta)),
+    _Con2((1.0-_Gamma)-0.5*_Gamma_Beta*(1.0-2.0*_Beta)),
     _Acc(3),
     _dp(coupledValue("Displacement")),
     _dp_old(coupledValueOld("Displacement")),
@@ -42,17 +42,23 @@ ZTest_Velocity::ZTest_Velocity(const InputParameters & parameters) :
 Real
 ZTest_Velocity::computeQpResidual()
 {
+  // if (_dt<=1.0e-11)
+  //   return 0.0;
+
   //_u_dot=(_u[_qp]-_u_old[_qp])/dt
   _Accumulator=(_Con1*_u_old[_qp]-_u[_qp])*_dt;
   _Accumulator+=(_dt*_dt)*_Con2*(*_Acc[_ComponentI])[_qp];
-
-  // _Accumulator=-_Con1*_u_dot[_qp];
-  // _Accumulator+=_Con2*(*_Acc[_ComponentI])[_qp];
-  // _Accumulator*=(_dt*_dt);
   _Accumulator+=_Gamma_Beta*(_dp[_qp]-_dp_old[_qp]);
   _Accumulator*=_test[_i][_qp];
 
+  // _Accumulator=(_Con1*_u_old[_qp]-_u[_qp]);
+  // _Accumulator+=(_dt)*_Con2*(*_Acc[_ComponentI])[_qp];
+  // _Accumulator+=_Gamma_Beta*(_dp[_qp]-_dp_old[_qp])/_dt;
+  // _Accumulator*=_test[_i][_qp];
+
    //_Accumulator=-_u[_qp]*_dt+_test[_i][_qp]*(_dp[_qp]-_dp_old[_qp]);
+
+
   return _Accumulator;
 }
 
@@ -61,7 +67,7 @@ Real
 ZTest_Velocity::computeQpJacobian()
 {
 
-  return -_Con1*_dt*_phi[_j][_qp]*_test[_i][_qp];
+  return -_phi[_j][_qp]*_test[_i][_qp]*_dt;
 }
 
 //** computeQpOffDiagJacobian() *********************************************************
@@ -74,5 +80,5 @@ ZTest_Velocity::computeQpOffDiagJacobian(unsigned int jvar)
   }
 
   return _phi[_j][_qp]*_test[_i][_qp]*_Gamma_Beta;
-  return 0.0;
+
 }

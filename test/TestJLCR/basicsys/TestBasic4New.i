@@ -668,6 +668,7 @@
     outputs = exodus
     displacements = 'u_x u_y u_z'
     velocities = 'v_x v_y v_z'
+    Beta = 0.25
   [../]
 
   [./ZTest_Stress1]
@@ -765,13 +766,13 @@
   nl_max_its = 30
   nl_abs_tol = 1e-12
   end_time = 0.1
-   dtmax   = 1.0e-3
-  dtmin = 1.0e-12
+   dtmax   = 1.0e-2
+  dtmin = 1.0e-4
    start_time                 = 0.0
  [./TimeStepper]
     # Turn on time stepping
     type = IterationAdaptiveDT
-    dt = 1.0e-3
+    dt = 1.0e-2
     cutback_factor = 0.8
     growth_factor = 1.5
     optimal_iterations = 12
