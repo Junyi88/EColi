@@ -29,7 +29,8 @@ ZTest_Velocity::ZTest_Velocity(const InputParameters & parameters) :
     _dp(coupledValue("Displacement")),
     _dp_old(coupledValueOld("Displacement")),
     _var_d(coupled("Displacement")),
-    _Accumulator(0.0)
+    _Accumulator(0.0),
+    _u_old(valueOld())
     {
 
       _Acc[0]=&getMaterialPropertyOld<Real>("Acc_x");
@@ -41,13 +42,13 @@ ZTest_Velocity::ZTest_Velocity(const InputParameters & parameters) :
 Real
 ZTest_Velocity::computeQpResidual()
 {
-  // _u_dot=(_u-_u_old)/dt
-  //_Accumulator=_Con1*(_u_old[_qp]-_u[_qp])*_dt;
-  //_Accumulator+=(_dt*_dt)*_Con2*(*_Acc[_ComponentI])[_qp];
+  //_u_dot=(_u[_qp]-_u_old[_qp])/dt
+  _Accumulator=_Con1*(_u_old[_qp]-_u[_qp])*_dt;
+  _Accumulator+=(_dt*_dt)*_Con2*(*_Acc[_ComponentI])[_qp];
 
-  _Accumulator=-_Con1*_u_dot[_qp];
-  _Accumulator+=_Con2*(*_Acc[_ComponentI])[_qp];
-  _Accumulator*=(_dt*_dt);
+  // _Accumulator=-_Con1*_u_dot[_qp];
+  // _Accumulator+=_Con2*(*_Acc[_ComponentI])[_qp];
+  // _Accumulator*=(_dt*_dt);
   _Accumulator+=_Gamma_Beta*(_dp[_qp]-_dp_old[_qp]);
   _Accumulator*=_test[_i][_qp];
 

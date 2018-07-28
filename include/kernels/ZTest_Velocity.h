@@ -36,7 +36,7 @@ protected:
   unsigned int _var_d;
 
   Real _Accumulator;
-
+  const VariableValue & _u_old;
 };
 
 #endif // COUPLEDTIMEDERIVATIVE_H
