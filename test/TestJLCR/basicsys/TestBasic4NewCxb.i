@@ -13,9 +13,9 @@
    type = GeneratedMesh
    dim = 3
    elem_type = HEX8
-   nx = 1
-   ny = 1
-   nz = 1
+   nx = 8
+   ny = 8
+   nz = 8
    xmin = 0
    xmax = 1.0
    ymin = 0
@@ -71,10 +71,10 @@
 #=======================================================
 #:BCs
 [BCs]
-  [./front]
+  [./back]
     type = PresetBC
     variable = u_z
-    boundary = front
+    boundary = back
     value = 0.0
   [../]
   [./left]
@@ -707,6 +707,7 @@
   outputs = exodus
   displacements = 'u_x u_y u_z'
   velocities = 'v_x v_y v_z'
+  use_displaced_mesh           = 1
  [../]
 
   [./elasticity_tensor]
@@ -721,12 +722,14 @@
   [./rot_elasticity_tensor]
     type = JLCR_CalcRotatedElasticityTensor
     outputs = exodus
+    use_displaced_mesh           = 1
 #    velocities = 'v_x v_y v_z'
   [../]
 
   [./StressRate]
     type = JLCR_CalcStressRate
     outputs = exodus
+    use_displaced_mesh           = 1
   [../]
 
   [./Accelerations]
@@ -735,11 +738,13 @@
     displacements = 'u_x u_y u_z'
     velocities = 'v_x v_y v_z'
     Beta = 0.25
+    use_displaced_mesh           = 1
   [../]
 
   [./ZTest_Stress1]
     type = ZTest_Stress
     outputs = exodus
+    use_displaced_mesh           = 1
   [../]
 []
 
@@ -752,30 +757,33 @@
       type = ZTest_VelocityJump
       variable = v_x
       Displacement = 'u_x'
+      use_displaced_mesh           = 1
     [../]
     [./ZTest_Velocity_y]
       type = ZTest_VelocityJump
       variable = v_y
       Displacement = 'u_y'
+      use_displaced_mesh           = 1
     [../]
     [./ZTest_Velocity_z]
       type = ZTest_VelocityJump
       variable = v_z
       Displacement = 'u_z'
+      use_displaced_mesh           = 1
     [../]
 
-      [./Dummy_v_x]
-        type = Gen_Dummy
-        variable = u_x
-      [../]
-      [./Dummy_v_y]
-        type = Gen_Dummy
-        variable = u_y
-      [../]
-      [./Dummy_v_z]
-        type = Gen_Dummy
-        variable = u_z
-      [../]
+      #[./Dummy_v_x]
+      #  type = Gen_Dummy
+      #  variable = u_x
+      #[../]
+      #[./Dummy_v_y]
+      #  type = Gen_Dummy
+      #  variable = u_y
+      #[../]
+      #[./Dummy_v_z]
+      #  type = Gen_Dummy
+      #  variable = u_z
+      #[../]
 
 
       [./ZTest_StressDivBasic_x]
@@ -783,6 +791,7 @@
         variable = u_x
         Other_Disp= 'u_y u_z'
         component = 0
+        use_displaced_mesh           = 1
       [../]
 
       [./ZTest_StressDivBasic_y]
@@ -790,6 +799,7 @@
         variable = u_y
         Other_Disp= 'u_x u_z'
         component = 1
+        use_displaced_mesh           = 1
       [../]
 
       [./ZTest_StressDivBasic_z]
@@ -797,6 +807,7 @@
         variable = u_z
         Other_Disp= 'u_x u_y'
         component = 2
+        use_displaced_mesh           = 1
       [../]
 []
 
@@ -818,7 +829,7 @@
   petsc_options_value = 'asm      ilu          nonzero'
   l_max_its = 40
   nl_max_its = 30
-  nl_abs_tol = 1e-8
+  nl_abs_tol = 1e-10
   end_time = 0.1
    dtmax   = 1.0e-2
   dtmin = 1.0e-12
