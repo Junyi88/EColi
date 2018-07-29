@@ -34,7 +34,7 @@ ZTest_AccelerationSplit::computeQpResidual()
   _Accumulator=-_Beta*_dt*_dt*_u[_qp];
   _Accumulator-=_dp_old[_qp];
   _Accumulator+=_dp[_qp];
-  _Accumulator+=_v_old[_qp]*_dt;
+  _Accumulator-=_v_old[_qp]*_dt;
   _Accumulator-=_u_old[_qp]*_dt*_dt*0.5*(1.0-2.0*_Beta);
   _Accumulator*=_test[_i][_qp];
 

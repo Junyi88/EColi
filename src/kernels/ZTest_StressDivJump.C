@@ -1,7 +1,7 @@
-#include "ZTest_StressDivBasic.h"
+#include "ZTest_StressDivJump.h"
 
 template<>
-InputParameters validParams<ZTest_StressDivBasic>()
+InputParameters validParams<ZTest_StressDivJump>()
 {
   InputParameters params = validParams<Kernel>();
   params.addClassDescription("Kernal For Stress Divergence");
@@ -10,21 +10,16 @@ InputParameters validParams<ZTest_StressDivBasic>()
                                         "An integer corresponding to the direction "
                                         "the variable this kernel acts in. (0 for x, "
                                         "1 for y, 2 for z)");
-  params.addParam<Real>("Gamma", 0.5, "Gamma");
-  params.addParam<Real>("Beta", 0.25, "Beta");
   return params;
 }
 
 //** Constructor *********************************************************
 
-ZTest_StressDivBasic::ZTest_StressDivBasic(const InputParameters & parameters) :
+ZTest_StressDivJump::ZTest_StressDivJump(const InputParameters & parameters) :
     DerivativeMaterialInterface<JvarMapKernelInterface<Kernel> >(parameters),
     _ComponentI(getParam<unsigned int>("component")),
     _OtherDisp(2),
     _IVals(2),
-    _Gamma(getParam<Real>("Gamma")),
-    _Beta(getParam<Real>("Beta")),
-    _Gamma_Beta(_Gamma/_Beta),
     _StressRate(getMaterialProperty<RankTwoTensor>("Stress_Rate")),
     _StressOld(getMaterialPropertyOld<RankTwoTensor>("Stress")),
     _Cijkl(getMaterialProperty<RankFourTensor>("elasticity_tensor")),
@@ -45,7 +40,7 @@ ZTest_StressDivBasic::ZTest_StressDivBasic(const InputParameters & parameters) :
 
 //** computeQpResidual() *********************************************************
 Real
-ZTest_StressDivBasic::computeQpResidual()
+ZTest_StressDivJump::computeQpResidual()
 {
 
   _Accumulator=0.0;
@@ -56,12 +51,12 @@ ZTest_StressDivBasic::computeQpResidual()
   }
 
 
-  return _Accumulator*_dt*_dt;
+  return _Accumulator;
 }
 
 //** computeQpJacobian() *********************************************************
 Real
-ZTest_StressDivBasic::computeQpJacobian()
+ZTest_StressDivJump::computeQpJacobian()
 {
   _Accumulator=0.0;
 
@@ -72,14 +67,13 @@ ZTest_StressDivBasic::computeQpJacobian()
         _Cijkl[_qp](_ComponentI,j,k,_ComponentI)*_grad_phi[_j][_qp](k)
       );
     }
-    
   }
-  return _Accumulator*0.5*_dt*_dt*_Gamma_Beta;
+  return _Accumulator;
 }
 
 //** computeQpOffDiagJacobian() *********************************************************
 Real
-ZTest_StressDivBasic::computeQpOffDiagJacobian(unsigned int jvar)
+ZTest_StressDivJump::computeQpOffDiagJacobian(unsigned int jvar)
 {
   _num_var=WhichJacobianVariable(jvar);
   if (_num_var<3){
@@ -93,7 +87,7 @@ ZTest_StressDivBasic::computeQpOffDiagJacobian(unsigned int jvar)
         );
       }
     }
-   return _Accumulator*0.5*_dt*_dt*_Gamma_Beta;
+   return _Accumulator;
   }
 
 
@@ -102,7 +96,7 @@ ZTest_StressDivBasic::computeQpOffDiagJacobian(unsigned int jvar)
 
 // ** WhichJacobianVariable
 unsigned int
-ZTest_StressDivBasic::WhichJacobianVariable(unsigned var)
+ZTest_StressDivJump::WhichJacobianVariable(unsigned var)
 {
     for (unsigned int i=0; i<2; ++i){
       if (var == _OtherDisp[i]){
