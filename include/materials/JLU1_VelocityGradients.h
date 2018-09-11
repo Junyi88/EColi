@@ -24,6 +24,7 @@ protected:
   std::vector<const VariableValue *> _vel;
   std::vector<const VariableGradient *> _grad_vel;
 
+  MaterialProperty<RankTwoTensor> & _L_grad_vel;
   MaterialProperty<RankTwoTensor> & _D_grad_vel;
   MaterialProperty<RankTwoTensor> & _W_grad_vel;
 

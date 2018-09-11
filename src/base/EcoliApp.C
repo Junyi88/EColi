@@ -8,6 +8,8 @@
 #include "JLU1_VelocityU.h"
 #include "JLU1_VelocityGradients.h"
 #include "JLU1_StressFromRates.h"
+#include "JLU1_StressDivergenceU.h"
+#include "JLU1_DeformationGradientStrains.h"
 
 //================================
 template<>
@@ -47,8 +49,10 @@ void
 EcoliApp::registerObjects(Factory & factory)
 {
   registerKernel(JLU1_VelocityU);
+  registerKernel(JLU1_StressDivergenceU);
   registerMaterial(JLU1_VelocityGradients);
   registerMaterial(JLU1_StressFromRates);
+  registerMaterial(JLU1_DeformationGradientStrains);
 }
 
 // External entry point for dynamic syntax association

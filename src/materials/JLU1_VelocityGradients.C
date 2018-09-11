@@ -18,6 +18,7 @@ JLU1_VelocityGradients::JLU1_VelocityGradients(const InputParameters & parameter
     _ndisp(coupledComponents("velocities")),
     _vel(3),
     _grad_vel(3),
+    _L_grad_vel(declareProperty<RankTwoTensor>("Velocity_Gradient")),
     _D_grad_vel(declareProperty<RankTwoTensor>("DVelocity_Gradient")),
     _W_grad_vel(declareProperty<RankTwoTensor>("WVelocity_Gradient"))
 {
@@ -40,6 +41,7 @@ JLU1_VelocityGradients::JLU1_VelocityGradients(const InputParameters & parameter
 void
 JLU1_VelocityGradients::initQpStatefulProperties()
 {
+  _L_grad_vel[_qp].zero();
   _D_grad_vel[_qp].zero();
   _W_grad_vel[_qp].zero();
 }
@@ -49,6 +51,11 @@ void
 JLU1_VelocityGradients::computeQpProperties()
 {
     // Calculate Velocity Gradients
-    _D_grad_vel[_qp]  = 0.5*(_VelGrad[_qp]+_VelGrad[_qp].transpose());
-    _W_grad_vel[_qp]  = 0.5*(_VelGrad[_qp]-_VelGrad[_qp].transpose());
+    RankTwoTensor A((*_grad_vel[0])[_qp],
+                    (*_grad_vel[1])[_qp],
+                    (*_grad_vel[2])[_qp]);
+
+    _L_grad_vel[_qp]  = A;
+    _D_grad_vel[_qp]  = 0.5*(A+A.transpose());
+    _W_grad_vel[_qp]  = 0.5*(A-A.transpose());
 }
