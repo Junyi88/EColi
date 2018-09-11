@@ -4,6 +4,10 @@
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
+// ---------------------
+#include "JLU1_VelocityU.h"
+#include "JLU1_VelocityGradients.h"
+#include "JLU1_StressFromRates.h"
 
 //================================
 template<>
@@ -42,7 +46,9 @@ extern "C" void EcoliApp__registerObjects(Factory & factory) { EcoliApp::registe
 void
 EcoliApp::registerObjects(Factory & factory)
 {
-
+  registerKernel(JLU1_VelocityU);
+  registerMaterial(JLU1_VelocityGradients);
+  registerMaterial(JLU1_StressFromRates);
 }
 
 // External entry point for dynamic syntax association
